@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Hare and Hounds</title>
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+        <link rel="stylesheet" type="text/css" href="css/grid.css" />
+    </head>
+
+    <script src="scripts/jquery.js"></script>
+    <script src="scripts/underscore.js"></script>
+    <script src="scripts/appmodel.js"></script>
+    <script src="scripts/select.js"></script>
+    <script src="scripts/board.js"></script>
+    <script src="scripts/appview.js"></script>
+    <script src="scripts/app.js"></script>
+  <script>
+    $(function() {
+
+        //TODO: Move the remaining stuff to app.js as well
+
+        //Initialize various modules
+        appModel.init();
+        boardView.init();
+        appView.init();
+        app.init();
+
+        //Set up the click on New-Game to trigger a new game
+        $(".new-game").on("click", function (event) {
+            var pieceType = $('#pieceType').val();
+            app.newGame(pieceType);
+            event.preventDefault();
+        });
+
+        //Handle the move event (internally triggerd from the board/selection manager)
+        $(boardView).on('move', function(event, from, to) {
+            app.movePiece(from, to);
+        });
+
+        //Handle selection change (again internally triggerd from the board/selection manager)
+        $(boardView).on('selectionChange', function(event, oldSelectedLocation, newSelectedLocation) {
+            boardView.setSelection(oldSelectedLocation, newSelectedLocation);
+        })
+
+        //Handle input style
+        //TODO: Rework this
+        selectionManager.useAltClick($('#altClick').prop('checked'));
+        $('#altClick').on('change', function(event) {
+            if ( $('#altClick').prop('checked') ) {
+                $('#altClickFaq').addClass('show');
+                $('#altClickFaq').removeClass('hidden');
+                $('#justClickFaq').removeClass('show');
+                $('#justClickFaq').addClass('hidden');
+                selectionManager.useAltClick(true);
+            } else {
+                $('#justClickFaq').addClass('show');
+                $('#justClickFaq').removeClass('hidden');
+                $('#altClickFaq').removeClass('show');
+                $('#altClickFaq').addClass('hidden');
+                selectionManager.useAltClick(false);
+            }
+        });
+
+        //In order to simplify joining, the link we produce, stashes the game ID in to a anchor
+        //Here we check if that is the situation
+        var hashCheck = function() {
+            var hashMatches = window.location.hash.match('#/join/(.*)');
+            if (hashMatches !== null) {
+                var gameId = hashMatches[1];
+                console.log("Game Id:" + gameId);
+                app.joinGame(gameId);
+                window.location.hash = "";
+            }
+        };
+        hashCheck();
+});
+</script>
+    <body>
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">Hare and Hounds</a>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="col-lg-8">
+            <div id="game" class="game">
+              <div id="grid" class="grid">
+                <a href="#" class="spot spot-1-0  empty"></a>
+                <a href="#" class="spot spot-2-0  empty"></a>
+                <a href="#" class="spot spot-3-0  empty"></a>
+                <a href="#" class="spot spot-0-1  empty"></a>
+                <a href="#" class="spot spot-1-1  empty"></a>
+                <a href="#" class="spot spot-2-1  empty"></a>
+                <a href="#" class="spot spot-3-1  empty"></a>
+                <a href="#" class="spot spot-4-1  empty"></a>
+                <a href="#" class="spot spot-1-2  empty"></a>
+                <a href="#" class="spot spot-2-2  empty"></a>
+                <a href="#" class="spot spot-3-2  empty"></a>
+              </div>
+              <div id="status"></div>
+            </div>
+            <br><br>
+            <div class="panel invisible">
+                <div id="serverStatusHeading" class="panel-heading"></div>
+                <div id="serverStatus" class="panel-body"></div>
+            </div>
+        </div>
+        <div class="col-lg-2">
+            <form class="form-inline">
+                <div class="form-group">
+                    <select id="pieceType" class="form-control">
+                        <option value="HOUND">Hound</option>
+                        <option value="HARE">Hare</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="new-game btn btn-primary" href="#" style="width:100%">New Game</button>
+                </div>
+            </form>
+            <br>
+            <div class="panel panel-default">
+                <div class="panel-heading">Usage</div>
+                <div class="panel-body">
+                    <label class="hidden"><input id="altClick" type="checkbox">Use Alt+Click</label>
+                    <div>
+                        <span id="altClickFaq" class="hidden"> Click to change selection. Alt+Click at target to move. You can select any cell, even empty ones. Use that for testing</span>
+                        <span id="justClickFaq">Must click the same cell to toggle selection. If you select something and click on a different cell, it will attempt to move. You can select any cell, even empty ones. Use that for testing</span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="panel panel-default invisible">
+                <div id="state" class="panel-body"></div>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>

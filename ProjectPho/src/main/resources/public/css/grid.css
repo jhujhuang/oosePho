@@ -1,0 +1,34 @@
+#game .grid {
+    background-image: url("../img/board.png");
+    width: 785px;
+    height: 422px;
+    position: relative;
+}
+
+#game .grid .spot {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+}
+
+.selected {
+    background-color: lightGray;
+    background-repeat: no-repeat;
+}
+
+#game .grid .empty { background-image: url("../img/empty.png"); }
+#game .grid .hare  { background-image: url("../img/hare.png");  }
+#game .grid .hound { background-image: url("../img/hound.png"); }
+
+/* Increments of 60*3 really. But +2 margin and +1 to be _inside_ the cell. Can probably be improved */
+#game .grid .spot-1-0  { left: 183px; top:   3px; }
+#game .grid .spot-2-0  { left: 363px; top:   3px; }
+#game .grid .spot-3-0  { left: 543px; top:   3px; }
+#game .grid .spot-0-1  { left:   3px; top: 183px; }
+#game .grid .spot-1-1  { left: 183px; top: 183px; }
+#game .grid .spot-2-1  { left: 363px; top: 183px; }
+#game .grid .spot-3-1  { left: 543px; top: 183px; }
+#game .grid .spot-4-1  { left: 723px; top: 183px; }
+#game .grid .spot-1-2  { left: 183px; top: 363px; }
+#game .grid .spot-2-2  { left: 363px; top: 363px; }
+#game .grid .spot-3-2  { left: 543px; top: 363px; }
