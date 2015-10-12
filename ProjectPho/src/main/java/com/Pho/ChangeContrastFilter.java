@@ -4,6 +4,10 @@ import java.util.Map;
 
 public class ChangeContrastFilter extends Filter {
 
+    /**
+     * Constructor for the change contrast filter class.
+     * @param params filter parameters
+     */
     public ChangeContrastFilter(Map<String, Double> params){
 
     }
