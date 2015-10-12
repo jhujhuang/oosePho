@@ -1,11 +1,13 @@
 package com.Pho;
 
+import java.util.List;
+
 /**
  * The Use class is for holding information of user.
  */
 public class User {
     private String userName, userEmail;
-    private Photo [] album;
+    private List<Photo> photos;
 
     /**
      * Constructor for the User class
@@ -13,7 +15,7 @@ public class User {
      * @param userEmail email of the user
      */
     public User(String userName, String userEmail) {
-        this.album = new Photo[1];
+        // TODO: implement
     }
 
     /**
@@ -23,7 +25,6 @@ public class User {
     public String getUserName() {
         return this.userName;
     }
-
 
     /**
      * Get the user email of this user.
@@ -36,7 +37,7 @@ public class User {
     /** Get the list of photos of the user.
      * @return the array containing the photos of the user
      */
-    public Photo [] getAlbums() {
-	return this.album;
+    public List<Photo> getPhotos() {
+	return this.photos;
     }
 }
