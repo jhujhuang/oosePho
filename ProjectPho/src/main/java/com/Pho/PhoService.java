@@ -4,14 +4,19 @@ import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
 
+/**
+ * Pho service.
+ */
 public class PhoService {
 
     private Sql2o db;
 
+    /**
+     * Constructor
+     * @param dataSource the data source
+     */
     public PhoService(DataSource dataSource) throws PhoServiceException {
-        // create a new database for games
-        // but I couldn't think of a good way to store all the game info
-        // so this database is empty
+        // create a new database
         db = new Sql2o(dataSource);
 
         //Create the schema for the database if necessary. This allows this
@@ -26,7 +31,125 @@ public class PhoService {
             throw new GameServiceException("Failed to create schema at startup", ex);
         }*/
     }
-  //-----------------------------------------------------------------------------//
+
+    /**
+     * Authenticate the user
+     * @param whether the user has been authenticated
+     */
+    public boolean authenticate(String userId, String token) {
+
+    }
+
+    /**
+     * Register new account
+     * @param userId the user ID
+     * @param password the user's password
+     */
+    public void register(String userId, String password) throws PhoServiceException {
+
+    }
+
+    /**
+     * Log in to account
+     * @param userId the user ID
+     * @param password the user's password
+     * @return the token
+     */
+    public String login(String userId, String password) throws PhoServiceException {
+
+    }
+
+    /**
+     * Create a new photo
+     * @param userId the user ID
+     * @return the photo ID
+     */
+    public String createNewPhoto(String userId) throws PhoServiceException {
+
+    }
+
+    /**
+     * Join editing session
+     * @param userId the user ID
+     */
+    public void joinEditingSession(String userId) throws PhoServiceException {
+
+    }
+
+    /**
+     * List photos of current user
+     * @param userId the user ID
+     * @param token the generated token for specific user
+     */   
+    public Map<String, List<String>> listPhotosOfCurrentUser() throws PhoServiceException {
+
+    }
+
+    /**
+     * Edit photo title
+     * @param userId the user ID
+     * @param title the title of the photo
+     */
+    public void editPhotoTitle(String userId, String title) {
+
+    }
+
+    /**
+     * Edit
+     * @param userId the user ID
+     * @param canvasId the canvas ID
+     * @param editType the edit type
+     * @param params other parameters
+     */
+    public void edit(String userId, String canvasId, String editType,
+        Map<String, String> params) {
+
+    }
+
+    /**
+     * Register new account
+     * @param userId the user ID
+     * @return a map of canvas
+     */
+    public Map<String, String> fetchCanvas(String userId) {
+
+    }
+
+    /**
+     * leave comment
+     * @param content comment content
+     */
+    public void comment(String content) {
+
+    }
+
+    /**
+     * Get all revisions
+     * @param userId the user ID
+     */
+    public Map<String, String> getRevisions(String userId) {
+
+    }
+
+    /**
+     * Revert to selected version
+     * @param userId the user ID
+     * @param versionId the version ID
+     */
+    public void revertToSelectedVersion(String userId, String versionId) {
+
+    }
+
+    /**
+     * Save the current version
+     * @param userId the user ID
+     * @param canvasId the canvas ID
+     */
+    public void saveVersion(String userId, String canvasId) {
+
+    }
+
+    //-----------------------------------------------------------------------------//
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
 
