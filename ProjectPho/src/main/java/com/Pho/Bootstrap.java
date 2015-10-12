@@ -50,16 +50,16 @@ public class Bootstrap {
      * @return javax.sql.DataSource corresponding to the Game database
      */
     private static DataSource configureDataSource() {
-        Path GamePath = Paths.get(".", "Game.db");
+        Path GamePath = Paths.get(".", "Pho.db");
         if ( !(Files.exists(GamePath) )) {
             try { Files.createFile(GamePath); }
             catch (java.io.IOException ex) {
-                logger.error("Failed to create toto.db file in current directory. Aborting");
+                logger.error("Failed to create Pho.db file in current directory. Aborting");
             }
         }
 
         SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl("jdbc:sqlite:Game.db");
+        dataSource.setUrl("jdbc:sqlite:Pho.db");
         return dataSource;
 
     }

@@ -7,15 +7,15 @@ import java.util.Collections;
 
 import static spark.Spark.post;
 
-public class EditingController {
+public class PhoController {
 
     private static final String API_CONTEXT = "/Pho/api/sessions";
 
-    private final EditingService editingService;
+    private final PhoService PhoService;
 
-    private final Logger logger = LoggerFactory.getLogger(EditingController.class);
-    public EditingController(EditingService editingService) {
-        this.editingService = editingService;
+    private final Logger logger = LoggerFactory.getLogger(PhoController.class);
+    public PhoController(PhoService PhoService) {
+        this.PhoService = PhoService;
         setupEndpoints();
     }
     private void setupEndpoints() {

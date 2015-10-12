@@ -4,11 +4,11 @@ import org.sql2o.Sql2o;
 
 import javax.sql.DataSource;
 
-public class EditingService {
+public class PhoService {
 
     private Sql2o db;
 
-    public EditingService(DataSource dataSource) throws EditingServiceException {
+    public PhoService(DataSource dataSource) throws PhoServiceException {
         // create a new database for games
         // but I couldn't think of a good way to store all the game info
         // so this database is empty
@@ -30,8 +30,8 @@ public class EditingService {
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
 
-    public static class EditingServiceException extends Exception {
-        public EditingServiceException(String message, Throwable cause) {
+    public static class PhoServiceException extends Exception {
+        public PhoServiceException(String message, Throwable cause) {
             super(message, cause);
         }
     }
