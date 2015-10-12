@@ -85,7 +85,6 @@ public class PhoService {
     /**
      * List photos of current user
      * @param userId the user ID
-     * @param token the generated token for specific user
      */   
     public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws PhoServiceException {
 
