@@ -81,16 +81,15 @@ public class PhoService {
      * @param userId the user ID
      * @param token the generated token for specific user
      */   
-    public Map<String, List<String>> listPhotosOfCurrentUser() throws PhoServiceException {
+    public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws PhoServiceException {
 
     }
 
     /**
      * Edit photo title
-     * @param userId the user ID
      * @param title the title of the photo
      */
-    public void editPhotoTitle(String userId, String title) {
+    public void editPhotoTitle(String title) {
 
     }
 
@@ -108,10 +107,9 @@ public class PhoService {
 
     /**
      * Register new account
-     * @param userId the user ID
      * @return a map of canvas
      */
-    public Map<String, String> fetchCanvas(String userId) {
+    public Map<String, String> fetchCanvas() {
 
     }
 
@@ -119,24 +117,23 @@ public class PhoService {
      * leave comment
      * @param content comment content
      */
-    public void comment(String content) {
+    public void comment(String userId, String content) {
 
     }
 
     /**
      * Get all revisions
-     * @param userId the user ID
+     * @return map of different versions
      */
-    public Map<String, String> getRevisions(String userId) {
+    public Map<String, List<String>> getRevisions() {
 
     }
 
     /**
      * Revert to selected version
-     * @param userId the user ID
      * @param versionId the version ID
      */
-    public void revertToSelectedVersion(String userId, String versionId) {
+    public void revertToSelectedVersion(String versionId) {
 
     }
 
