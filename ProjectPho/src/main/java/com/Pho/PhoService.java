@@ -1,8 +1,11 @@
 package com.Pho;
 
 import org.sql2o.Sql2o;
-
 import javax.sql.DataSource;
+
+import java.util.List;
+import java.util.Map;
+
 
 /**
  * Pho service.
@@ -34,7 +37,9 @@ public class PhoService {
 
     /**
      * Authenticate the user
-     * @param whether the user has been authenticated
+     * @param user Id the user ID
+     * @param token the generated token for specific user
+     * @return whether the user has been authenticated
      */
     public boolean authenticate(String userId, String token) {
 
