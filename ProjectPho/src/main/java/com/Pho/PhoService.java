@@ -71,8 +71,9 @@ public class PhoService {
     /**
      * Join editing session
      * @param userId the user ID
+     * @param photoId the photo ID
      */
-    public void joinEditingSession(String userId) throws PhoServiceException {
+    public void joinEditingSession(String userId, String photoId) throws PhoServiceException {
 
     }
 
@@ -88,61 +89,69 @@ public class PhoService {
     /**
      * Edit photo title
      * @param title the title of the photo
+     * @param photoId the photo ID
      */
-    public void editPhotoTitle(String title) {
+    public void editPhotoTitle(String photoId, String title) {
 
     }
 
     /**
      * Edit
      * @param userId the user ID
+     * @param photoId the photo ID
      * @param canvasId the canvas ID
      * @param editType the edit type
      * @param params other parameters
      */
-    public void edit(String userId, String canvasId, String editType,
+    public void edit(String userId, String photoId, String canvasId, String editType,
         Map<String, String> params) {
 
     }
 
     /**
      * Register new account
+     * @param photoId the photo ID
      * @return a map of canvas
      */
-    public Map<String, String> fetchCanvas() {
+    public Map<String, String> fetchCanvas(String photoId) {
 
     }
 
     /**
      * leave comment
+     * @param userId the user ID
+     * @param photoId the photo ID
      * @param content comment content
      */
-    public void comment(String userId, String content) {
+    public void comment(String userId, String photoId, String content) {
 
     }
 
     /**
      * Get all revisions
+     * @param photoId the photo ID
      * @return map of different versions
      */
-    public Map<String, List<String>> getRevisions() {
+    public Map<String, List<String>> getRevisions(String photoId) {
 
     }
 
     /**
      * Revert to selected version
+     * @param photoId the photo ID
      * @param versionId the version ID
      */
-    public void revertToSelectedVersion(String versionId) {
+    public void revertToSelectedVersion(String photoId, String versionId) {
 
     }
 
     /**
      * Save the current version
      * @param userId the user ID
+     * @param photoId the photo ID
      * @param canvasId the canvas ID
      */
-    public void saveVersion(String userId, String canvasId) {
+    public void saveVersion(String userId, String photoId, String canvasId) {
 
     }
 
