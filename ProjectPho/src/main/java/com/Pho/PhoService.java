@@ -17,6 +17,7 @@ public class PhoService {
     /**
      * Constructor
      * @param dataSource the data source
+     * @throws PhoServiceException when failures occur
      */
     public PhoService(DataSource dataSource) throws PhoServiceException {
         // create a new database
@@ -50,6 +51,7 @@ public class PhoService {
      * Register new account
      * @param userId the user ID
      * @param password the user's password
+     * @throws PhoServiceException when failures occur
      */
     public void register(String userId, String password) throws PhoServiceException {
         // TODO: Implement
@@ -59,6 +61,7 @@ public class PhoService {
      * Log in to account
      * @param userId the user ID
      * @param password the user's password
+     * @throws PhoServiceException when failures occur
      * @return the token
      */
     public String login(String userId, String password) throws PhoServiceException {
@@ -68,6 +71,7 @@ public class PhoService {
     /**
      * Create a new photo
      * @param userId the user ID
+     * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
     public String createNewPhoto(String userId) throws PhoServiceException {
@@ -78,6 +82,7 @@ public class PhoService {
      * Join editing session
      * @param userId the user ID
      * @param photoId the photo ID
+     * @throws PhoServiceException when failures occur
      */
     public void joinEditingSession(String userId, String photoId) throws PhoServiceException {
         // TODO: Implement
@@ -86,6 +91,8 @@ public class PhoService {
     /**
      * List photos of current user
      * @param userId the user ID
+     * @throws PhoServiceException when failures occur
+     * @return map of content to be included in the response, where the list is a list of userId's
      */   
     public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws PhoServiceException {
         return null;  // TODO: Implement

@@ -24,7 +24,7 @@ public abstract class Filter {
 
     /**
      * Loads the img of the photo in the filter instance.
-     * @param pId
+     * @param pId The pId of the photo to load with this filter.
      */
     protected void loadImage (String pId) {
         // TODO: implement

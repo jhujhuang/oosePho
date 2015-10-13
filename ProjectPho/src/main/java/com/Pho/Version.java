@@ -14,6 +14,7 @@ public class Version {
      * Constructor for the Version class.
      * @param versionId the id of this version
      * @param createdTime the createdTime of this version
+     * @param userId the userId of the user who saved this version.
      * @param img the image of this version
      */
     public Version(String versionId, String createdTime, String userId, BufferedImage img) {
