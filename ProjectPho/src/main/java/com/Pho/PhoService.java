@@ -22,6 +22,7 @@ public class PhoService {
         // create a new database
         db = new Sql2o(dataSource);
 
+        // TODO: Implement
         //Create the schema for the database if necessary. This allows this
         //program to mostly self-contained. But this is not always what you want;
         //sometimes you want to create the schema externally via a script.
@@ -37,12 +38,12 @@ public class PhoService {
 
     /**
      * Authenticate the user
-     * @param user Id the user ID
+     * @param userId the unique user ID
      * @param token the generated token for specific user
      * @return whether the user has been authenticated
      */
     public boolean authenticate(String userId, String token) {
-
+        return true; // TODO: Implement
     }
 
     /**
@@ -51,7 +52,7 @@ public class PhoService {
      * @param password the user's password
      */
     public void register(String userId, String password) throws PhoServiceException {
-
+        // TODO: Implement
     }
 
     /**
@@ -61,7 +62,7 @@ public class PhoService {
      * @return the token
      */
     public String login(String userId, String password) throws PhoServiceException {
-
+        return null;  // TODO: Implement
     }
 
     /**
@@ -70,7 +71,7 @@ public class PhoService {
      * @return the photo ID
      */
     public String createNewPhoto(String userId) throws PhoServiceException {
-
+        return null;  // TODO: Implement
     }
 
     /**
@@ -79,7 +80,7 @@ public class PhoService {
      * @param photoId the photo ID
      */
     public void joinEditingSession(String userId, String photoId) throws PhoServiceException {
-
+        // TODO: Implement
     }
 
     /**
@@ -87,7 +88,7 @@ public class PhoService {
      * @param userId the user ID
      */   
     public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws PhoServiceException {
-
+        return null;  // TODO: Implement
     }
 
     /**
@@ -96,7 +97,7 @@ public class PhoService {
      * @param photoId the photo ID
      */
     public void editPhotoTitle(String photoId, String title) {
-
+        // TODO: Implement
     }
 
     /**
@@ -109,7 +110,7 @@ public class PhoService {
      */
     public void edit(String userId, String photoId, String canvasId, String editType,
         Map<String, String> params) {
-
+        // TODO: Implement
     }
 
     /**
@@ -118,7 +119,7 @@ public class PhoService {
      * @return a map of canvas
      */
     public Map<String, String> fetchCanvas(String photoId) {
-
+        return null;  // TODO: Implement
     }
 
     /**
@@ -128,7 +129,7 @@ public class PhoService {
      * @param content comment content
      */
     public void comment(String userId, String photoId, String content) {
-
+        // TODO: Implement
     }
 
     /**
@@ -137,7 +138,7 @@ public class PhoService {
      * @return map of different versions
      */
     public Map<String, List<String>> getRevisions(String photoId) {
-
+        return null;  // TODO: Implement
     }
 
     /**
@@ -146,7 +147,7 @@ public class PhoService {
      * @param versionId the version ID
      */
     public void revertToSelectedVersion(String photoId, String versionId) {
-
+        // TODO: Implement
     }
 
     /**
@@ -156,7 +157,7 @@ public class PhoService {
      * @param canvasId the canvas ID
      */
     public void saveVersion(String userId, String photoId, String canvasId) {
-
+        // TODO: Implement
     }
 
     //-----------------------------------------------------------------------------//
