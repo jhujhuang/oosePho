@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 /**
- * Pho service.
+ * Pho service. The model ("M") of the MVC model.
  */
 public class PhoService {
 

@@ -3,7 +3,7 @@ package com.Pho;
 import java.util.List;
 
 /**
- * A photo class.
+ * A photo object.
  */
 public class Photo {
     private static final String INITIAL_PHOTO_TITLE = "Untitled";

@@ -3,7 +3,8 @@ package com.Pho;
 import java.util.List;
 
 /**
- * The Use class is for holding information of user.
+ * Pho user.
+ * Each user is maintained with a unique userId and a list of owned photos.
  */
 public class User {
     private String userId;

@@ -13,7 +13,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Bootstrap.
+ */
 public class Bootstrap {
+
     public static final String IP_ADDRESS = "localhost";
     public static final int PORT = 8080;
 

@@ -3,7 +3,7 @@ package com.Pho;
 import java.util.Map;
 
 /**
- * This is the edge detection filter class.
+ * Edge detection filter.
  */
 public class EdgeDetectionFilter extends Filter {
 

@@ -6,6 +6,9 @@ import spark.ResponseTransformer;
 
 import java.util.HashMap;
 
+/**
+ * Json transformer.
+ */
 public class JsonTransformer implements ResponseTransformer {
 
     private Gson gson = new Gson();

@@ -3,7 +3,7 @@ package com.Pho;
 import java.util.Map;
 
 /**
- * This is the blur filter class.
+ * Blur filter.
  */
 public class BlurFilter extends Filter {
 
