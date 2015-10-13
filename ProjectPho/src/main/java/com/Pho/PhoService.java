@@ -138,7 +138,7 @@ public class PhoService {
     /**
      * Get all revisions
      * @param photoId the photo ID
-     * @return map of content to be included in the response, where the list is a list of versions' information.
+     * @return map of content to be included in the response, where the list is a list of Version instances.
      */
     public Map<String, List<Version>> getRevisions(String photoId) {
         return null;  // TODO: Implement
