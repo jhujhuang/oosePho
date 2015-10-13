@@ -12,7 +12,7 @@ public class BlurFilter extends Filter {
      * @param params filter parameters
      */
     public BlurFilter(Map<String, Double> params) {
-
+        // TODO: Implement
     }
 
     /**
@@ -23,7 +23,7 @@ public class BlurFilter extends Filter {
      * @param y2 y coordinate of the bot right point of the rectangular area.
      */
     public void applyToRectangle(int x1, int x2, int y1, int y2) {
-
+        // TODO: Implement
     }
 
     /**
@@ -33,6 +33,6 @@ public class BlurFilter extends Filter {
      * @param r radius of the circle.
      */
     public void applyToCircle(int x, int y, int r) {
-
+        // TODO: Implement
     }
 }
