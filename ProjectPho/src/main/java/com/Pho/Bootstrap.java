@@ -37,9 +37,9 @@ public class Bootstrap {
 
         //Create the model instance and then configure and start the web service
         try {
-            EditingService model = new EditingService(dataSource);
-            new EditingController(model);
-        } catch (EditingService.EditingServiceException ex) {
+            PhoService model = new PhoService(dataSource);
+            new PhoController(model);
+        } catch (PhoService.PhoServiceException ex) {
             logger.error("Failed to create a Service instance. Aborting");
         }
     }
