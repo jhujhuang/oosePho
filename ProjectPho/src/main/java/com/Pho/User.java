@@ -6,32 +6,23 @@ import java.util.List;
  * The Use class is for holding information of user.
  */
 public class User {
-    private String userName, userEmail;
+    private String userId;
     private List<Photo> photos;
 
     /**
      * Constructor for the User class
-     * @param userName user name of the user
-     * @param userEmail email of the user
+     * @param userName string of the userId
      */
-    public User(String userName, String userEmail) {
+    public User(String userName) {
         // TODO: implement
     }
 
     /**
-     * Get the user name of user.
-     * @return the user name of the user
+     * Get the user ID of user.
+     * @return the userId of the user
      */
-    public String getUserName() {
-        return this.userName;
-    }
-
-    /**
-     * Get the user email of this user.
-     * @return the email of the user
-     */
-    public String getUserEmail() {
-	return this.userEmail;
+    public String getUserId() {
+        return this.userId;
     }
 
     /** Get the list of photos of the user.
