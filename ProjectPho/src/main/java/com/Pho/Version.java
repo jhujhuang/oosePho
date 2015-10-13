@@ -1,4 +1,4 @@
-package com.Pho;
+package com.pho;
 
 import java.awt.image.BufferedImage;
 

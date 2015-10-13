@@ -1,4 +1,4 @@
-package com.Pho;
+package com.pho;
 
 import com.google.gson.Gson;
 import spark.Response;

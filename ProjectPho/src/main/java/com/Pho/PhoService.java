@@ -1,4 +1,4 @@
-package com.Pho;
+package com.pho;
 
 import org.sql2o.Sql2o;
 import javax.sql.DataSource;
@@ -8,7 +8,7 @@ import java.util.Map;
 
 
 /**
- * Pho service. The model ("M") of the MVC model.
+ * pho service. The model ("M") of the MVC model.
  */
 public class PhoService {
 

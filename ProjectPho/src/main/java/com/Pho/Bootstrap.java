@@ -1,4 +1,4 @@
-package com.Pho;
+package com.pho;
 
 
 import org.slf4j.Logger;
@@ -54,16 +54,16 @@ public class Bootstrap {
      * @return javax.sql.DataSource corresponding to the Game database
      */
     private static DataSource configureDataSource() {
-        Path GamePath = Paths.get(".", "Pho.db");
+        Path GamePath = Paths.get(".", "pho.db");
         if ( !(Files.exists(GamePath) )) {
             try { Files.createFile(GamePath); }
             catch (java.io.IOException ex) {
-                logger.error("Failed to create Pho.db file in current directory. Aborting");
+                logger.error("Failed to create pho.db file in current directory. Aborting");
             }
         }
 
         SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl("jdbc:sqlite:Pho.db");
+        dataSource.setUrl("jdbc:sqlite:pho.db");
         return dataSource;
 
     }

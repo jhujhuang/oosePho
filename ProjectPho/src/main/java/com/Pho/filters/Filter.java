@@ -1,4 +1,4 @@
-package com.Pho.filters;
+package com.pho.filters;
 
 /**
  * An abstract class for filters.

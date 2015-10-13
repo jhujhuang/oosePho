@@ -1,9 +1,9 @@
-package com.Pho;
+package com.pho;
 
 import java.util.List;
 
 /**
- * Pho user.
+ * pho user.
  * Each user is maintained with a unique userId and a list of owned photos.
  */
 public class User {

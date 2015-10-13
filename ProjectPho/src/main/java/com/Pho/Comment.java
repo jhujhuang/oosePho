@@ -1,4 +1,4 @@
-package com.Pho;
+package com.pho;
 
 /**
  * A Comment on a photo in the edit interface.
