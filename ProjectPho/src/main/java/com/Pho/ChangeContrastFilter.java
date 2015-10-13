@@ -2,6 +2,9 @@ package com.Pho;
 
 import java.util.Map;
 
+/**
+ * Change contrast filter.
+ */
 public class ChangeContrastFilter extends Filter {
 
     /**
