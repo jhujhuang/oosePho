@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage;
  * A Photo class contains a list of versions.
  */
 public class Version {
-    private String versionId, createdTime;
+    private String versionId, createdTime, userId;
     private BufferedImage img;
     
     /**
@@ -16,10 +16,11 @@ public class Version {
      * @param createdTime the createdTime of this version
      * @param img the image of this version
      */
-    public Version(String versionId, String createdTime, BufferedImage img) {
-	this.versionId = versionId;
-	this.createdTime = createdTime;
-	this.img = img;
+    public Version(String versionId, String createdTime, String userId, BufferedImage img) {
+    	this.versionId = versionId;
+	    this.createdTime = createdTime;
+        this.userId = userId;
+	    this.img = img;
     }
 
     /**
@@ -27,15 +28,23 @@ public class Version {
      * @return the version id of this version
      */ 
     public String getVersionId() {
-	return this.versionId;
-    } 
+	    return this.versionId;
+    }
 
     /**
      * Get the created time of this version.
      * @return the created time of this version
      */
     public String getCreatedTime() {
-	return this.createdTime;
+	    return this.createdTime;
+    }
+
+    /**
+     * Retrieves the userId of the user who saved this version.
+     * @return string, userId
+     */
+    public String getUserId() {
+        return this.userId;
     }
 
     /**
@@ -43,6 +52,6 @@ public class Version {
      * @return the image of this verison
      */
     public BufferedImage getImage() {
-	return this.img;
+	    return this.img;
     }
 }

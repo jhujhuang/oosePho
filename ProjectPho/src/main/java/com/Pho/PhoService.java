@@ -101,7 +101,8 @@ public class PhoService {
     }
 
     /**
-     * Edit
+     * Make an edit to a photo.
+     *
      * @param userId the user ID
      * @param photoId the photo ID
      * @param canvasId the canvas ID
@@ -114,16 +115,18 @@ public class PhoService {
     }
 
     /**
-     * Register new account
+     * Handles the fetch of current contents about a photo's editing session.
+     *
      * @param photoId the photo ID
-     * @return a map of canvas
+     * @return map of content to be included in the response to fetch
      */
-    public Map<String, String> fetchCanvas(String photoId) {
+    public Map<String, String> fetch(String photoId) {
         return null;  // TODO: Implement
     }
 
     /**
-     * leave comment
+     * Comment on a photo.
+     *
      * @param userId the user ID
      * @param photoId the photo ID
      * @param content comment content
@@ -135,9 +138,9 @@ public class PhoService {
     /**
      * Get all revisions
      * @param photoId the photo ID
-     * @return map of different versions
+     * @return map of content to be included in the response, where the list is a list of versions' information.
      */
-    public Map<String, List<String>> getRevisions(String photoId) {
+    public Map<String, List<Version>> getRevisions(String photoId) {
         return null;  // TODO: Implement
     }
 
