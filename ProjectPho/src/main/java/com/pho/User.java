@@ -1,6 +1,7 @@
 package com.pho;
 
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * pho user.
@@ -15,7 +16,7 @@ public class User {
      * @param userName string of the userId
      */
     public User(String userName) {
-        // TODO: implement
+        this.userId = userName;
     }
 
     /**
@@ -31,5 +32,12 @@ public class User {
      */
     public List<Photo> getPhotos() {
 	return this.photos;
+    }
+    
+    /** Add a photo to a user's collection of photo.
+     * @param p the photo to add
+     */
+    public void addPhoto(Photo p) {
+	// TODO: implement
     }
 }
