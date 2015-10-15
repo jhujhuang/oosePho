@@ -2,4 +2,4 @@
 
 Travis Status
 -------------
-![](https://travis-ci.org/jhu-oose/2015-group-8.svg)
+![](https://magnum.travis-ci.com/jhu-oose/2015-group-8.svg?token=yn8z5Kcxy4pNxCCzuAEr&branch=master)
