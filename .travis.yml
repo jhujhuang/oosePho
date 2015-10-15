@@ -3,3 +3,6 @@ jdk:
  - oraclejdk8
  
 before_script: cd ProjectPho
+
+script:
+  - mvn package -DskipTests
