@@ -9,7 +9,7 @@ public class Comment {
     private String createdTime;
 
     /**
-     * Creates a Comment instantce.
+     * Creates a Comment instance.
      * @param content the actual content that the user has entered.
      * @param author the userId of the author.
      * @param createdTime string representing the time of comment.

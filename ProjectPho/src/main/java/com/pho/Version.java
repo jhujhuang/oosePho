@@ -50,7 +50,7 @@ public class Version {
 
     /**
      * Get the image of this version.
-     * @return the image of this verison
+     * @return the image of this version
      */
     public BufferedImage getImage() {
 	return this.img;
