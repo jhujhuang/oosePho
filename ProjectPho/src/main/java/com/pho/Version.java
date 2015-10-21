@@ -19,9 +19,9 @@ public class Version {
      */
     public Version(String versionId, String createdTime, String userId, BufferedImage img) {
     	this.versionId = versionId;
-	    this.createdTime = createdTime;
+	this.createdTime = createdTime;
         this.userId = userId;
-	    this.img = img;
+	this.img = img;
     }
 
     /**
@@ -29,7 +29,7 @@ public class Version {
      * @return the version id of this version
      */ 
     public String getVersionId() {
-	    return this.versionId;
+	return this.versionId;
     }
 
     /**
@@ -37,7 +37,7 @@ public class Version {
      * @return the created time of this version
      */
     public String getCreatedTime() {
-	    return this.createdTime;
+	return this.createdTime;
     }
 
     /**
@@ -53,6 +53,6 @@ public class Version {
      * @return the image of this verison
      */
     public BufferedImage getImage() {
-	    return this.img;
+	return this.img;
     }
 }
