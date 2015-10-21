@@ -52,7 +52,7 @@ public class Photo {
      * @param version Version, a new version of this photo.
      */
     public void addVersion(Version version) {
-        // TODO: implement
+	this.versions.add(version);
     }
 
     /**
@@ -60,7 +60,7 @@ public class Photo {
      * @param comment Comment, a new comment just created.
      */
     public void addComment(Comment comment) {
-        // TODO: implement
+	this.comments.add(comment);
     }
 
     /**
