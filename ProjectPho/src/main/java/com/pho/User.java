@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * Each user is maintained with a unique userId and a list of owned photos.
  */
 public class User {
-    private String userId;
+    private final String userId;
     private List<Photo> photos;
 
     /**
@@ -38,6 +38,6 @@ public class User {
      * @param p the photo to add
      */
     public void addPhoto(Photo p) {
-	// TODO: implement
+	this.photos.add(p);
     }
 }
