@@ -17,6 +17,7 @@ public class User {
      */
     public User(String userName) {
         this.userId = userName;
+        this.photos = new ArrayList<>();
     }
 
     /**
