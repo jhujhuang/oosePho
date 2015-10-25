@@ -26,3 +26,11 @@
   margin: 40px 0 20px;
   border-bottom: 1px solid #eeeeee;
 }
+.my-navbar-brand {
+  padding: 11px 11px;
+  height: 40px;
+}
+
+.my-navbar-form {
+  margin-bottom: 0px;
+}
