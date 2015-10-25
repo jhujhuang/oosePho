@@ -119,13 +119,8 @@ public class PhoService {
      * @param params other parameters
      * @return newCanvasId the new canvas ID
      */
-<<<<<<< HEAD
-    public String edit(String userId, String photoId, String canvasId, String editType,
-        Map<String, String> params) {
-=======
-    public void edit(String userId, String photoId, String canvasId, String editType, Map<String, String> params)
+    public String edit(String userId, String photoId, String canvasId, String editType, Map<String, String> params)
             throws InvalidTokenException, InvalidPhotoIdException, PhoSyncException, PhoServiceException {
->>>>>>> c063dc0eb9b7d176b94feda557e4c1fbe9ccf69e
         // TODO: Implement
         return "new canvas ID";
     }
