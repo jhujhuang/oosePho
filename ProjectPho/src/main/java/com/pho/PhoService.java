@@ -181,4 +181,23 @@ public class PhoService {
             super(message, cause);
         }
     }
+
+    public static class InvalidTokenException extends Exception {
+        public InvalidTokenException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class InvalidPhotoIdException extends Exception {
+        public InvalidPhotoIdException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
+    public static class PhoSyncException extends Exception {
+        public PhoSyncException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 }
