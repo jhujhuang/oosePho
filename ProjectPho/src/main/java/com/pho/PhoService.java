@@ -13,6 +13,8 @@ import java.util.Map;
 public class PhoService {
 
     private Sql2o db;
+    private List<EditingSession> editingSessions;
+    private List<User> users;
 
     /**
      * Constructor
