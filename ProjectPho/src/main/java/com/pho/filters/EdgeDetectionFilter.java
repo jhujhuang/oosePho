@@ -7,12 +7,14 @@ import java.util.Map;
  */
 public class EdgeDetectionFilter extends Filter {
 
+    private Map<String, Double> params;
     /**
      * Constructor for the edge detection filter class.
      * @param params dictionary of filter parameters
      */
     public EdgeDetectionFilter(Map<String, Double> params){
         // TODO: Implement
+        this.params = params;
     }
 
     @Override
