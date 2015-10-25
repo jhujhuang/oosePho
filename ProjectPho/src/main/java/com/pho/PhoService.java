@@ -117,10 +117,12 @@ public class PhoService {
      * @param canvasId the canvas ID
      * @param editType the edit type
      * @param params other parameters
+     * @return newCanvasId the new canvas ID
      */
-    public void edit(String userId, String photoId, String canvasId, String editType,
+    public String edit(String userId, String photoId, String canvasId, String editType,
         Map<String, String> params) {
         // TODO: Implement
+        return "new canvas ID";
     }
 
     /**
