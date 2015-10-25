@@ -26,8 +26,8 @@ public class ChangeContrastFilter extends Filter {
                 return;
             double averageLuminance = 0;
             int count = 0;
-            for (int i = 0; i < x1; i++) {
-                for (int j = 0; j < x2; j++) {
+            for (int i = y1; i < y2; i++) {
+                for (int j = x1; j < x2; j++) {
                     count++;
                     int rgb = image.getRGB(i, j);
                     int r = (rgb >> 16) & 0xFF;

@@ -41,4 +41,8 @@ public abstract class Filter {
             System.out.println("Unable to read image");
         }
     }
+
+    public BufferedImage getImage () {
+        return image;
+    }
 }
