@@ -3,6 +3,7 @@ package com.pho;
 import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,6 +12,7 @@ import java.util.Map;
  * pho service. The model ("M") of the MVC model.
  */
 public class PhoService {
+    // TODO: Consider to maintain users & editingSessions lists in an order for fast lookup.
 
     private Sql2o db;
     private List<User> users;
@@ -22,8 +24,14 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      */
     public PhoService(DataSource dataSource) throws PhoServiceException {
+        // Initializes users & editingSessions lists
+        users = new ArrayList<>();
+        editingSessions = new ArrayList<>();
+
         // create a new database
         db = new Sql2o(dataSource);
+
+        // TODO: Load users from database & load editingSessions from database
 
         // TODO: Implement
         //Create the schema for the database if necessary. This allows this
@@ -53,10 +61,22 @@ public class PhoService {
      * Register new account
      * @param userId the user ID
      * @param password the user's password
-     * @throws PhoServiceException when failures occur
+     * @throws PhoServiceException when the userId already exists
      */
     public void register(String userId, String password) throws PhoServiceException {
-        // TODO: Implement
+        // Check if userId is existing yet
+        for (User usr: users) {
+            if (usr.getUserId().equals(userId)) {
+                throw new PhoServiceException("", null);
+            }
+        }
+
+        // Store user password
+        // TODO: implement
+
+        // Create new user
+        User user = new User(userId);
+        users.add(user);
     }
 
     /**
