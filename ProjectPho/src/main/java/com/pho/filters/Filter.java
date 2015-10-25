@@ -10,7 +10,7 @@ import java.io.IOException;
  */
 public abstract class Filter {
 
-    private BufferedImage image = null;
+    protected BufferedImage image = null;
 
     /**
      * Apply filter to a rectangular area.
@@ -33,7 +33,7 @@ public abstract class Filter {
      * Loads the img of the photo in the filter instance.
      * @param pId The pId of the photo to load with this filter.
      */
-    protected void loadImage (String pId) {
+    public void loadImage (String pId) {
         // TODO: implement
         try {
             image = ImageIO.read(new File(pId));
