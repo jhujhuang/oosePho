@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * pho user.
+ * Pho user.
  * Each user is maintained with a unique userId and a list of owned photos.
  */
 public class User {
