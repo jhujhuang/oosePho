@@ -1,16 +1,24 @@
 package com.pho;
 
 import com.google.gson.Gson;
+import org.junit.experimental.theories.DataPoint;
 import spark.Spark;
 import spark.utils.IOUtils;
 
+import java.awt.*;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import com.pho.PhoService;
+import com.pho.filters.*;
+
 import org.junit.*;
+
+import javax.sql.DataSource;
+
 import static org.junit.Assert.*;
 
 public class TestPhoServer {
@@ -63,6 +71,18 @@ public class TestPhoServer {
         //Check that two objects are equal
         assertEquals(str1, str2);
     }
+
+
+    @Test
+    public void testBlurFilter() throws Exception {
+        Map<String, Double> params = new HashMap<String, Double>();
+        params.add("value", 0.5);
+        Filter blurFilter = new BlurFilter(params);
+        blurFilter.loadImage("a");
+        blurFilter.applyToCircle(photo);
+
+    }
+
 
 
     //------------------------------------------------------------------------//
