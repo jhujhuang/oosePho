@@ -76,7 +76,7 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
-    public String createNewPhoto(String userId) throws PhoServiceException {
+    public String createNewPhoto(String userId) throws InvalidTokenException {
         return null;  // TODO: Implement
     }
 
@@ -86,7 +86,7 @@ public class PhoService {
      * @param photoId the photo ID
      * @throws PhoServiceException when failures occur
      */
-    public void joinEditingSession(String userId, String photoId) throws PhoServiceException {
+    public void joinEditingSession(String userId, String photoId) throws InvalidTokenException, InvalidPhotoIdException {
         // TODO: Implement
     }
 
@@ -96,7 +96,7 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
-    public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws PhoServiceException {
+    public Map<String, List<String>> listPhotosOfCurrentUser(String userId) throws InvalidTokenException {
         return null;  // TODO: Implement
     }
 
@@ -105,7 +105,7 @@ public class PhoService {
      * @param title the title of the photo
      * @param photoId the photo ID
      */
-    public void editPhotoTitle(String photoId, String title) {
+    public void editPhotoTitle(String photoId, String title) throws InvalidTokenException, InvalidPhotoIdException {
         // TODO: Implement
     }
 
@@ -119,8 +119,13 @@ public class PhoService {
      * @param params other parameters
      * @return newCanvasId the new canvas ID
      */
+<<<<<<< HEAD
     public String edit(String userId, String photoId, String canvasId, String editType,
         Map<String, String> params) {
+=======
+    public void edit(String userId, String photoId, String canvasId, String editType, Map<String, String> params)
+            throws InvalidTokenException, InvalidPhotoIdException, PhoSyncException, PhoServiceException {
+>>>>>>> c063dc0eb9b7d176b94feda557e4c1fbe9ccf69e
         // TODO: Implement
         return "new canvas ID";
     }
@@ -131,7 +136,7 @@ public class PhoService {
      * @param photoId the photo ID
      * @return map of content to be included in the response to fetch
      */
-    public Map<String, String> fetch(String photoId) {
+    public Map<String, String> fetch(String photoId) throws InvalidTokenException, InvalidPhotoIdException {
         return null;  // TODO: Implement
     }
 
@@ -142,7 +147,8 @@ public class PhoService {
      * @param photoId the photo ID
      * @param content comment content
      */
-    public void comment(String userId, String photoId, String content) {
+    public void comment(String userId, String photoId, String content)
+            throws InvalidTokenException, InvalidPhotoIdException {
         // TODO: Implement
     }
 
@@ -151,7 +157,8 @@ public class PhoService {
      * @param photoId the photo ID
      * @return map of content to be included in the response, where the list is a list of Version instances.
      */
-    public Map<String, List<Version>> getRevisions(String photoId) {
+    public Map<String, List<Version>> getRevisions(String photoId)
+            throws InvalidTokenException, InvalidPhotoIdException {
         return null;  // TODO: Implement
     }
 
@@ -160,7 +167,8 @@ public class PhoService {
      * @param photoId the photo ID
      * @param versionId the version ID
      */
-    public void revertToSelectedVersion(String photoId, String versionId) {
+    public void revertToSelectedVersion(String photoId, String versionId)
+            throws InvalidTokenException, InvalidPhotoIdException, PhoServiceException {
         // TODO: Implement
     }
 
@@ -170,7 +178,8 @@ public class PhoService {
      * @param photoId the photo ID
      * @param canvasId the canvas ID
      */
-    public void saveVersion(String userId, String photoId, String canvasId) {
+    public void saveVersion(String userId, String photoId, String canvasId)
+            throws InvalidTokenException, InvalidPhotoIdException, PhoSyncException {
         // TODO: Implement
     }
 
