@@ -1,9 +1,16 @@
 package com.pho.filters;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 /**
  * An abstract class for filters.
  */
 public abstract class Filter {
+
+    private BufferedImage image = null;
 
     /**
      * Apply filter to a rectangular area.
@@ -28,5 +35,10 @@ public abstract class Filter {
      */
     protected void loadImage (String pId) {
         // TODO: implement
+        try {
+            image = ImageIO.read(new File(pId));
+        } catch (IOException E) {
+            System.out.println("Unable to read image");
+        }
     }
 }
