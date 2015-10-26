@@ -116,6 +116,7 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
         //TODO
     }
 
