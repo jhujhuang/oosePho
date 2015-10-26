@@ -49,11 +49,10 @@ public class EditingSession {
     }
 
     /**
-     * Get the photo id associated with this editing session
-     * @return pId string
+     * Get the photo associated with this editing session
+     * @return Photo
      */
-    public String getPhotoId() {
-        return photo.getPhotoId();
+    Photo getPhoto() {
+        return photo;
     }
-
 }

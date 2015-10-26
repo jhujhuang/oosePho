@@ -71,7 +71,7 @@ public class PhoService {
      */
     private EditingSession findByPhotoId(String pId) {
         for (EditingSession e: editingSessions) {
-            if (e.getPhotoId().equals(pId)) {
+            if (e.getPhoto().getPhotoId().equals(pId)) {
                 return e;
             }
         }
@@ -182,7 +182,9 @@ public class PhoService {
      * @throws InvalidPhotoIdException when photo id is invalid
      */
     public void editPhotoTitle(String photoId, String title) throws InvalidPhotoIdException {
-        // TODO: Implement
+        EditingSession e = findByPhotoId(photoId);
+        Photo p = e.getPhoto();
+        p.setTitle(title);
     }
 
     /**
