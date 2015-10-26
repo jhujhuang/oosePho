@@ -51,6 +51,7 @@ public class PhoService {
      * Authenticate the user
      * @param userId the unique user ID
      * @param token the generated token for specific user
+     * @throws InvalidTokenException when authentication fails
      * @return whether the user has been authenticated
      */
     public boolean authenticate(String userId, String token) throws InvalidTokenException {
@@ -93,7 +94,6 @@ public class PhoService {
     /**
      * Create a new photo
      * @param userId the user ID
-     * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
     public String createNewPhoto(String userId) {
@@ -104,7 +104,7 @@ public class PhoService {
      * Join editing session
      * @param userId the user ID
      * @param photoId the photo ID
-     * @throws PhoServiceException when failures occur
+     * @throws InvalidPhotoIdException when failures occur
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
         // TODO: Implement
@@ -113,7 +113,6 @@ public class PhoService {
     /**
      * List photos of current user
      * @param userId the user ID
-     * @throws PhoServiceException when failures occur
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
     public Map<String, List<String>> listPhotosOfCurrentUser(String userId) {
@@ -124,6 +123,7 @@ public class PhoService {
      * Edit photo title
      * @param title the title of the photo
      * @param photoId the photo ID
+     * @throws InvalidPhotoIdException when photo id is invalid
      */
     public void editPhotoTitle(String photoId, String title) throws InvalidPhotoIdException {
         // TODO: Implement
@@ -137,6 +137,9 @@ public class PhoService {
      * @param canvasId the canvas ID
      * @param editType the edit type
      * @param params other parameters
+     * @throws InvalidPhotoIdException when photo id is invalid
+     * @throws PhoSyncException if canvas in out of date
+     * @throws PhoServiceException when failures occur
      * @return newCanvasId the new canvas ID
      */
     public String edit(String userId, String photoId, String canvasId, String editType, Map<String, String> params)
@@ -149,6 +152,7 @@ public class PhoService {
      * Handles the fetch of current contents about a photo's editing session.
      *
      * @param photoId the photo ID
+     * @throws InvalidPhotoIdException when photo id is invalid
      * @return map of content to be included in the response to fetch
      */
     public Map<String, String> fetch(String photoId) throws InvalidPhotoIdException {
@@ -161,19 +165,19 @@ public class PhoService {
      * @param userId the user ID
      * @param photoId the photo ID
      * @param content comment content
+     * @throws InvalidPhotoIdException when photo id is invalid
      */
-    public void comment(String userId, String photoId, String content)
-            throws InvalidPhotoIdException {
+    public void comment(String userId, String photoId, String content) throws InvalidPhotoIdException {
         // TODO: Implement
     }
 
     /**
      * Get all revisions
      * @param photoId the photo ID
+     * @throws InvalidPhotoIdException when photo id is invalid
      * @return map of content to be included in the response, where the list is a list of Version instances.
      */
-    public Map<String, List<Version>> getRevisions(String photoId)
-            throws InvalidPhotoIdException {
+    public Map<String, List<Version>> getRevisions(String photoId) throws InvalidPhotoIdException {
         return null;  // TODO: Implement
     }
 
@@ -181,6 +185,8 @@ public class PhoService {
      * Revert to selected version
      * @param photoId the photo ID
      * @param versionId the version ID
+     * @throws InvalidPhotoIdException when photo id is invalid
+     * @throws PhoServiceException when failures occur
      */
     public void revertToSelectedVersion(String photoId, String versionId)
             throws InvalidPhotoIdException, PhoServiceException {
@@ -192,6 +198,8 @@ public class PhoService {
      * @param userId the user ID
      * @param photoId the photo ID
      * @param canvasId the canvas ID
+     * @throws InvalidPhotoIdException when photo id is invalid
+     * @throws PhoSyncException when canvas is out of date
      */
     public void saveVersion(String userId, String photoId, String canvasId)
             throws InvalidPhotoIdException, PhoSyncException {
