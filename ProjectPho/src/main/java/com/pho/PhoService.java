@@ -4,6 +4,7 @@ import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -164,7 +165,14 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
     public Map<String, List<String>> listPhotosOfCurrentUser(String userId) {
-        return null;  // TODO: Implement
+        User usr = findByUserId(userId);
+        Map<String, List<String>> result = new HashMap<>();
+        List<String> l = new ArrayList<>();
+        for (Photo p: usr.getPhotos()) {  // TODO: QUESTION: Should User store photoIds instead of Photos?
+            l.add(p.getPhotoId());
+        }
+        result.put("photos", l);
+        return result;
     }
 
     /**
