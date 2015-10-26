@@ -1,16 +1,32 @@
 package com.pho;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import spark.Spark;
 import spark.utils.IOUtils;
 
+import java.awt.*;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import com.pho.PhoService;
+import com.pho.filters.*;
+
 import org.junit.*;
+
+import javax.sql.DataSource;
+
+import java.util.Map;
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 public class TestPhoServer {
@@ -42,27 +58,96 @@ public class TestPhoServer {
 
     @Test
     public void testRegister() throws Exception {
-        String str1 = new String ("abc");
-        String str2 = new String ("abc");
-        //Check that two objects are equal
-        assertEquals(str1, str2);
+        Map<String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        Response r = request("POST", "/register", content);
+        assertEquals("Fail to register", 200, r.httpStatus);
+        r = request("POST", "/register", content);
+        assertEquals("Fail to recognize existing accounts", 409, r.httpStatus);
     }
 
     @Test
     public void testLogin() throws Exception {
-        String str1 = new String ("abc");
-        String str2 = new String ("abc");
-        //Check that two objects are equal
-        assertEquals(str1, str2);
+        Map<String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        assertEquals("Fail to login", 200, r.httpStatus);
+
+        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
+        String token = rContent.get("token");
+        assertNotEquals("Token is null", null, token);
+
+        content.clear();
+        content.put("userId", "scott");
+        content.put("password", "hello");
+        r = request("POST", "/login", content);
+        assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
+
+        content.clear();
+        content.put("userId", "david");
+        content.put("userId", "hello");
+        r = request("POST", "/login", content);
+        assertEquals("Fail to recognize wrong id", 401, r.httpStatus);
     }
 
     @Test
-    public void testEdit() throws Exception {
-        String str1 = new String ("abc");
-        String str2 = new String ("abc");
-        //Check that two objects are equal
-        assertEquals(str1, str2);
+    public void testCreateNewPhoto() throws Exception {
+        Map<String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        content = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
+        content.put ("userId", "scott");
+        r = request("POST", "/newphoto", content);
+        assertEquals("Fail to create new photo", 200, r.httpStatus);
+
+        String token = content.remove("token");
+        content.put("token", token + "something");
+        r = request("POST", "/newphoto", content);
+        assertEquals("Invalid token", 401, r.httpStatus);
     }
+
+    public void testListPhotos() throws Exception {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        //TODO
+    }
+
+    @Test
+    public void testBlurFilterCircle() {
+        Map<String, Double> params = new HashMap<String, Double>();
+        params.put("value", 0.5);
+    }
+        // Response r = request("GET", "/edit/test/change", );
+
+    @Test
+    public void testBlurFilter() throws Exception {
+        Map<String, Double> params = new HashMap<>();
+        params.put("value", 0.5);
+        Filter blurFilter = new BlurFilter(params);
+        blurFilter.loadImage("test.jpg");
+        BufferedImage p1 = blurFilter.getImage();
+        blurFilter.applyToCircle(2, 3, 4);
+        BufferedImage p2 = blurFilter.getImage();
+
+        assertEquals(p1.getHeight(), p2.getHeight());
+        assertEquals(p1.getWidth(), p2.getWidth());
+
+        for (int x = 0; x < p1.getWidth(); x++) {
+            for (int y = 0; y < p2.getHeight(); y++)
+                assertEquals(p1.getRGB(x, y), p2.getRGB(x, y));
+        }
+    }
+
+
+
+
 
 
     //------------------------------------------------------------------------//
