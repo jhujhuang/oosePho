@@ -34,5 +34,8 @@ public class EditingSession {
         return canvasId;
     }
 
+    public String getPhotoId() {
+        return photo.getPhotoId();
+    }
 
 }

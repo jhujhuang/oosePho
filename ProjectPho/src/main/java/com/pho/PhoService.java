@@ -63,6 +63,20 @@ public class PhoService {
         return null;
     }
 
+    /**
+     * Find an editing session for a specific photo.
+     * @param pId the pId string
+     * @return editing session, or null if not found.
+     */
+    private EditingSession findByPhotoId(String pId) {
+        for (EditingSession e: editingSessions) {
+            if (e.getPhotoId().equals(pId)) {
+                return e;
+            }
+        }
+        return null;
+    }
+
     private String getStringId(Long l) {
         // TODO: Use org.hashids to generate non-guessable strings.
         return l.toString();
@@ -118,13 +132,10 @@ public class PhoService {
      */
     public String createNewPhoto(String userId) throws PhoServiceException {
         User usr = findByUserId(userId);
-        if (usr == null) {
-            throw new PhoServiceException("No such user.", null);
-        }
         String pId = getStringId(pIdTracker++);
         Photo p = new Photo(pId);
         // TODO: Add version based given image
-        usr.addPhoto(p);
+        usr.addPhoto(p);  // User is authenticated at this point.
         return pId;
     }
 
@@ -135,6 +146,10 @@ public class PhoService {
      * @throws InvalidPhotoIdException when failures occur
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
+        EditingSession e = findByPhotoId(photoId);
+        if (e == null) {
+
+        }
         // TODO: Implement
     }
 
