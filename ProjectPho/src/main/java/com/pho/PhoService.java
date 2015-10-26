@@ -136,6 +136,10 @@ public class PhoService {
         Photo p = new Photo(pId);
         // TODO: Add version based given image
         usr.addPhoto(p);  // User is authenticated at this point.
+
+        // Add editing session associated with the new photo.
+        EditingSession e = new EditingSession(p);
+
         return pId;
     }
 
@@ -148,9 +152,10 @@ public class PhoService {
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
         EditingSession e = findByPhotoId(photoId);
         if (e == null) {
-
+            throw new InvalidPhotoIdException("Cannot find photo.", null);
         }
-        // TODO: Implement
+        User usr = findByUserId(userId);
+        e.addCollaborator(usr);
     }
 
     /**
