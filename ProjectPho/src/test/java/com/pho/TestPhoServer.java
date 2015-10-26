@@ -24,6 +24,9 @@ import org.junit.*;
 
 import javax.sql.DataSource;
 
+import java.util.Map;
+import java.util.HashMap;
+
 import static org.junit.Assert.*;
 
 public class TestPhoServer {
@@ -104,22 +107,26 @@ public class TestPhoServer {
 
         String token = content.remove("token");
         content.put("token", token + "something");
-        r = request("POST", "/newphoto", content)
+        r = request("POST", "/newphoto", content);
         assertEquals("Invalid token", 401, r.httpStatus);
     }
 
     public void testListPhotos() throws Exception {
         Map <String, String> content = new HashMap<String, String>();
-        content.put
+        //TODO
     }
 
     @Test
     public void testBlurFilterCircle() {
         Map<String, Double> params = new HashMap<String, Double>();
         params.put("value", 0.5);
-
+    }
         // Response r = request("GET", "/edit/test/change", );
 
+    @Test
+    public void testBlurFilter() throws Exception {
+        Map<String, Double> params = new HashMap<>();
+        params.put("value", 0.5);
         Filter blurFilter = new BlurFilter(params);
         blurFilter.loadImage("test.jpg");
         BufferedImage p1 = blurFilter.getImage();
@@ -135,10 +142,7 @@ public class TestPhoServer {
         }
     }
 
-    @Test
-    public void testBlurFilterRectangle() {
 
-    }
 
 
 

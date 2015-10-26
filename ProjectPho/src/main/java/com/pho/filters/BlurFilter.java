@@ -32,7 +32,6 @@ public class BlurFilter extends Filter {
                 {1, 2, 1}
         };
 
-        Double contrast = params.get("contrast");
         for (int y = y1; y < y2; y++) {
             for (int x = x1; x < x2; x++) {
 
