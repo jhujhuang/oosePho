@@ -98,4 +98,6 @@ public class TestPhoService {
         assert(!pId.equals(wrongId));
         phoService.joinEditingSession(userId, wrongId);
     }
+
+    // TODO: more tests
 }

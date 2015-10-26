@@ -1,5 +1,6 @@
 package com.pho;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +21,10 @@ public class Photo {
     public Photo(String photoId) {
         // TODO: Extended Feature: initialize with given title.
         this.title = INITIAL_PHOTO_TITLE;
-        // TODO: implement
+        this.photoId = photoId;
+
+        this.comments = new ArrayList<>();
+        // TODO: Initialize versions
     }
 
     /**
