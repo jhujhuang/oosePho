@@ -113,6 +113,8 @@ public class TestPhoServer {
 
     public void testListPhotos() throws Exception {
         Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
         //TODO
     }
 
