@@ -17,6 +17,7 @@ public class PhoService {
     private Sql2o db;
     private List<User> users;
     private List<EditingSession> editingSessions;
+    private Long pIdTracker;
 
     /**
      * Constructor
@@ -27,6 +28,7 @@ public class PhoService {
         // Initializes users & editingSessions lists
         users = new ArrayList<>();
         editingSessions = new ArrayList<>();
+        pIdTracker = 0L;
 
         // create a new database
         db = new Sql2o(dataSource);
@@ -48,6 +50,25 @@ public class PhoService {
     }
 
     /**
+     * Find a user in the users list by userId.
+     * @param userId the userId string
+     * @return user a User object, or null if not found
+     */
+    private User findByUserId(String userId) {
+        for (User usr: users) {
+            if (usr.getUserId().equals(userId)) {
+                return usr;
+            }
+        }
+        return null;
+    }
+
+    private String getStringId(Long l) {
+        // TODO: Use org.hashids to generate non-guessable strings.
+        return l.toString();
+    }
+
+    /**
      * Authenticate the user
      * @param userId the unique user ID
      * @param token the generated token for specific user
@@ -66,10 +87,8 @@ public class PhoService {
      */
     public void register(String userId, String password) throws PhoServiceException {
         // Check if userId is existing yet
-        for (User usr: users) {
-            if (usr.getUserId().equals(userId)) {
-                throw new PhoServiceException("", null);
-            }
+        if (findByUserId(userId) != null) {
+            throw new PhoServiceException("Existing userId", null);
         }
 
         // Store user password
@@ -94,10 +113,19 @@ public class PhoService {
     /**
      * Create a new photo
      * @param userId the user ID
+     * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
-    public String createNewPhoto(String userId) {
-        return null;  // TODO: Implement
+    public String createNewPhoto(String userId) throws PhoServiceException {
+        User usr = findByUserId(userId);
+        if (usr == null) {
+            throw new PhoServiceException("No such user.", null);
+        }
+        String pId = getStringId(pIdTracker++);
+        Photo p = new Photo(pId);
+        // TODO: Add version based given image
+        usr.addPhoto(p);
+        return pId;
     }
 
     /**
