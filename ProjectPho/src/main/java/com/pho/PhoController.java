@@ -4,9 +4,14 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
-import static spark.Spark.*;
+import static spark.Spark.get;
+import static spark.Spark.post;
+
 
 /**
  * The controller of the MVC model.
@@ -82,7 +87,7 @@ public class PhoController {
             }
         });
 
-        post(API_CONTEXT + "/listphoto", "application/json", (request, response) -> {
+        post(API_CONTEXT + "/listphotos", "application/json", (request, response) -> {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
