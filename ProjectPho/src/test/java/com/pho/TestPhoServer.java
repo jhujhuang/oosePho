@@ -115,6 +115,7 @@ public class TestPhoServer {
         Map <String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
         content.put("password", "oose");
+        request("POST", "/register", content);
         //TODO
     }
 
