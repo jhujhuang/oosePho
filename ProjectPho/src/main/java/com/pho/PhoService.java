@@ -1,5 +1,6 @@
 package com.pho;
 
+import org.hashids.Hashids;
 import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
@@ -15,10 +16,14 @@ import java.util.Map;
 public class PhoService {
     // TODO: Consider to maintain users & editingSessions lists in an order for fast lookup.
 
+    // TODO: Confirm hash salt before using.
+    private static final String HASH_SALT = "AlWaYs UnIqUe NeVeR ChAnGe";
+
     private Sql2o db;
     private List<User> users;
     private List<EditingSession> editingSessions;
-    private Long pIdTracker;
+    // Since we store all editing sessions in a List, cannot scale up to long now
+    private int pIdTracker;
 
     /**
      * Constructor
@@ -29,7 +34,9 @@ public class PhoService {
         // Initializes users & editingSessions lists
         users = new ArrayList<>();
         editingSessions = new ArrayList<>();
-        pIdTracker = 0L;
+
+        // TODO: track pId with persistence layer
+        pIdTracker = 0;
 
         // create a new database
         db = new Sql2o(dataSource);
@@ -65,22 +72,33 @@ public class PhoService {
     }
 
     /**
-     * Find an editing session for a specific photo.
+     * Find an editing session for a specific photo, by decoding the string pId.
      * @param pId the pId string
-     * @return editing session, or null if not found.
+     * @return editing session
+     * @throws InvalidPhotoIdException when cannot find by given pId
      */
-    private EditingSession findByPhotoId(String pId) {
-        for (EditingSession e: editingSessions) {
-            if (e.getPhoto().getPhotoId().equals(pId)) {
-                return e;
-            }
+    private EditingSession findByPhotoId(String pId) throws InvalidPhotoIdException{
+        Hashids hashids = new Hashids(HASH_SALT);
+        long[] decode =  hashids.decode(pId);
+        if (decode.length != 1) {  // Was encoded with an int pIdTracker at that time
+            throw new InvalidPhotoIdException("Cannot find photo.", null);
         }
-        return null;
+        int index = (int) decode[0];
+        EditingSession e = editingSessions.get(index);
+        if (e == null) {  // Should never happen per current implementation
+            throw new InvalidPhotoIdException("Cannot find valid photo.", null);
+        }
+        return e;
     }
 
-    private String getStringId(Long l) {
-        // TODO: Use org.hashids to generate non-guessable strings.
-        return l.toString();
+    /**
+     * Generate unique non-guessable strings based on a unique long number.
+     * @param num int, a number the generated string id will correspond to
+     * @return string
+     */
+    private String getStringId(int num) {
+        Hashids hashids = new Hashids(HASH_SALT);
+        return hashids.encode(num);
     }
 
     /**
@@ -133,13 +151,15 @@ public class PhoService {
      */
     public String createNewPhoto(String userId) throws PhoServiceException {
         User usr = findByUserId(userId);
-        String pId = getStringId(pIdTracker++);
+        String pId = getStringId(pIdTracker);
         Photo p = new Photo(pId);
         // TODO: Add version based given image
         usr.addPhoto(p);  // User is authenticated at this point.
 
         // Add editing session associated with the new photo.
         EditingSession e = new EditingSession(p);
+        editingSessions.add(pIdTracker, e);
+        pIdTracker++;
 
         return pId;
     }
@@ -152,9 +172,6 @@ public class PhoService {
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
         EditingSession e = findByPhotoId(photoId);
-        if (e == null) {
-            throw new InvalidPhotoIdException("Cannot find photo.", null);
-        }
         User usr = findByUserId(userId);
         e.addCollaborator(usr);
     }
