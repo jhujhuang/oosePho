@@ -294,7 +294,7 @@ public class PhoController {
 
     private Map<String, String> createFailureContent(String reason) {
         Map<String, String> response = new HashMap<>();
-        response.put("reason", message);
+        response.put("reason", reason);
         return response;
     }
 }
