@@ -11,12 +11,13 @@ public class Photo {
 
     private String photoId;
     private String title;
+    private int nextVId;
     private List<Version> versions;
     // TODO: Maybe store and handle comments under EditingSession instead
     private List<Comment> comments;
 
     /**
-     * Creates a new photo associated with a unique pId.
+     * Creates a new photo (empty with no version) associated with a unique pId.
      * @param photoId string, a unique pId given by the server at creation time.
      */
     public Photo(String photoId) {
@@ -24,8 +25,8 @@ public class Photo {
         this.title = INITIAL_PHOTO_TITLE;
         this.photoId = photoId;
 
-        this.comments = new ArrayList<>();
-        // TODO: Initialize versions
+        this.nextVId = 0;
+        this.versions = new ArrayList<>();
     }
 
     /**
@@ -57,7 +58,9 @@ public class Photo {
      * @param version Version, a new version of this photo.
      */
     public void addVersion(Version version) {
-	this.versions.add(version);
+        this.versions.add(version);
+        assert(version.getVersionId().equals("" + nextVId));  // TODO: Handle better, or let it go
+        nextVId++;
     }
 
     /**
@@ -82,5 +85,13 @@ public class Photo {
      */
     public void setTitle(String newTitle) {
         this.title = newTitle;
+    }
+
+    /**
+     * Return the next versionId string unique among versions for this photo
+     * @return string
+     */
+    String getNextVId() {
+        return "" + nextVId;  // TODO: Consider change how to make this versionId
     }
 }
