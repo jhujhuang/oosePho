@@ -12,6 +12,7 @@ public class Photo {
     private String photoId;
     private String title;
     private List<Version> versions;
+    // TODO: Maybe store and handle comments under EditingSession instead
     private List<Comment> comments;
 
     /**
@@ -57,6 +58,14 @@ public class Photo {
      */
     public void addVersion(Version version) {
 	this.versions.add(version);
+    }
+
+    /**
+     * Retrieves all the comments of this photo.
+     * @return list of comments
+     */
+    public List<Comment> getComments() {
+        return this.comments;
     }
 
     /**
