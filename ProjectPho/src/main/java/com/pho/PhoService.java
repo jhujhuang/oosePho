@@ -155,7 +155,7 @@ public class PhoService {
      * @return the token
      */
     public String login(String userId, String password) throws PhoServiceException {
-        return null;  // TODO: Implement
+        return "dummy token";  // TODO: Implement
     }
 
     /**
