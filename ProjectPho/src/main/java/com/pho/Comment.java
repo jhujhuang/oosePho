@@ -15,7 +15,9 @@ public class Comment {
      * @param createdTime string representing the time of comment.
      */
     public Comment(String content, String author, String createdTime) {
-        // TODO: implement
+        this.content = content;
+        this.author = author;
+        this.createdTime = createdTime;
     }
 
     /**
@@ -23,8 +25,7 @@ public class Comment {
      * @return string of the content
      */
     public String getContent() {
-        // TODO: implement
-        return null;
+        return this.content;
     }
 
     /**
@@ -32,8 +33,7 @@ public class Comment {
      * @return string of user id of the author
      */
     public String getAuthor() {
-        // TODO: implement
-        return null;
+        return this.author;
     }
 
     /**
@@ -41,8 +41,7 @@ public class Comment {
      * @return string of the time that the comment was created.
      */
     public String getCreatedTime() {
-        // TODO: implement
-        return null;
+        return this.createdTime;
     }
 
 }

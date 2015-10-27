@@ -98,7 +98,7 @@ public class TestFilters {
 
         assertFalse(this.isDifferent(p1, p2));
     }
-    
+
     // Helper method for checking if two images are equal
     private boolean isDifferent(BufferedImage p1, BufferedImage p2) {
         if (p1.getHeight() != p2.getHeight() || p1.getWidth() != p2.getWidth())
