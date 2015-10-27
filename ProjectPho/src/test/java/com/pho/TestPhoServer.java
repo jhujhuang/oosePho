@@ -63,8 +63,8 @@ public class TestPhoServer {
         content.put("password", "oose");
         Response r = request("POST", "/register", content);
         assertEquals("Fail to register", 201, r.httpStatus);
-        // r = request("POST", "/register", content);
-        // assertEquals("Fail to recognize existing accounts", 409, r.httpStatus);
+        r = request("POST", "/register", content);
+        assertEquals("Fail to recognize existing accounts", 409, r.httpStatus);
     }
 
     @Test
@@ -76,7 +76,7 @@ public class TestPhoServer {
         Response r = request("POST", "/login", content);
         assertEquals("Fail to login", 200, r.httpStatus);
 
-//        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
+  //      Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
  //       String token = rContent.get("token");
  //       assertNotEquals("Token is null", null, token);
 
@@ -100,8 +100,10 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+        // TODO
     }
 
+    @Test
     public void testListPhotos() throws Exception {
         Map <String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
@@ -110,6 +112,89 @@ public class TestPhoServer {
         Response r = request("POST", "/login", content);
         //TODO
     }
+
+    @Test
+    public void testJoinEditSession() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+
+    @Test
+    public void testChangePhotoTitle() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+    @Test
+    public void testEdit() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+    @Test
+    public void testFetch() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+
+    @Test
+    public void testMakeComment() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+    @Test
+    public void testSeeRevisions() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+    @Test
+    public void testSaveVersion() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
+    @Test
+    public void testRevertVersion() {
+        Map <String, String> content = new HashMap<String, String>();
+        content.put("userId", "scott");
+        content.put("password", "oose");
+        request("POST", "/register", content);
+        Response r = request("POST", "/login", content);
+        // TODO
+    }
+
 
     //------------------------------------------------------------------------//
     // Generic Helper Methods and classes
@@ -131,9 +216,11 @@ public class TestPhoServer {
                 output.flush();
                 output.close();
             }
-
-            String responseBody = IOUtils.toString(http.getInputStream());
-            return new Response(http.getResponseCode(), responseBody);
+            if (http.getResponseCode() < 400) {
+                String responseBody = IOUtils.toString(http.getInputStream());
+                return new Response(http.getResponseCode(), responseBody);
+            } else
+                return new Response(http.getResponseCode(), "");
         } catch (IOException e) {
             e.printStackTrace();
             fail("Sending request failed: " + e.getMessage());
