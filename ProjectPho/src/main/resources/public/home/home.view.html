@@ -1,4 +1,5 @@
-﻿<h1>Hi {{vm.user.firstName}}!</h1>
+﻿<!-- uncomment the following code to see list of registered users -->
+<!--<h1>Hi {{vm.user.firstName}}!</h1>
 <p>You're logged in!!</p>
 <h3>All registered users:</h3>
 <ul>
@@ -7,5 +8,62 @@
         - <a href="#" ng-click="vm.deleteUser(user.id)">Delete</a>
     </li>
 </ul>
-<p>&nbsp;</p>
-<p><a href="#/login" class="btn btn-primary">Logout</a></p>
+<p>&nbsp;</p>-->
+<div class="my-photo-header">
+    <div class="container">
+        <a class="navbar-brand my-navbar-brand">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+        <form class="navbar-form my-navbar-form navbar-left" role="search">
+            <div>
+                <input id="photo-title" type="text" class="form-control" placeholder="Untitled"
+                       title="Edit your photo title here." value="TITLE">
+            </div>
+        </form>
+        <ul id="photo-title-header" class="nav nav-tabs">
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    File <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu"  aria-labelledby="dropdownMenu1">
+                    <li><a>Save</a></li>
+                    <li><a>Upload</a></li>
+                    <li><a>Open</a></li>
+                    <li><a>Invite</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a>Export as<span class="caret"></span></a></li>
+                    <li><a>Print</a></li>
+                </ul>
+            </li>
+            <!-- Please change TODO to display the number, and maybe change style to not be a tab -->
+            <li role="listitem"><a>{{TODO}} revisions</a></li>
+            <li><a href="#/login" class="btn btn-primary">Logout</a></li>
+        </ul>
+    </div>
+</div>
+<div class="container">
+    <div class="col-sm-3">
+        <div id="toolbar" class="my-toolbar btn-group-vertical btn-group-lg btn-block" role="toolbar">
+            <!-- TODO: Maybe make dropdown, for filter type selection, etc. -->
+            <button type="button" class="btn btn-lg btn-default btn-block">Filters</button>
+            <button type="button" class="btn btn-lg btn-default btn-block">Selection</button>
+            <button type="button" class="btn btn-lg btn-default btn-block">Pencil</button>
+        </div>
+        <div id="tools-parameters">
+            <!-- TODO: Show inputs of parameters, depending on which tool is selected -->
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="canvas">
+                    <!-- TODO: Show image -->
+                </div>
+            </div>
+        </div>
+        <!-- TODO: "Make a comment" form -->
+        <div id="comments">
+            <!-- TODO: Show list of comments -->
+        </div>
+    </div>
+</div>

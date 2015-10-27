@@ -269,8 +269,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.428571429;
-  color: #333333;
-  background-color: #ffffff;
+  background: #a7c9f7;
+  color: #fff;
+  /*color: #333333;*/
+  /*background-color: #ffffff;*/
 }
 input,
 button,
@@ -2069,11 +2071,11 @@ fieldset[disabled] .btn-default.active {
   border-color: #cccccc;
 }
 .btn-default .badge {
-  color: #ffffff;
+  color: #fff;
   background-color: #333333;
 }
 .btn-primary {
-  color: #ffffff;
+  color: #fff;
   background-color: #428bca;
   border-color: #357ebd;
 }
@@ -2278,7 +2280,7 @@ fieldset[disabled] .btn-danger.active {
   background-color: #ffffff;
 }
 .btn-link {
-  color: #428bca;
+  color: #fff;
   font-weight: normal;
   cursor: pointer;
   border-radius: 0;

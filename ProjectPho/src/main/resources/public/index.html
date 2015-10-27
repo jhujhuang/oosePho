@@ -9,186 +9,58 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/icon.png">
-
-    <title>Login | Pho</title>
-
+    <title ng-bind="$root.title + ' | Pho'">Welcome | Pho</title>
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.css" rel="stylesheet">
-
     <!-- Custom styles for the login page -->
     <link href="./css/login.css" rel="stylesheet">
-
+    <!-- Custom styles for the editing page -->
+    <link href="./css/phototitle.css" rel="stylesheet">
+    <link href="./css/toolbar.css" rel="stylesheet">
+    <link href="./css/canvas.css" rel="stylesheet">
 </head>
 
 <body>
-    <div class="jumbotron">
-        <div class="container">
-            <div class="col-sm-8 col-sm-offset-2">
-                <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
-                <div ng-view></div>
-            </div>
-        </div>
-    </div>
-  
-  <!-- setup the Facebook SDK for JavaScript, maybe to use in the future -->
-  <!-- <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '107488482944181',
-      xfbml      : true,
-      version    : 'v2.5'
-    });
-  };
+<div ng-view></div>
+<!-- setup the Facebook SDK for JavaScript, maybe to use in the future -->
+<!-- <script>
+     window.fbAsyncInit = function() {
+       FB.init({
+         appId      : '107488482944181',
+         xfbml      : true,
+         version    : 'v2.5'
+       });
+     };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-  </script> -->
-
-    <!-- container -->
-<!-- <div class="container">
-<div class="row">
-<div class="col-lg-6 col-md-7 col-sm-9">
-
-  <h4 style="border-bottom: 1px solid #c5c5c5;">
-    <i class="glyphicon glyphicon-user">
-    </i>
-    Account Access
-  </h4>
-  <div style="padding: 20px;" id="form-olvidado">
-  <form accept-charset="UTF-8" role="form" id="login-form" method="post">
-      <fieldset>
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            @
-          </span>
-          <input class="form-control" placeholder="Email" name="email" type="email" required="" autofocus="">
-        </div>
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-lock">
-            </i>
-          </span>
-          <input class="form-control" placeholder="Password" name="password" type="password" value="" required="">
-        </div>
-        <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block">
-            Access
-          </button>
-          <p class="help-block">
-            <a class="pull-right text-muted" href="#" id="olvidado"><small>Forgot your password?</small></a>
-            <a class="pull-left text-muted" href="#" id="olvidado2"><small>Signup!</small></a>
-
-          </p>
-        </div>
-      </fieldset>
-    </form>
-  </div>
-
-  <div style="display: none;" id="form-olvidado1">
-    <h4 class="">
-      Forgot your password?
-    </h4>
-    <form accept-charset="UTF-8" role="form" id="login-recordar" method="post">
-      <fieldset>
-        <span class="help-block">
-          Please enter the email address you use to log in to your account.
-        </span>
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            @
-          </span>
-          <input class="form-control" placeholder="Email" name="email" type="email" required="">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">
-          Continue
-        </button>
-        <p class="help-block">
-          <a class="text-muted" href="#" id="acceso1"><small>Login</small></a>
-
-        </p>
-      </fieldset>
-    </form>
-  </div>
-<div style="display: none;" id="form-olvidado2">
-    <h4 class="">
-      Welcome!
-    </h4>
-    <form accept-charset="UTF-8" role="form" id="login-recordar" method="post">
-      <fieldset>
-        <span class="help-block">
-          Signup page
-          <br>
-          Please sign up and start!
-        </span>
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            @
-          </span>
-          <input class="form-control" placeholder="Email" name="email" type="email" required="">
-        </div>
-
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-lock">
-            </i>
-          </span>
-          <input class="form-control" placeholder="Password" name="password_new" type="password" required="">
-        </div>
-        <div class="form-group input-group">
-          <span class="input-group-addon">
-            <i class="glyphicon glyphicon-lock">
-            </i>
-          </span>
-          <input class="form-control" placeholder="Repeat Password" name="password_new_2" type="password" required="">
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-block" id="btn-olvidado">
-          Continue
-        </button>
-        <p class="help-block">
-          <a class="text-muted" href="#" id="acceso2"><small>Login</small></a>
-        </p>
-      </fieldset>
-    </form>
-  </div>
-</div>
-</div>
-</div>-->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- jQuery -->
-    <script src="./js/jquery.js"></script>
-
-    <!-- Angular -->
-    <script src="./js/angular.js"></script>
-    <script src="./js/angular-route.js"></script>
-    <script src="./js/angular-cookies.js"></script>
-
-    <!-- view control -->
-    <script src="./js/bootstrap.js"></script>
-    <script src="./js/login.js"></script>
-
-    <script src="app.js"></script>
-    <script src="app-services/authentication.service.js"></script>
-    <script src="app-services/flash.service.js"></script>
-
-    <!-- Real user service that uses an api -->
-    <!-- <script src="app-services/user.service.js"></script> -->
-
-    <!-- Fake user service for demo that uses local storage -->
-    <script src="app-services/user.service.local-storage.js"></script>
-
-    <script src="home/home.controller.js"></script>
-    <script src="login/login.controller.js"></script>
-    <script src="register/register.controller.js"></script>
+     (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+     </script> -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="./js/ie10-viewport-bug-workaround.js"></script>
+<!-- jQuery -->
+<script src="./js/jquery.js"></script>
+<!-- Angular -->
+<script src="./js/angular.js"></script>
+<script src="./js/angular-route.js"></script>
+<script src="./js/angular-cookies.js"></script>
+<!-- view control -->
+<script src="./js/bootstrap.js"></script>
+<script src="./js/login.js"></script>
+<script src="app.js"></script>
+<script src="app-services/authentication.service.js"></script>
+<script src="app-services/flash.service.js"></script>
+<!-- Real user service that uses an api -->
+<!-- <script src="app-services/user.service.js"></script> -->
+<!-- Fake user service for demo that uses local storage -->
+<script src="app-services/user.service.local-storage.js"></script>
+<script src="home/home.controller.js"></script>
+<script src="login/login.controller.js"></script>
+<script src="register/register.controller.js"></script>
 </body>
 
 </html>

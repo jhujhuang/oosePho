@@ -1,5 +1,6 @@
 package com.pho;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +17,25 @@ public class EditingSession {
      */
     public EditingSession(Photo photo) {
         this.photo = photo;
+        collaborators = new ArrayList<>();
+        // TODO: initialize canvasId
     }
 
+    /**
+     * Add a collaborator to an editing session. Does nothing if user is already in.
+     * @param collaborator User to add to the editing session.
+     */
     public void addCollaborator(User collaborator) {
+        if (collaborators.contains(collaborator)) {
+            return;
+        }
         collaborators.add(collaborator);
     }
 
+    /**
+     * Get the list of all collaborators
+     * @return a list of User
+     */
     public List<User> getCollaborators() {
         return collaborators;
     }
@@ -34,5 +48,11 @@ public class EditingSession {
         return canvasId;
     }
 
-
+    /**
+     * Get the photo associated with this editing session
+     * @return Photo
+     */
+    Photo getPhoto() {
+        return photo;
+    }
 }
