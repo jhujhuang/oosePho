@@ -17,7 +17,6 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -34,8 +33,8 @@ public class TestFilters {
     }
 
     @Before
-    public void setup() throws PhoService.PhoServiceException {
-        DataSource mockDataSource = new SQLiteDataSource();  // TODO: Change to actual mock
+    public void setup() {
+        // Nothing to setup for filters
     }
 
     @After
