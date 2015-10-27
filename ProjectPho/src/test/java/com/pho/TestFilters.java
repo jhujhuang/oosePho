@@ -20,9 +20,7 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
-/**
- * Created by jhuang on 10/26/15.
- */
+
 @RunWith(Theories.class)
 public class TestFilters {
 
@@ -50,7 +48,7 @@ public class TestFilters {
         }
     };
 
-    @DataPoint
+  /*  @DataPoint
     public static final Fixture changeContrastFilter = new Fixture() {
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
@@ -67,14 +65,13 @@ public class TestFilters {
             return new BlurFilter(params);
         }
     };
-
-
+*/
     @Theory
     public void testFilterRectangle(Fixture fix) throws Exception {
         Filter f = fix.init();
         f.loadImage("test.jpg");
         BufferedImage p1 = f.getImage();
-        f.applyToRectangle(50, 50, 100, 100);
+        f.applyToRectangle(50, 100, 50, 100);
         BufferedImage p2 = f.getImage();
 
         assertEquals(p1.getHeight(), p2.getHeight());
@@ -83,7 +80,7 @@ public class TestFilters {
         boolean difference = false;
 
         for (int x = 0; x < p1.getWidth(); x++) {
-            for (int y = 0; y < p2.getHeight(); y++) {
+            for (int y = 0; y < p1.getHeight(); y++) {
                 if (p1.getRGB(x, y) != p2.getRGB(x, y))
                     difference = true;
             }
