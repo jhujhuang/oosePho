@@ -76,13 +76,13 @@ public class TestPhoServer {
         Response r = request("POST", "/login", content);
         assertEquals("Fail to login", 200, r.httpStatus);
 
-        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
-        String token = rContent.get("token");
-        assertNotEquals("Token is null", null, token);
+//        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
+ //       String token = rContent.get("token");
+ //       assertNotEquals("Token is null", null, token);
 
-        content.clear();
-        content.put("userId", "scott");
-        content.put("password", "hello");
+//        content.clear();
+ //       content.put("userId", "scott");
+  //      content.put("password", "hello");
    //     r = request("POST", "/login", content);
 //        assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
 
@@ -100,16 +100,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
-        content = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
-        content.put ("userId", "scott");
-        r = request("POST", "/newphoto", content);
-        //assertEquals("Fail to create new photo", 200, r.httpStatus);
-
-        String token = content.remove("token");
-        content.put("token", token + "something");
-        r = request("POST", "/newphoto", content);
-        //assertEquals("Invalid token", 401, r.httpStatus);
     }
 
     public void testListPhotos() throws Exception {
