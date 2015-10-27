@@ -77,13 +77,13 @@ public class PhoService {
      * @return editing session
      * @throws InvalidPhotoIdException when cannot find by given pId
      */
-    private EditingSession findByPhotoId(String pId) throws InvalidPhotoIdException{
-        Hashids hashids = new Hashids(HASH_SALT);
-        long[] decode =  hashids.decode(pId);
-        if (decode.length != 1) {  // Was encoded with an int pIdTracker at that time
-            throw new InvalidPhotoIdException("Cannot find photo.", null);
+    private EditingSession findByPhotoId(String pId) throws InvalidPhotoIdException {
+        int index;
+        try {
+            index = getIntId(pId);
+        } catch (IllegalArgumentException ex) {
+            throw new InvalidPhotoIdException("Cannot find valid photo.", ex);
         }
-        int index = (int) decode[0];
         EditingSession e = editingSessions.get(index);
         if (e == null) {  // Should never happen per current implementation
             throw new InvalidPhotoIdException("Cannot find valid photo.", null);
@@ -92,13 +92,28 @@ public class PhoService {
     }
 
     /**
-     * Generate unique non-guessable strings based on a unique long number.
+     * Generate unique non-guessable strings based on a unique number.
      * @param num int, a number the generated string id will correspond to
      * @return string
      */
     private String getStringId(int num) {
         Hashids hashids = new Hashids(HASH_SALT);
         return hashids.encode(num);
+    }
+
+    /**
+     * Decode generated hashids strings back to integer.
+     * @param pId string, a valid hashids string generated with HASH_SALT
+     * @throws IllegalArgumentException when string given is illegal
+     * @return int
+     */
+    private int getIntId(String pId) {
+        Hashids hashids = new Hashids(HASH_SALT);
+        long[] decode =  hashids.decode(pId);
+        if (decode.length != 1) {  // Was encoded with an int pIdTracker at that time
+            throw new IllegalArgumentException("Given string was not encoded with same hashids");
+        }
+        return (int) decode[0];
     }
 
     /**
