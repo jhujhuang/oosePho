@@ -168,7 +168,7 @@ public class PhoService {
         User usr = findByUserId(userId);
         String pId = getStringId(pIdTracker);
         Photo p = new Photo(pId);
-        // TODO: Add version based given image
+        // TODO: Add version based on given image
         usr.addPhoto(p);  // User is authenticated at this point.
 
         // Add editing session associated with the new photo.
@@ -200,7 +200,7 @@ public class PhoService {
         User usr = findByUserId(userId);
         Map<String, List<String>> result = new HashMap<>();
         List<String> l = new ArrayList<>();
-        for (Photo p: usr.getPhotos()) {  // TODO: QUESTION: Should User store photoIds instead of Photos?
+        for (Photo p: usr.getPhotos()) {
             l.add(p.getPhotoId());
         }
         result.put("photos", l);
