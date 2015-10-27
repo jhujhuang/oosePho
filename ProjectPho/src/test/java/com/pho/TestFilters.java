@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 @RunWith(Theories.class)
 public class TestFilters {
 
-    // Anonymous class
+    // Anonymous class for testing filters
     private interface Fixture {
         Filter init();
     }
@@ -109,6 +109,4 @@ public class TestFilters {
         }
         assertFalse(difference);
     }
-
-
 }
