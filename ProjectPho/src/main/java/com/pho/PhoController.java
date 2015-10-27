@@ -4,6 +4,11 @@ import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.imageio.ImageIO;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.http.Part;
+import java.awt.image.BufferedImage;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +23,8 @@ import static spark.Spark.post;
  */
 public class PhoController {
 
-    private static final String API_CONTEXT = ""; // TODO: confirm
+    private static final String API_CONTEXT = "";  // TODO: confirm
+    private static final String UPLOAD_FILE = "file";  // name of upload form
 
     private final PhoService phoService;
 
@@ -71,12 +77,21 @@ public class PhoController {
 
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             try {
+                MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
+                request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
+
                 response.status(201);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
                 String token = property.getProperty("token");
                 phoService.authenticate(userId, token);
-                String photoId = phoService.createNewPhoto(userId);
+
+                Part file = request.raw().getPart(UPLOAD_FILE);
+                InputStream imageStream = file.getInputStream();
+                BufferedImage img = ImageIO.read(imageStream);
+                // TODO Check correctness of converted img
+
+                String photoId = phoService.createNewPhoto(userId, img);
                 Map<String, String> returnMessage = new HashMap<>();
                 returnMessage.put("pId", photoId);
                 return returnMessage;

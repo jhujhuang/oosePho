@@ -4,6 +4,7 @@ import org.hashids.Hashids;
 import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,11 +165,17 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
-    public String createNewPhoto(String userId) throws PhoServiceException {
+    public String createNewPhoto(String userId, BufferedImage image) throws PhoServiceException {
         User usr = findByUserId(userId);
         String pId = getStringId(pIdTracker);
         Photo p = new Photo(pId);
-        // TODO: Add version based on given image
+
+        // Add version based on given image
+        String vId = p.getNextVId();
+        String time = "0000-00"; // TODO: Get actual time
+        Version v0 = new Version(vId, time, userId, image);
+        p.addVersion(v0);
+
         usr.addPhoto(p);  // User is authenticated at this point.
 
         // Add editing session associated with the new photo.
