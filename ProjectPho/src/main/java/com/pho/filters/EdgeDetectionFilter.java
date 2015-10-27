@@ -1,5 +1,6 @@
 package com.pho.filters;
 
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 /**
@@ -25,6 +26,9 @@ public class EdgeDetectionFilter extends Filter {
                 {-1, 8, -1},
                 {-1, -1, -1}
         };
+
+        // apply filtering to offscreen first
+        BufferedImage offscreen = deepCopy(image);
 
         for (int y = y1; y < y2; y++) {
             for (int x = x1; x < x2; x++) {
@@ -93,9 +97,11 @@ public class EdgeDetectionFilter extends Filter {
                 newB = newB < 0 ? 0 : newB;
 
                 int newColor = ((newR & 0x0ff) << 16) | (( newG & 0x0ff) << 8) | (newB & 0x0ff);
-                image.setRGB(x, y, newColor);
+                offscreen.setRGB(x, y, newColor);
             }
         }
+        // update image with offscreen
+        image = offscreen;
     }
 
    @Override

@@ -1,5 +1,6 @@
 package com.pho.filters;
 
+import java.awt.image.BufferedImage;
 import java.util.Map;
 
 /**
@@ -19,7 +20,9 @@ public class ChangeContrastFilter extends Filter {
 
     @Override
     public void applyToRectangle(int x1, int x2, int y1, int y2){
-        // TODO: Implement
+        // apply filtering to offscreen first
+        BufferedImage offscreen = deepCopy(image);
+
         Double contrast = params.get("contrast");
         if (contrast >= 0) {
             if (contrast == 1)
@@ -49,9 +52,11 @@ public class ChangeContrastFilter extends Filter {
                     int newG = (int)((g - averageLuminance) * contrast + (255 - averageLuminance));
                     int newB = (int)((b - averageLuminance) * contrast + (255 - averageLuminance));
                     int newColor = ((newR & 0x0ff) << 16) | (( newG & 0x0ff) << 8) | (newB & 0x0ff);
-                    image.setRGB(x, y, newColor);
+                    offscreen.setRGB(x, y, newColor);
                 }
             }
+            // update the image with the offscreen
+            image = offscreen;
         }
     }
 

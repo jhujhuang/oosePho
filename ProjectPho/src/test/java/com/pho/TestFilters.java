@@ -48,7 +48,7 @@ public class TestFilters {
         }
     };
 
-  /*  @DataPoint
+    @DataPoint
     public static final Fixture changeContrastFilter = new Fixture() {
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
@@ -65,7 +65,7 @@ public class TestFilters {
             return new BlurFilter(params);
         }
     };
-*/
+
     @Theory
     public void testFilterRectangle(Fixture fix) throws Exception {
         Filter f = fix.init();

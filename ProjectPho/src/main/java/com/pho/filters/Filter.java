@@ -2,6 +2,8 @@ package com.pho.filters;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
 
@@ -30,11 +32,10 @@ public abstract class Filter {
     public abstract void applyToCircle (int x, int y, int r);
 
     /**
-     * Loads the img of the photo in the filter instance.
+     * Load the img of the photo in the filter instance.
      * @param pId The pId of the photo to load with this filter.
      */
     public void loadImage (String pId) {
-        // TODO: implement
         try {
             image = ImageIO.read(new File(pId));
         } catch (IOException E) {
@@ -42,7 +43,19 @@ public abstract class Filter {
         }
     }
 
+    /**
+     * Getter method for the image in this filter.
+     * @return the image of the filter.
+     */
     public BufferedImage getImage () {
         return image;
+    }
+
+    // For copying a BufferedImage before modifying the image
+    protected BufferedImage deepCopy(BufferedImage bi) {
+        ColorModel cm = bi.getColorModel();
+        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+        WritableRaster raster = bi.copyData(null);
+        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
 }

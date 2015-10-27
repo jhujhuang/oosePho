@@ -34,71 +34,72 @@ public class BlurFilter extends Filter {
                 {1, 2, 1}
         };
 
-        BufferedImage offscreen = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        // apply filtering to offscreen first
+        BufferedImage offscreen = deepCopy(image);
 
         for (int y = y1; y < y2; y++) {
             for (int x = x1; x < x2; x++) {
 
                 int totalPixels = 4;
-                int rgb = offscreen.getRGB(x, y);
+                int rgb = image.getRGB(x, y);
 
                 int newR = (rgb >> 16) & 0xFF * mask[1][1];
                 int newG = (rgb >> 8) & 0xFF * mask[1][1];
                 int newB = (rgb >> 0) & 0xFF * mask[1][1];
 
                 if (x > 0 && y > 0) {
-                    newR += (offscreen.getRGB(x - 1, y - 1) >> 16) & 0xFF * mask[0][0];
-                    newG += (offscreen.getRGB(x - 1, y - 1) >> 8) & 0xFF * mask[0][0];
-                    newB += (offscreen.getRGB(x - 1, y - 1) >> 0) & 0xFF * mask[0][0];
+                    newR += (image.getRGB(x - 1, y - 1) >> 16) & 0xFF * mask[0][0];
+                    newG += (image.getRGB(x - 1, y - 1) >> 8) & 0xFF * mask[0][0];
+                    newB += (image.getRGB(x - 1, y - 1) >> 0) & 0xFF * mask[0][0];
                     totalPixels+= 1;
                 }
 
                 if (y > 0) {
-                    newR += (offscreen.getRGB(x, y - 1) >> 16) & 0xFF * mask[1][0];
-                    newG += (offscreen.getRGB(x, y - 1) >> 8) & 0xFF * mask[1][0];
-                    newB += (offscreen.getRGB(x, y - 1) >> 0) & 0xFF * mask[1][0];
+                    newR += (image.getRGB(x, y - 1) >> 16) & 0xFF * mask[1][0];
+                    newG += (image.getRGB(x, y - 1) >> 8) & 0xFF * mask[1][0];
+                    newB += (image.getRGB(x, y - 1) >> 0) & 0xFF * mask[1][0];
                     totalPixels+= 2;
                 }
 
                 if (x < x2 - 1 && y > 0) {
-                    newR += (offscreen.getRGB(x + 1, y - 1) >> 16) & 0xFF * mask[2][0];
-                    newG += (offscreen.getRGB(x + 1, y - 1) >> 8) & 0xFF * mask[2][0];
-                    newB += (offscreen.getRGB(x + 1, y - 1) >> 0) & 0xFF * mask[2][0];
+                    newR += (image.getRGB(x + 1, y - 1) >> 16) & 0xFF * mask[2][0];
+                    newG += (image.getRGB(x + 1, y - 1) >> 8) & 0xFF * mask[2][0];
+                    newB += (image.getRGB(x + 1, y - 1) >> 0) & 0xFF * mask[2][0];
                     totalPixels+= 1;
                 }
 
                 if (x > 0) {
-                    newR += (offscreen.getRGB(x - 1, y) >> 16) & 0xFF * mask[0][1];
-                    newG += (offscreen.getRGB(x - 1, y) >> 8) & 0xFF * mask[0][1];
-                    newB += (offscreen.getRGB(x - 1, y) >> 0) & 0xFF * mask[0][1];
+                    newR += (image.getRGB(x - 1, y) >> 16) & 0xFF * mask[0][1];
+                    newG += (image.getRGB(x - 1, y) >> 8) & 0xFF * mask[0][1];
+                    newB += (image.getRGB(x - 1, y) >> 0) & 0xFF * mask[0][1];
                     totalPixels+= 2;
                 }
 
                 if (x < x2 - 1) {
-                    newR += (offscreen.getRGB(x + 1, y) >> 16) & 0xFF * mask[2][1];
-                    newG += (offscreen.getRGB(x + 1, y) >> 8) & 0xFF * mask[2][1];
-                    newB += (offscreen.getRGB(x + 1, y) >> 0) & 0xFF  * mask[2][1];
+                    newR += (image.getRGB(x + 1, y) >> 16) & 0xFF * mask[2][1];
+                    newG += (image.getRGB(x + 1, y) >> 8) & 0xFF * mask[2][1];
+                    newB += (image.getRGB(x + 1, y) >> 0) & 0xFF  * mask[2][1];
                     totalPixels+= 2;
                 }
 
                 if (x > 0 && y < y2 - 1) {
-                    newR += (offscreen.getRGB(x - 1, y + 1) >> 16) & 0xFF * mask[0][2];
-                    newG += (offscreen.getRGB(x - 1, y + 1) >> 8) & 0xFF * mask[0][2];
-                    newB += (offscreen.getRGB(x - 1, y + 1) >> 0) & 0xFF * mask[0][2];
+                    newR += (image.getRGB(x - 1, y + 1) >> 16) & 0xFF * mask[0][2];
+                    newG += (image.getRGB(x - 1, y + 1) >> 8) & 0xFF * mask[0][2];
+                    newB += (image.getRGB(x - 1, y + 1) >> 0) & 0xFF * mask[0][2];
                     totalPixels+= 1;
                 }
 
                 if (y < y2 - 1) {
-                    newR += (offscreen.getRGB(x, y + 1) >> 16) & 0xFF * mask[1][2];
-                    newG += (offscreen.getRGB(x, y + 1) >> 8) & 0xFF * mask[1][2];
-                    newB += (offscreen.getRGB(x, y + 1) >> 0) & 0xFF * mask[1][2];
+                    newR += (image.getRGB(x, y + 1) >> 16) & 0xFF * mask[1][2];
+                    newG += (image.getRGB(x, y + 1) >> 8) & 0xFF * mask[1][2];
+                    newB += (image.getRGB(x, y + 1) >> 0) & 0xFF * mask[1][2];
                     totalPixels+= 2;
                 }
 
                 if (x < x2 -1 && y < y2 - 1) {
-                    newR += (offscreen.getRGB(x + 1, y + 1) >> 16) & 0xFF * mask[2][2];
-                    newG += (offscreen.getRGB(x + 1, y + 1) >> 8) & 0xFF * mask[2][2];
-                    newB += (offscreen.getRGB(x + 1, y + 1) >> 0) & 0xFF * mask[0][2];
+                    newR += (image.getRGB(x + 1, y + 1) >> 16) & 0xFF * mask[2][2];
+                    newG += (image.getRGB(x + 1, y + 1) >> 8) & 0xFF * mask[2][2];
+                    newB += (image.getRGB(x + 1, y + 1) >> 0) & 0xFF * mask[0][2];
                     totalPixels+= 1;
                 }
 
@@ -110,6 +111,7 @@ public class BlurFilter extends Filter {
                 offscreen.setRGB(x, y, newColor);
             }
         }
+        // update image with offscreen
         image = offscreen;
     }
 
