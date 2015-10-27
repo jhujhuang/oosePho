@@ -26,8 +26,7 @@ import static org.junit.Assert.assertFalse;
 @RunWith(Theories.class)
 public class TestFilters {
 
-    private static final int TEST_NUM = 7;
-
+    // Anonymous class
     private interface Fixture {
         Filter init();
     }
