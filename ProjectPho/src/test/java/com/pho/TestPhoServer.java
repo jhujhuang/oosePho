@@ -75,8 +75,10 @@ public class TestPhoServer {
         request("POST", "/register", content);
         Response r = request("POST", "/login", content);
         assertEquals("Fail to login", 200, r.httpStatus);
+        //Type type = (new TypeToken<HashMap<String, String>>(){}).getType();
+        Type type = (new TypeToken<Map<String, String>>(){}).getType();
 
-        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>(){}).getType());
+        Map<String, String> rContent = r.getContentAsObject(type);
  //       String token = rContent.get("token");
  //       assertNotEquals("Token is null", null, token);
 
@@ -100,6 +102,7 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+
         // TODO
     }
 
@@ -110,7 +113,7 @@ public class TestPhoServer {
         content.put("password", "oose");
         request("POST", "/register", content);
         Response r = request("POST", "/login", content);
-        //TODO
+
     }
 
     @Test
@@ -241,6 +244,10 @@ public class TestPhoServer {
         }
 
         public <T> T getContentAsObject(Type type) {
+            System.out.println(content);
+            Map<String, String> m = new HashMap();
+            m.put("token", "dummy token");
+            String wtf = new Gson().toJson(m);
             return new Gson().fromJson(content, type);
         }
     }
