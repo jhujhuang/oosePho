@@ -76,7 +76,7 @@ public class TestPhoServer {
         Response r = request("POST", "/login", content);
         assertEquals("Fail to login", 200, r.httpStatus);
 
-  //      Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>() { }). getType());
+        Map<String, String> rContent = r.getContentAsObject((new TypeToken<HashMap<String, String>>(){}).getType());
  //       String token = rContent.get("token");
  //       assertNotEquals("Token is null", null, token);
 
