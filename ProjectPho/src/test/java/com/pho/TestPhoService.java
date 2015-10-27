@@ -98,5 +98,19 @@ public class TestPhoService {
         phoService.joinEditingSession(userId, wrongId);
     }
 
+    @Test
+    public void testGetRevisionsInitial() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        Map<String, List<Version>> map = phoService.getRevisions(pId);
+        assertEquals(1, map.get("versions").size());
+        // Check that the image stored in the first version is correct
+        assertEquals(testImg, map.get("versions").get(0).getImage());
+        // Check that the author of the first version is the creator
+        assertEquals(userId, map.get("versions").get(0).getUserId());
+    }
+
     // TODO: more tests
 }
