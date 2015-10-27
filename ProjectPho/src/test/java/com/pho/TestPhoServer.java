@@ -112,13 +112,6 @@ public class TestPhoServer {
     }
 
     @Test
-    public void testBlurFilterCircle() {
-        Map<String, Double> params = new HashMap<String, Double>();
-        params.put("value", 0.5);
-    }
-        // Response r = request("GET", "/edit/test/change", );
-
-    @Test
     public void testBlurFilter() throws Exception {
         Map<String, Double> params = new HashMap<>();
         params.put("value", 0.5);
@@ -152,9 +145,43 @@ public class TestPhoServer {
             for (int y = 0; y < p2.getHeight(); y++)
                 assertEquals(p1.getRGB(x, y), p2.getRGB(x, y));
         }
-
     }
 
+    @Test
+    public void testChangeContrastFilter() throws Exception {
+        Map<String, Double> params = new HashMap<>();
+        params.put("value", 0.5);
+        Filter changeContrastFilter = new ChangeContrastFilter(params);
+        changeContrastFilter.loadImage("test.jpg");
+        BufferedImage p1 = changeContrastFilter.getImage();
+        changeContrastFilter.applyToCircle(50, 50, 10);
+        BufferedImage p2 = changeContrastFilter.getImage();
+
+        assertEquals(p1.getHeight(), p2.getHeight());
+        assertEquals(p1.getWidth(), p2.getWidth());
+
+        for (int x = 0; x < p1.getWidth(); x++) {
+            for (int y = 0; y < p2.getHeight(); y++)
+                assertEquals(p1.getRGB(x, y), p2.getRGB(x, y));
+        }
+
+        changeContrastFilter.loadImage("test.jpg");
+        params.put("value", 0.4);
+        changeContrastFilter.applyToCircle(50, 50, 10);
+        p1 = changeContrastFilter.getImage();
+        changeContrastFilter.loadImage("test.jpg");
+        params.put("value", 0.8);
+        changeContrastFilter.applyToCircle(50, 50, 10);
+        p2 = changeContrastFilter.getImage();
+
+        assertEquals(p1.getHeight(), p2.getHeight());
+        assertEquals(p1.getWidth(), p2.getWidth());
+
+        for (int x = 0; x < p1.getWidth(); x++) {
+            for (int y = 0; y < p2.getHeight(); y++)
+                assertEquals(p1.getRGB(x, y), p2.getRGB(x, y));
+        }
+    }
 
 
 
