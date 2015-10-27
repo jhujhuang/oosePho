@@ -56,7 +56,7 @@ public class PhoController {
                 response.status(409);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/login", "application/json", (request, response) -> {
             try {
@@ -73,7 +73,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             try {
@@ -100,7 +100,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/listphotos", "application/json", (request, response) -> {
             try {
@@ -115,7 +115,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId", "application/json", (request, response) -> {
             try {
@@ -136,7 +136,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/edittitle", "application/json", (request, response) -> {
             try {
@@ -156,7 +156,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/change", "application/json", (request, response) -> {
             try {
@@ -194,7 +194,7 @@ public class PhoController {
                 response.status(400);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         get(API_CONTEXT + "/edit/:pId/fetch", "application/json", (request, response) -> {
             try {
@@ -214,7 +214,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/comment", "application/json", (request, response) -> {
             try {
@@ -236,7 +236,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
             try {
@@ -256,7 +256,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/versions/revert", "application/json", (request, response) -> {
             try {
@@ -282,7 +282,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId/save", "application/json", (request, response) -> {
             try {
@@ -308,7 +308,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        });
+        }, new JsonTransformer());
 
     }
 
