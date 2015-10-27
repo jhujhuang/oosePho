@@ -9,75 +9,58 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/icon.png">
-
     <title ng-bind="$root.title + ' | Pho'">Welcome | Pho</title>
     <!-- Bootstrap core CSS -->
     <link href="./css/bootstrap.css" rel="stylesheet">
-
     <!-- Custom styles for the login page -->
     <link href="./css/login.css" rel="stylesheet">
     <!-- Custom styles for the editing page -->
     <link href="./css/phototitle.css" rel="stylesheet">
     <link href="./css/toolbar.css" rel="stylesheet">
     <link href="./css/canvas.css" rel="stylesheet">
-
 </head>
 
 <body>
-    <div class="container">
-        <div class="col-sm-8 col-sm-offset-2">
-            <div ng-view></div>
-        </div>
-    </div>
-  
-  <!-- setup the Facebook SDK for JavaScript, maybe to use in the future -->
-  <!-- <script>
-  window.fbAsyncInit = function() {
-    FB.init({
-      appId      : '107488482944181',
-      xfbml      : true,
-      version    : 'v2.5'
-    });
-  };
+<div ng-view></div>
+<!-- setup the Facebook SDK for JavaScript, maybe to use in the future -->
+<!-- <script>
+     window.fbAsyncInit = function() {
+       FB.init({
+         appId      : '107488482944181',
+         xfbml      : true,
+         version    : 'v2.5'
+       });
+     };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
-  </script> -->
-
-
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="./js/ie10-viewport-bug-workaround.js"></script>
-
-    <!-- jQuery -->
-    <script src="./js/jquery.js"></script>
-
-    <!-- Angular -->
-    <script src="./js/angular.js"></script>
-    <script src="./js/angular-route.js"></script>
-    <script src="./js/angular-cookies.js"></script>
-
-    <!-- view control -->
-    <script src="./js/bootstrap.js"></script>
-    <script src="./js/login.js"></script>
-
-    <script src="app.js"></script>
-    <script src="app-services/authentication.service.js"></script>
-    <script src="app-services/flash.service.js"></script>
-
-    <!-- Real user service that uses an api -->
-    <!-- <script src="app-services/user.service.js"></script> -->
-
-    <!-- Fake user service for demo that uses local storage -->
-    <script src="app-services/user.service.local-storage.js"></script>
-
-    <script src="home/home.controller.js"></script>
-    <script src="login/login.controller.js"></script>
-    <script src="register/register.controller.js"></script>
+     (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+     </script> -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="./js/ie10-viewport-bug-workaround.js"></script>
+<!-- jQuery -->
+<script src="./js/jquery.js"></script>
+<!-- Angular -->
+<script src="./js/angular.js"></script>
+<script src="./js/angular-route.js"></script>
+<script src="./js/angular-cookies.js"></script>
+<!-- view control -->
+<script src="./js/bootstrap.js"></script>
+<script src="./js/login.js"></script>
+<script src="app.js"></script>
+<script src="app-services/authentication.service.js"></script>
+<script src="app-services/flash.service.js"></script>
+<!-- Real user service that uses an api -->
+<!-- <script src="app-services/user.service.js"></script> -->
+<!-- Fake user service for demo that uses local storage -->
+<script src="app-services/user.service.local-storage.js"></script>
+<script src="home/home.controller.js"></script>
+<script src="login/login.controller.js"></script>
+<script src="register/register.controller.js"></script>
 </body>
 
 </html>
