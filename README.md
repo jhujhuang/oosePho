@@ -18,7 +18,7 @@ If you instead want to compile and run from the command line, assuming you have 
 
 ```console
 mvn package
-java -jar target/todoapp1-1.0-SNAPSHOT.jar
+java -jar target/Pho1-1.0-SNAPSHOT.jar
 ```
 
 Now simply point your browser to http://localhost:8080 to use the application.

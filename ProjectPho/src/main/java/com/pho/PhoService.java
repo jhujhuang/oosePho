@@ -162,6 +162,7 @@ public class PhoService {
     /**
      * Create a new photo
      * @param userId the user ID
+     * @param image BufferedImage with image content
      * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
@@ -275,7 +276,11 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of Version instances.
      */
     public Map<String, List<Version>> getRevisions(String photoId) throws InvalidPhotoIdException {
-        return null;  // TODO: Implement
+        Photo p = findByPhotoId(photoId).getPhoto();
+        List<Version> versions = p.getVersions();
+        Map<String, List<Version>> map = new HashMap<>();
+        map.put("versions", versions);
+        return map;
     }
 
     /**
