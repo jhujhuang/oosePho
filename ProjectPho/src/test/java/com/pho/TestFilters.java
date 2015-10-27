@@ -4,16 +4,16 @@ import com.pho.filters.BlurFilter;
 import com.pho.filters.Filter;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 
-import org.sqlite.SQLiteDataSource;
 
-import javax.sql.DataSource;
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,46 +67,48 @@ public class TestFilters {
     };
 
     @Theory
-    public void testFilterRectangle(Fixture fix) throws Exception {
+    public void testFilterRectangle(Fixture fix) {
         Filter f = fix.init();
         f.loadImage("test.jpg");
         BufferedImage p1 = f.getImage();
         f.applyToRectangle(50, 100, 50, 100);
         BufferedImage p2 = f.getImage();
 
-        assertEquals(p1.getHeight(), p2.getHeight());
-        assertEquals(p1.getWidth(), p2.getWidth());
-
-        boolean difference = false;
-
-        for (int x = 0; x < p1.getWidth(); x++) {
-            for (int y = 0; y < p1.getHeight(); y++) {
-                if (p1.getRGB(x, y) != p2.getRGB(x, y))
-                    difference = true;
-            }
-        }
-        assertTrue(difference);
+        assertTrue(isDifferent(p1, p2));
     }
 
     @Theory
-    public void testFilterCircle(Fixture fix) throws Exception {
+    public void testFilterCircle(Fixture fix) {
         Filter f = fix.init();
         f.loadImage("test.jpg");
         BufferedImage p1 = f.getImage();
         f.applyToCircle(50, 50, 100);
         BufferedImage p2 = f.getImage();
 
-        assertEquals(p1.getHeight(), p2.getHeight());
-        assertEquals(p1.getWidth(), p2.getWidth());
+        assertFalse(this.isDifferent(p1, p2));
+    }
 
-        boolean difference = false;
+    @Theory
+    public void testFilterIO(Fixture fix) throws IOException {
+        String imageName = "test.jpg";
+        Filter f = fix.init();
+        BufferedImage p1 = ImageIO.read(new File(imageName));
+        f.loadImage(imageName);
+        BufferedImage p2 = f.getImage();
 
+        assertFalse(this.isDifferent(p1, p2));
+    }
+    
+    // Helper method for checking if two images are equal
+    private boolean isDifferent(BufferedImage p1, BufferedImage p2) {
+        if (p1.getHeight() != p2.getHeight() || p1.getWidth() != p2.getWidth())
+            return true;
         for (int x = 0; x < p1.getWidth(); x++) {
             for (int y = 0; y < p2.getHeight(); y++) {
                 if (p1.getRGB(x, y) != p2.getRGB(x, y))
-                    difference = true;
+                    return true;
             }
         }
-        assertFalse(difference);
+        return false;
     }
 }
