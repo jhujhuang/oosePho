@@ -6,19 +6,18 @@ import org.junit.Test;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by jhuang on 10/26/15.
- */
 public class TestPhoService {
 
     private static final int TEST_NUM = 7;
 
     PhoService phoService;
+    BufferedImage testImg = new BufferedImage(2, 2, 1);
 
     @Before
     public void setup() throws PhoService.PhoServiceException {
@@ -49,7 +48,7 @@ public class TestPhoService {
         phoService.register(userId, "password");
         Map<String, List<String>> map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(0, map.get("photos").size());
-        String pId = phoService.createNewPhoto(userId);
+        String pId = phoService.createNewPhoto(userId, testImg);
         map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(1, map.get("photos").size());
         assertEquals(pId, map.get("photos").get(0));
@@ -70,7 +69,7 @@ public class TestPhoService {
         int num = TEST_NUM;
         String[] pIds = new String[num];
         for (int i = 0; i < num; i++) {
-            pIds[i] = phoService.createNewPhoto(userId);
+            pIds[i] = phoService.createNewPhoto(userId, testImg);
         }
         Map<String, List<String>> map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(num, map.get("photos").size());
@@ -84,7 +83,7 @@ public class TestPhoService {
         String userId = "scott";
         phoService.register(userId, "password");
 
-        String pId = phoService.createNewPhoto(userId);
+        String pId = phoService.createNewPhoto(userId, testImg);
         phoService.joinEditingSession(userId, pId);
     }
 
@@ -93,7 +92,7 @@ public class TestPhoService {
         String userId = "scott";
         phoService.register(userId, "password");
 
-        String pId = phoService.createNewPhoto(userId);
+        String pId = phoService.createNewPhoto(userId, testImg);
         String wrongId = "csf";
         assert(!pId.equals(wrongId));
         phoService.joinEditingSession(userId, wrongId);
