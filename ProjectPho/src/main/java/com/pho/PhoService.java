@@ -162,6 +162,7 @@ public class PhoService {
     /**
      * Create a new photo
      * @param userId the user ID
+     * @param image BufferedImage with image content
      * @throws PhoServiceException when failures occur
      * @return the photo ID
      */
