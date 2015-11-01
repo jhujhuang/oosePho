@@ -118,14 +118,13 @@ public class PhoService {
     }
 
     /**
-     * Authenticate the user
+     * Authenticate the user, and throw InvalidTokenException when authentication fails.
      * @param userId the unique user ID
      * @param token the generated token for specific user
      * @throws InvalidTokenException when authentication fails
-     * @return whether the user has been authenticated
      */
-    public boolean authenticate(String userId, String token) throws InvalidTokenException {
-        return true; // TODO: Implement
+    public void authenticate(String userId, String token) throws InvalidTokenException {
+        // TODO: Implement
     }
 
     /**
