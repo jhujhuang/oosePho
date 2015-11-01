@@ -3,7 +3,6 @@ package com.pho;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
 import java.awt.image.BufferedImage;
@@ -11,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
 
 public class TestPhoService {
 
@@ -21,7 +21,7 @@ public class TestPhoService {
 
     @Before
     public void setup() throws PhoService.PhoServiceException {
-        DataSource mockDataSource = new SQLiteDataSource();  // TODO: Change to actual mock
+        DataSource mockDataSource = mock(DataSource.class);
         phoService = new PhoService(mockDataSource);
     }
 
