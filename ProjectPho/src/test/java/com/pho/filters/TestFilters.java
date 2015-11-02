@@ -1,14 +1,11 @@
-package com.pho;
+package com.pho.filters;
 
-import com.pho.filters.BlurFilter;
-import com.pho.filters.Filter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -17,9 +14,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(Theories.class)
 public class TestFilters {
