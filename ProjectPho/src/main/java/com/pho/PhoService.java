@@ -77,17 +77,13 @@ public class PhoService {
      * @param pId the pId string
      * @return editing session
      * @throws InvalidPhotoIdException when cannot find by given pId
+     * @throws IllegalArgumentException when pId is successfully decoded but photo record is not found
      */
     private EditingSession findByPhotoId(String pId) throws InvalidPhotoIdException {
-        int index;
-        try {
-            index = getIntId(pId);
-        } catch (IllegalArgumentException ex) {
-            throw new InvalidPhotoIdException("Cannot find valid photo.", ex);
-        }
+        int index = getIntId(pId);
         EditingSession e = editingSessions.get(index);
         if (e == null) {  // Should never happen per current implementation
-            throw new InvalidPhotoIdException("Cannot find valid photo.", null);
+            throw new IllegalArgumentException("Cannot find valid photo by given pId.");
         }
         return e;
     }
@@ -105,14 +101,14 @@ public class PhoService {
     /**
      * Decode generated hashids strings back to integer.
      * @param pId string, a valid hashids string generated with HASH_SALT
-     * @throws IllegalArgumentException when string given is illegal
+     * @throws InvalidPhotoIdException when string given is illegal
      * @return int
      */
-    private int getIntId(String pId) {
+    private int getIntId(String pId) throws InvalidPhotoIdException {
         Hashids hashids = new Hashids(HASH_SALT);
         long[] decode =  hashids.decode(pId);
-        if (decode.length != 1) {  // Was encoded with an int pIdTracker at that time
-            throw new IllegalArgumentException("Given string was not encoded with same hashids");
+        if (decode.length != 1) {  // Was encoded with one integer (pIdTracker)
+            throw new InvalidPhotoIdException("Given string was not encoded with same hashids", null);
         }
         return (int) decode[0];
     }
