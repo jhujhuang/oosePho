@@ -54,10 +54,19 @@ public class Photo {
     }
 
     /**
+     * Retrieves the latest version of this photo
+     * @return Version
+     */
+    public Version getCurrentVersion() {
+        return versions.get(versions.size() - 1);
+    }
+
+    /**
      * Adds a newest version to the versions list of this photo.
      * @param version Version, a new version of this photo.
      */
     public void addVersion(Version version) {
+        // TODO: handle the assignment of VId in here rather than in PhoService
         this.versions.add(version);
         assert(version.getVersionId().equals("" + nextVId));  // TODO: Handle better, or let it go
         nextVId++;

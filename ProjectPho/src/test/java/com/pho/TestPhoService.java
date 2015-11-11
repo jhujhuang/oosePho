@@ -4,12 +4,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
 import javax.sql.DataSource;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 public class TestPhoService {
@@ -110,6 +115,36 @@ public class TestPhoService {
         assertEquals(testImg, map.get("versions").get(0).getImage());
         // Check that the author of the first version is the creator
         assertEquals(userId, map.get("versions").get(0).getUserId());
+    }
+
+    @Test
+    public void testFetch() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException, IOException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(testImg, "jpg", baos);
+        baos.flush();
+        byte[] bytes = baos.toByteArray();
+        baos.close();
+        String s = DatatypeConverter.printBase64Binary(bytes);
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        EditingSession.FetchResult response = phoService.fetch(pId);
+        assertTrue(response.canvasData != null);
+        assertEquals(s, response.canvasData);
+        assertEquals("0", response.versionId);
+    }
+
+    @Test(expected = PhoService.InvalidPhotoIdException.class)
+    public void testFetchFailed() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        String wrongId = "csf";
+        assert(!pId.equals(wrongId));
+        phoService.fetch(wrongId);
     }
 
     // TODO: more tests

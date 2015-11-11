@@ -1,5 +1,6 @@
 package com.pho;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +55,52 @@ public class EditingSession {
      */
     Photo getPhoto() {
         return photo;
+    }
+
+    /**
+     * Retrieves the result for fetch
+     * @return FetchResult object
+     * @throws IOException
+     */
+    public FetchResult getFetchResults() throws IOException {
+        FetchResult result = new FetchResult();
+        result.setCanvasId(canvasId);
+        result.setCollaborators(collaborators);
+        result.setTitle(photo.getTitle());
+        Version currentVersion = photo.getCurrentVersion();
+        result.setCanvasData(currentVersion);
+        result.setVersionId(currentVersion);
+        return result;
+    }
+
+    /**
+     * An helper object for fetch result that is ready to convert to JSON response.
+     */
+    class FetchResult {
+        String canvasId;
+        List<User> collaborators;
+        String title;
+        String canvasData;  // img converted to base 64 string
+        String versionId;
+
+        void setCanvasId(String canvasId) {
+            this.canvasId = canvasId;
+        }
+
+        void setCollaborators(List<User> collaborators) {
+            this.collaborators = collaborators;
+        }
+
+        void setTitle(String title) {
+            this.title = title;
+        }
+
+        void setCanvasData(Version v) throws IOException {
+            this.canvasData = v.getImageBytes();
+        }
+
+        void setVersionId(Version v) {
+            this.versionId = v.getVersionId();
+        }
     }
 }
