@@ -4,8 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.imageio.ImageIO;
 import javax.sql.DataSource;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -119,9 +122,17 @@ public class TestPhoService {
         String userId = "scott";
         phoService.register(userId, "password");
 
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(testImg, "jpg", baos);
+        baos.flush();
+        byte[] bytes = baos.toByteArray();
+        baos.close();
+        String s = DatatypeConverter.printBase64Binary(bytes);
+
         String pId = phoService.createNewPhoto(userId, testImg);
         EditingSession.FetchResult response = phoService.fetch(pId);
-        assertTrue(response.canvasData != null);  // TODO: assert bytes correct
+        assertTrue(response.canvasData != null);
+        assertEquals(s, response.canvasData);
         assertEquals("0", response.versionId);
     }
 
