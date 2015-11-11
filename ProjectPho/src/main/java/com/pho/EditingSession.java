@@ -57,6 +57,11 @@ public class EditingSession {
         return photo;
     }
 
+    /**
+     * Retrieves the result for fetch
+     * @return FetchResult object
+     * @throws IOException
+     */
     public FetchResult getFetchResults() throws IOException {
         FetchResult result = new FetchResult();
         result.setCanvasId(canvasId);
@@ -68,6 +73,9 @@ public class EditingSession {
         return result;
     }
 
+    /**
+     * An helper object for fetch result that is ready to convert to JSON response.
+     */
     class FetchResult {
         String canvasId;
         List<User> collaborators;
