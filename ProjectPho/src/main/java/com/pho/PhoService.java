@@ -5,6 +5,7 @@ import org.sql2o.Sql2o;
 import javax.sql.DataSource;
 
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -248,8 +249,13 @@ public class PhoService {
      * @throws InvalidPhotoIdException when photo id is invalid
      * @return map of content to be included in the response to fetch
      */
-    public Map<String, String> fetch(String photoId) throws InvalidPhotoIdException {
-        return null;  // TODO: Implement
+    public EditingSession.FetchResult fetch(String photoId) throws InvalidPhotoIdException {
+        EditingSession e = findByPhotoId(photoId);
+        try {
+            return e.getFetchResults();
+        } catch (IOException ex) {
+            throw new RuntimeException("Something went wrong when we try to write image to bytes.");
+        }
     }
 
     /**

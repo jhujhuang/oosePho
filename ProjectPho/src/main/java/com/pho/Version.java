@@ -1,6 +1,10 @@
 package com.pho;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 /**
  * Version class contains the actual picture of photo.
@@ -53,6 +57,20 @@ public class Version {
      * @return the image of this version
      */
     public BufferedImage getImage() {
-        return this.img;
+        return img;
+    }
+
+    /**
+     * Get the image in the form of base 64 bytes.
+     * @return base 64 string
+     * @throws IOException
+     */
+    public String getImageBytes() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(img, "jpg", baos);
+        baos.flush();
+        byte[] imageInByteArray = baos.toByteArray();
+        baos.close();
+        return DatatypeConverter.printBase64Binary(imageInByteArray);
     }
 }

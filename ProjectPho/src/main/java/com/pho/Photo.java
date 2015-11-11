@@ -54,6 +54,14 @@ public class Photo {
     }
 
     /**
+     * Retrieves the latest version of this photo
+     * @return Version
+     */
+    public Version getCurrentVersion() {
+        return versions.get(versions.size() - 1);
+    }
+
+    /**
      * Adds a newest version to the versions list of this photo.
      * @param version Version, a new version of this photo.
      */
