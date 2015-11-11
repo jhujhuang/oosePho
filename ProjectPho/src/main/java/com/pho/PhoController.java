@@ -83,8 +83,6 @@ public class PhoController {
                 response.status(201);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
-                phoService.authenticate(userId, token);
 
                 Part file = request.raw().getPart(UPLOAD_FILE);
                 InputStream imageStream = file.getInputStream();
@@ -107,8 +105,6 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
-                phoService.authenticate(userId, token);
                 return phoService.listPhotosOfCurrentUser(userId);
             } catch (PhoService.InvalidTokenException ex) {
                 logger.error("Invalid token");
@@ -122,9 +118,7 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
-                phoService.authenticate(userId, token);
                 phoService.joinEditingSession(userId, photoId);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -143,8 +137,6 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
-                phoService.authenticate(userId, token);
                 phoService.editPhotoTitle(request.params(":pId"), property.getProperty("title"));
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -163,13 +155,11 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String canvasId = property.getProperty("canvasId");
                 String editType = property.getProperty("editType");
                 String moreParams = property.getProperty("moreParams");
                 HashMap<String, String> paramMap = new Gson().fromJson(moreParams, HashMap.class);
                 String photoId = request.params(":pId");
-                phoService.authenticate(userId, token);
                 phoService.edit(userId, photoId, canvasId, editType, paramMap);
 
                 return Collections.EMPTY_MAP;
@@ -201,9 +191,7 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
-                phoService.authenticate(userId, token);
                 return phoService.fetch(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
@@ -221,10 +209,8 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
                 String comment = property.getProperty("comment");
-                phoService.authenticate(userId, token);
                 phoService.comment(userId, photoId, comment);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -243,9 +229,7 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
-                phoService.authenticate(userId, token);
                 return phoService.getRevisions(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
@@ -263,10 +247,8 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
                 String versionId = property.getProperty("versionId");
-                phoService.authenticate(userId, token);
                 phoService.revertToSelectedVersion(photoId, versionId);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -289,10 +271,8 @@ public class PhoController {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String userId = property.getProperty("userId");
-                String token = property.getProperty("token");
                 String photoId = request.params(":pId");
                 String canvasId = property.getProperty("canvasId");
-                phoService.authenticate(userId, token);
                 phoService.saveVersion(userId, photoId, canvasId);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
