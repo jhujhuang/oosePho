@@ -43,7 +43,7 @@ public class PhoController {
      * Sets up the endpoints.
      */
     private void setupEndpoints() {
-        post(API_CONTEXT + "/register", "application/json", (request, response) -> {
+        /*post(API_CONTEXT + "/register", "application/json", (request, response) -> {
             try {
                 response.status(201);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
@@ -73,7 +73,7 @@ public class PhoController {
                 response.status(401);
                 return createFailureContent(ex.getMessage());
             }
-        }, new JsonTransformer());
+        }, new JsonTransformer());*/
 
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             try {
