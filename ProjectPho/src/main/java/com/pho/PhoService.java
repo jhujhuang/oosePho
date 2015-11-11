@@ -247,7 +247,7 @@ public class PhoService {
      *
      * @param photoId the photo ID
      * @throws InvalidPhotoIdException when photo id is invalid
-     * @return map of content to be included in the response to fetch
+     * @return EditingSession.FetchResult content to be included in the response to fetch
      */
     public EditingSession.FetchResult fetch(String photoId) throws InvalidPhotoIdException {
         EditingSession e = findByPhotoId(photoId);

@@ -66,6 +66,7 @@ public class Photo {
      * @param version Version, a new version of this photo.
      */
     public void addVersion(Version version) {
+        // TODO: handle the assignment of VId in here rather than in PhoService
         this.versions.add(version);
         assert(version.getVersionId().equals("" + nextVId));  // TODO: Handle better, or let it go
         nextVId++;
