@@ -72,8 +72,8 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
 
+        // TODO
     }
 
     @Test
@@ -82,7 +82,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -93,7 +92,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -103,7 +101,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -113,7 +110,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -124,7 +120,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -134,7 +129,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -144,7 +138,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -154,7 +147,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -204,10 +196,6 @@ public class TestPhoServer {
         }
 
         public <T> T getContentAsObject(Type type) {
-            System.out.println(content);
-            Map<String, String> m = new HashMap();
-            m.put("token", "dummy token");
-            String wtf = new Gson().toJson(m);
             return new Gson().fromJson(content, type);
         }
     }
