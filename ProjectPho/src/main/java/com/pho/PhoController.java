@@ -53,6 +53,7 @@ public class PhoController {
         }, new JsonTransformer());
 
         // TODO: Probably we don't need login endpoint
+        /*
         post(API_CONTEXT + "/login", "application/json", (request, response) -> {
             response.status(200);
             Properties property = new Gson().fromJson(request.body(), Properties.class);
@@ -63,6 +64,7 @@ public class PhoController {
             returnMessage.put("token", token);
             return returnMessage;
         }, new JsonTransformer());
+        */
 
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");

@@ -134,16 +134,16 @@ public class PhoService {
         users.add(user);
     }
 
-    /**
+    /*
      * Log in to account
      * @param userId the user ID
      * @param password the user's password
      * @throws PhoServiceException when failures occur
      * @return the token
-     */
     public String login(String userId, String password) throws PhoServiceException {
         return "dummy token";  // TODO: Probably we don't need login in backend
     }
+     */
 
     /**
      * Create a new photo
