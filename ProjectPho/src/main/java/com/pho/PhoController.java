@@ -44,25 +44,37 @@ public class PhoController {
      */
     private void setupEndpoints() {
         post(API_CONTEXT + "/register", "application/json", (request, response) -> {
-            response.status(201);
-            Properties property = new Gson().fromJson(request.body(), Properties.class);
-            String userId = property.getProperty("userId");
-            String password = property.getProperty("password");
-            phoService.register(userId, password);
-            return Collections.EMPTY_MAP;
+            try {
+                response.status(201);
+                Properties property = new Gson().fromJson(request.body(), Properties.class);
+                String userId = property.getProperty("userId");
+                String password = property.getProperty("password");
+                phoService.register(userId, password);
+                return Collections.EMPTY_MAP;
+            } catch (PhoService.PhoServiceException ex) {
+                logger.error("Registration failed");
+                response.status(409);
+                return createFailureContent(ex.getMessage());
+            }
         }, new JsonTransformer());
 
         // TODO: Probably we don't need login endpoint
         /*
         post(API_CONTEXT + "/login", "application/json", (request, response) -> {
-            response.status(200);
-            Properties property = new Gson().fromJson(request.body(), Properties.class);
-            String userId = property.getProperty("userId");
-            String password = property.getProperty("password");
-            String token = phoService.login(userId, password);
-            Map<String, String> returnMessage = new HashMap<>();
-            returnMessage.put("token", token);
-            return returnMessage;
+            try{
+                response.status(200);
+                Properties property = new Gson().fromJson(request.body(), Properties.class);
+                String userId = property.getProperty("userId");
+                String password = property.getProperty("password");
+                String token = phoService.login(userId, password);
+                Map<String, String> returnMessage = new HashMap<>();
+                returnMessage.put("token", token);
+                return returnMessage;
+            } catch (PhoService.PhoServiceException ex) {
+                logger.error("Wrong userId/password");
+                response.status(401);
+                return createFailureContent(ex.getMessage());
+            }
         }, new JsonTransformer());
         */
 
