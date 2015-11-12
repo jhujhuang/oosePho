@@ -142,7 +142,7 @@ public class PhoService {
      * @return the token
      */
     public String login(String userId, String password) throws PhoServiceException {
-        return "dummy token";  // TODO: Maybe we don't need login in backend
+        return "dummy token";  // TODO: Probably we don't need login in backend
     }
 
     /**

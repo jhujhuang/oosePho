@@ -52,6 +52,7 @@ public class PhoController {
             return Collections.EMPTY_MAP;
         }, new JsonTransformer());
 
+        // TODO: Probably we don't need login endpoint
         post(API_CONTEXT + "/login", "application/json", (request, response) -> {
             response.status(200);
             Properties property = new Gson().fromJson(request.body(), Properties.class);
