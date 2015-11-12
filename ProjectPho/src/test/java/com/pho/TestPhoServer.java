@@ -1,33 +1,22 @@
 package com.pho;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import spark.Spark;
 import spark.utils.IOUtils;
 
-import java.awt.*;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.net.HttpURLConnection;
-
-import com.pho.PhoService;
-import com.pho.filters.*;
-
-import org.junit.*;
-
-import javax.sql.DataSource;
-
-import java.util.Map;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TestPhoServer {
 
@@ -65,35 +54,6 @@ public class TestPhoServer {
         assertEquals("Fail to register", 201, r.httpStatus);
         r = request("POST", "/register", content);
         assertEquals("Fail to recognize existing accounts", 409, r.httpStatus);
-    }
-
-    @Test
-    public void testLogin() throws Exception {
-        Map<String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
-        assertEquals("Fail to login", 200, r.httpStatus);
-        //Type type = (new TypeToken<HashMap<String, String>>(){}).getType();
-        Type type = (new TypeToken<Map<String, String>>(){}).getType();
-
-        Map<String, String> rContent = r.getContentAsObject(type);
- //       String token = rContent.get("token");
- //       assertNotEquals("Token is null", null, token);
-
-//        content.clear();
- //       content.put("userId", "scott");
-  //      content.put("password", "hello");
-   //     r = request("POST", "/login", content);
-//        assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
-
-
-//        content.clear();
-//        content.put("userId", "david");
-//        content.put("userId", "hello");
-//        r = request("POST", "/login", content);
-//        assertEquals("Fail to recognize wrong id", 401, r.httpStatus);
     }
 
     @Test
