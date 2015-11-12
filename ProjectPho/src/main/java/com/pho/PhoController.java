@@ -44,73 +44,49 @@ public class PhoController {
      */
     private void setupEndpoints() {
         post(API_CONTEXT + "/register", "application/json", (request, response) -> {
-            try {
-                response.status(201);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
-                String password = property.getProperty("password");
-                phoService.register(userId, password);
-                return Collections.EMPTY_MAP;
-            } catch (PhoService.PhoServiceException ex) {
-                logger.error("Registration failed");
-                response.status(409);
-                return createFailureContent(ex.getMessage());
-            }
+            response.status(201);
+            Properties property = new Gson().fromJson(request.body(), Properties.class);
+            String userId = property.getProperty("userId");
+            String password = property.getProperty("password");
+            phoService.register(userId, password);
+            return Collections.EMPTY_MAP;
         }, new JsonTransformer());
 
         post(API_CONTEXT + "/login", "application/json", (request, response) -> {
-            try {
-                response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
-                String password = property.getProperty("password");
-                String token = phoService.login(userId, password);
-                Map<String, String> returnMessage = new HashMap<>();
-                returnMessage.put("token", token);
-                return returnMessage;
-            } catch (PhoService.PhoServiceException ex) {
-                logger.error("Wrong userId/password");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
-            }
+            response.status(200);
+            Properties property = new Gson().fromJson(request.body(), Properties.class);
+            String userId = property.getProperty("userId");
+            String password = property.getProperty("password");
+            String token = phoService.login(userId, password);
+            Map<String, String> returnMessage = new HashMap<>();
+            returnMessage.put("token", token);
+            return returnMessage;
         }, new JsonTransformer());
 
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
-            try {
-                MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
-                request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
+            MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
+            request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
 
-                response.status(201);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
+            response.status(201);
+            Properties property = new Gson().fromJson(request.body(), Properties.class);
+            String userId = property.getProperty("userId");
 
-                Part file = request.raw().getPart(UPLOAD_FILE);
-                InputStream imageStream = file.getInputStream();
-                BufferedImage img = ImageIO.read(imageStream);
-                // TODO Check correctness of converted img
+            Part file = request.raw().getPart(UPLOAD_FILE);
+            InputStream imageStream = file.getInputStream();
+            BufferedImage img = ImageIO.read(imageStream);
+            // TODO Check correctness of converted img
 
-                String photoId = phoService.createNewPhoto(userId, img);
-                Map<String, String> returnMessage = new HashMap<>();
-                returnMessage.put("pId", photoId);
-                return returnMessage;
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
-            }
+            String photoId = phoService.createNewPhoto(userId, img);
+            Map<String, String> returnMessage = new HashMap<>();
+            returnMessage.put("pId", photoId);
+            return returnMessage;
         }, new JsonTransformer());
 
         post(API_CONTEXT + "/listphotos", "application/json", (request, response) -> {
-            try {
-                response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
-                return phoService.listPhotosOfCurrentUser(userId);
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
-            }
+            response.status(200);
+            Properties property = new Gson().fromJson(request.body(), Properties.class);
+            String userId = property.getProperty("userId");
+            return phoService.listPhotosOfCurrentUser(userId);
         }, new JsonTransformer());
 
         post(API_CONTEXT + "/edit/:pId", "application/json", (request, response) -> {
@@ -125,10 +101,6 @@ public class PhoController {
                 logger.error("Invalid photo Id");
                 response.status(404);
                 return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
             }
         }, new JsonTransformer());
 
@@ -142,10 +114,6 @@ public class PhoController {
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);
-                return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
                 return createFailureContent(ex.getMessage());
             }
         }, new JsonTransformer());
@@ -166,10 +134,6 @@ public class PhoController {
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);
-                return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
                 return createFailureContent(ex.getMessage());
             } catch (PhoService.PhoSyncException ex) {
                 logger.error("Canvas out of date");
@@ -197,10 +161,6 @@ public class PhoController {
                 logger.error("Invalid photo Id");
                 response.status(404);
                 return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
             }
         }, new JsonTransformer());
 
@@ -217,10 +177,6 @@ public class PhoController {
                 logger.error("Invalid photo Id");
                 response.status(404);
                 return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
             }
         }, new JsonTransformer());
 
@@ -234,10 +190,6 @@ public class PhoController {
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);
-                return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
                 return createFailureContent(ex.getMessage());
             }
         }, new JsonTransformer());
@@ -254,10 +206,6 @@ public class PhoController {
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);
-                return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
                 return createFailureContent(ex.getMessage());
             } catch (PhoService.PhoServiceException ex) {
                 logger.error("Invalid version Id");
@@ -278,10 +226,6 @@ public class PhoController {
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);
-                return createFailureContent(ex.getMessage());
-            } catch (PhoService.InvalidTokenException ex) {
-                logger.error("Invalid token");
-                response.status(401);
                 return createFailureContent(ex.getMessage());
             } catch (PhoService.PhoSyncException ex) {
                 logger.error("Canvas out of date");
