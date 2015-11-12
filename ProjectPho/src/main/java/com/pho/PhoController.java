@@ -123,7 +123,6 @@ public class PhoController {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
                 phoService.editPhotoTitle(request.params(":pId"), property.getProperty("title"));
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -168,8 +167,6 @@ public class PhoController {
         get(API_CONTEXT + "/edit/:pId/fetch", "application/json", (request, response) -> {
             try {
                 response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
                 String photoId = request.params(":pId");
                 return phoService.fetch(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -199,7 +196,6 @@ public class PhoController {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
                 String photoId = request.params(":pId");
                 return phoService.getRevisions(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {
