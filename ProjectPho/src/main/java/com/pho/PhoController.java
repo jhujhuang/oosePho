@@ -58,26 +58,6 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
-        // TODO: Probably we don't need login endpoint
-        /*
-        post(API_CONTEXT + "/login", "application/json", (request, response) -> {
-            try{
-                response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
-                String password = property.getProperty("password");
-                String token = phoService.login(userId, password);
-                Map<String, String> returnMessage = new HashMap<>();
-                returnMessage.put("token", token);
-                return returnMessage;
-            } catch (PhoService.PhoServiceException ex) {
-                logger.error("Wrong userId/password");
-                response.status(401);
-                return createFailureContent(ex.getMessage());
-            }
-        }, new JsonTransformer());
-        */
-
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
             request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
