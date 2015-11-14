@@ -1,6 +1,7 @@
 package com.pho;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
@@ -17,8 +18,7 @@ import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -67,9 +67,12 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+        // Create a new photo
         Response r = multipartRequest("/scott/createnewphoto", "test.jpg");
         assertEquals("Fail to create new photo", 201, r.httpStatus);
-        // TODO
+        Properties property = new Gson().fromJson(r.content, Properties.class);
+        String pId = property.getProperty("pId");
+        // TODO: fetch and check image data
     }
 
     @Test
@@ -79,7 +82,25 @@ public class TestPhoServer {
         content.put("password", "oose");
         request("POST", "/register", content);
 
-        // TODO
+        Type listType = new TypeToken<Map<String, List<String>>>() {}.getType();
+
+        // List photos of user
+        Response r = request("POST", "/listphotos", content);
+        assertEquals("Fail to list photos when no photos", 200, r.httpStatus);
+        Map<String, List<String>> listResult = new Gson().fromJson(r.content, listType);
+        assertEquals(0, listResult.get("photos").size());
+
+        // Create a new photo
+        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
+        String pId = property.getProperty("pId");
+
+        // List again and check pId
+        r = request("POST", "/listphotos", content);
+        assertEquals("Fail to list photos when no photos", 200, r.httpStatus);
+        listResult = new Gson().fromJson(r.content, listType);
+        assertEquals(1, listResult.get("photos").size());
+        assertEquals(pId, listResult.get("photos").get(0));
     }
 
     @Test
@@ -88,7 +109,18 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        // TODO
+        // Create a new photo
+        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
+        String pId = property.getProperty("pId");
+
+        // Join editing session
+        Response joinResponse = request("POST", "/edit/" + pId, content);
+        assertEquals("Fail to join editing session", 200, joinResponse.httpStatus);
+
+        // Join non-existing editing session
+        joinResponse = request("POST", "/edit/csf", content);
+        assertEquals("Fail to recognize non-existing pId", 404, joinResponse.httpStatus);
     }
 
 
@@ -116,6 +148,18 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+
+        Response r = multipartRequest("/scott/createnewphoto", "test.jpg");
+        assertEquals("Fail to create new photo", 201, r.httpStatus);
+        Properties property = new Gson().fromJson(r.content, Properties.class);
+        String pId = property.getProperty("pId");
+
+        // TODO: WHY Problem accessing /edit/8Q/fetch ?
+        Response fetchResult = request("POST", "/edit/" + pId + "/fetch", Collections.EMPTY_MAP);
+        System.out.println(fetchResult.content);
+        System.out.println(fetchResult.httpStatus);
+        Properties fetched = new Gson().fromJson(fetchResult.content, Properties.class);
+        String base64 =  fetched.getProperty("canvasData");
         // TODO
     }
 
