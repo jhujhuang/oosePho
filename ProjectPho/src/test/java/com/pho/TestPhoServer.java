@@ -75,25 +75,19 @@ public class TestPhoServer {
         request("POST", "/register", content);
         Response r = request("POST", "/login", content);
         assertEquals("Fail to login", 200, r.httpStatus);
-        //Type type = (new TypeToken<HashMap<String, String>>(){}).getType();
         Type type = (new TypeToken<Map<String, String>>(){}).getType();
 
-        Map<String, String> rContent = r.getContentAsObject(type);
- //       String token = rContent.get("token");
- //       assertNotEquals("Token is null", null, token);
+        content.clear();
+        content.put("userId", "scott");
+        content.put("password", "hello");
+        r = request("POST", "/login", content);
+        //assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
 
-//        content.clear();
- //       content.put("userId", "scott");
-  //      content.put("password", "hello");
-   //     r = request("POST", "/login", content);
-//        assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
-
-
-//        content.clear();
-//        content.put("userId", "david");
-//        content.put("userId", "hello");
-//        r = request("POST", "/login", content);
-//        assertEquals("Fail to recognize wrong id", 401, r.httpStatus);
+        content.clear();
+        content.put("userId", "david");
+        content.put("userId", "hello");
+        r = request("POST", "/login", content);
+        //assertEquals("Fail to recognize wrong id", 401, r.httpStatus);
     }
 
     @Test
@@ -244,10 +238,6 @@ public class TestPhoServer {
         }
 
         public <T> T getContentAsObject(Type type) {
-            System.out.println(content);
-            Map<String, String> m = new HashMap();
-            m.put("token", "dummy token");
-            String wtf = new Gson().toJson(m);
             return new Gson().fromJson(content, type);
         }
     }
@@ -269,3 +259,7 @@ public class TestPhoServer {
     }*/
 
 }
+
+
+
+
