@@ -130,7 +130,22 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        // TODO
+
+        // Create a new photo
+        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
+        String pId = property.getProperty("pId");
+
+        // Change title
+        String newTitle = "New Title";
+        content = new HashMap<>();
+        content.put("title", newTitle);
+        Response titleResponse = request("POST", "/edit/" + pId + "/edittitle", content);
+        assertEquals("Fail to change title", 200, titleResponse.httpStatus);
+
+        // Non-existing photo
+        titleResponse = request("POST", "/edit/csf/edittitle", content);
+        assertEquals("Fail to recognize non-existing pId", 404, titleResponse.httpStatus);
     }
 
     @Test
