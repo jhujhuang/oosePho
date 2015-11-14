@@ -21,7 +21,12 @@
 </head>
 
 <body>
-<div ng-view></div>
+<div class="container">
+    <div class="col-sm-8 col-sm-offset-2">
+        <div ng-class="{ 'alert': flash, 'alert-success': flash.type === 'success', 'alert-danger': flash.type === 'error' }" ng-if="flash" ng-bind="flash.message"></div>
+    </div>
+    <div ng-view></div>
+</div>
 <!-- setup the Facebook SDK for JavaScript, maybe to use in the future -->
 <!-- <script>
      window.fbAsyncInit = function() {
