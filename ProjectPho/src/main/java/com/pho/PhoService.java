@@ -115,16 +115,6 @@ public class PhoService {
     }
 
     /**
-     * Authenticate the user, and throw InvalidTokenException when authentication fails.
-     * @param userId the unique user ID
-     * @param token the generated token for specific user
-     * @throws InvalidTokenException when authentication fails
-     */
-    public void authenticate(String userId, String token) throws InvalidTokenException {
-        // TODO: Implement
-    }
-
-    /**
      * Register new account
      * @param userId the user ID
      * @param password the user's password
@@ -142,17 +132,6 @@ public class PhoService {
         // Create new user
         User user = new User(userId);
         users.add(user);
-    }
-
-    /**
-     * Log in to account
-     * @param userId the user ID
-     * @param password the user's password
-     * @throws PhoServiceException when failures occur
-     * @return the token
-     */
-    public String login(String userId, String password) throws PhoServiceException {
-        return "dummy token";  // TODO: Implement
     }
 
     /**
@@ -315,12 +294,6 @@ public class PhoService {
 
     public static class PhoServiceException extends Exception {
         public PhoServiceException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
-
-    public static class InvalidTokenException extends Exception {
-        public InvalidTokenException(String message, Throwable cause) {
             super(message, cause);
         }
     }

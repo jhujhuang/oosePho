@@ -40,6 +40,12 @@
                 loadAllUsers();
             });
         }
+
+        function uploadImage(images) {
+            var imageWithJson = new FormData();
+            imageWithJson.append("file", files[0]);
+            imageWithJson.append("userId", "haha");
+        }
     }
 
 })();
