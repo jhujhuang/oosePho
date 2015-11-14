@@ -1,13 +1,18 @@
 package com.pho;
 
 import com.google.gson.Gson;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import spark.Spark;
 import spark.utils.IOUtils;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
@@ -62,7 +67,7 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/createnewphoto", content);
+        Response r = multipartRequest("/createnewphoto", content);
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         // TODO
     }
@@ -186,6 +191,46 @@ public class TestPhoServer {
         }
     }
 
+    private Response multipartRequest(String path, Object content) {
+        try {
+            URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, path);
+            System.out.println(url);
+            HttpURLConnection http = (HttpURLConnection) url.openConnection();
+            http.setRequestMethod("POST");
+            http.setDoInput(true);
+            http.setDoOutput(true);
+
+            FileBody fileBody = new FileBody(new File("test.jpg"));
+            MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.STRICT);
+            multipartEntity.addPart("file", fileBody);
+
+            http.setRequestProperty("Content-Type", multipartEntity.getContentType().getValue());
+            OutputStream out = http.getOutputStream();
+            try {
+                multipartEntity.writeTo(out);
+            } finally {
+                out.close();
+            }
+            if (content != null) {
+                String contentAsJson = new Gson().toJson(content);
+                OutputStreamWriter output = new OutputStreamWriter(http.getOutputStream());
+                output.write(contentAsJson);
+                output.flush();
+                output.close();
+            }
+            if (http.getResponseCode() < 400) {
+                String responseBody = IOUtils.toString(http.getInputStream());
+                return new Response(http.getResponseCode(), responseBody);
+            } else {
+                String responseBody = IOUtils.toString(http.getErrorStream());
+                return new Response(http.getResponseCode(), responseBody);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            fail("Sending request failed: " + e.getMessage());
+            return null;
+        }
+    }
 
     private static class Response {
 
