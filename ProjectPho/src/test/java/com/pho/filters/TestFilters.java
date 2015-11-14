@@ -27,7 +27,7 @@ public class TestFilters {
 
     @Before
     public void setup() {
-        // Nothing to setup for filters
+        // setup for filters
     }
 
     @After
