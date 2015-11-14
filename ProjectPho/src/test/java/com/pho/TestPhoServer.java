@@ -1,33 +1,22 @@
 package com.pho;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 import spark.Spark;
 import spark.utils.IOUtils;
 
-import java.awt.*;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
-import java.net.URL;
 import java.net.HttpURLConnection;
-
-import com.pho.PhoService;
-import com.pho.filters.*;
-
-import org.junit.*;
-
-import javax.sql.DataSource;
-
-import java.util.Map;
+import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 public class TestPhoServer {
 
@@ -68,6 +57,7 @@ public class TestPhoServer {
     }
 
     @Test
+<<<<<<< HEAD
     public void testLogin() throws Exception {
         Map<String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
@@ -91,6 +81,8 @@ public class TestPhoServer {
     }
 
     @Test
+=======
+>>>>>>> 3e7d72e6101a67c84354e787fdfcf65202d865c5
     public void testCreateNewPhoto() throws Exception {
         Map<String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
@@ -106,8 +98,8 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
 
+        // TODO
     }
 
     @Test
@@ -116,7 +108,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -127,7 +118,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -137,7 +127,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -147,7 +136,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -158,7 +146,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -168,7 +155,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -178,7 +164,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
@@ -188,7 +173,6 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
         // TODO
     }
 
