@@ -164,20 +164,20 @@ public class TestPhoServer {
         content.put("password", "oose");
         request("POST", "/register", content);
 
-        Response r = multipartRequest("/scott/createnewphoto", "test.jpg");
-        assertEquals("Fail to create new photo", 201, r.httpStatus);
-        Properties property = new Gson().fromJson(r.content, Properties.class);
+        // Create a new photo
+        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
-        // TODO: WHY Problem accessing /edit/8Q/fetch ?
-        Response fetchResult = request("POST", "/edit/" + pId + "/fetch", Collections.EMPTY_MAP);
+        // Fetch
+        // TODO: WHY /edit/8Q/fetch not found?
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", Collections.EMPTY_MAP);
         System.out.println(fetchResult.content);
         System.out.println(fetchResult.httpStatus);
         Properties fetched = new Gson().fromJson(fetchResult.content, Properties.class);
         String base64 =  fetched.getProperty("canvasData");
         // TODO
     }
-
 
     @Test
     public void testMakeComment() {
