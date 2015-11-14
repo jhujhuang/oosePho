@@ -67,7 +67,7 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-        Response r = multipartRequest("/createnewphoto", content);
+        Response r = multipartRequest("/scott/createnewphoto", "test.jpg");
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         // TODO
     }
@@ -191,7 +191,7 @@ public class TestPhoServer {
         }
     }
 
-    private Response multipartRequest(String path, Object content) {
+    private Response multipartRequest(String path, String filename) {
         try {
             URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, path);
             System.out.println(url);
@@ -200,7 +200,7 @@ public class TestPhoServer {
             http.setDoInput(true);
             http.setDoOutput(true);
 
-            FileBody fileBody = new FileBody(new File("test.jpg"));
+            FileBody fileBody = new FileBody(new File(filename));
             MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.STRICT);
             multipartEntity.addPart("file", fileBody);
 
@@ -210,13 +210,6 @@ public class TestPhoServer {
                 multipartEntity.writeTo(out);
             } finally {
                 out.close();
-            }
-            if (content != null) {
-                String contentAsJson = new Gson().toJson(content);
-                OutputStreamWriter output = new OutputStreamWriter(http.getOutputStream());
-                output.write(contentAsJson);
-                output.flush();
-                output.close();
             }
             if (http.getResponseCode() < 400) {
                 String responseBody = IOUtils.toString(http.getInputStream());

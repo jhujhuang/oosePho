@@ -60,13 +60,12 @@ public class PhoController {
         }, new JsonTransformer());
 
         // Create a new photo from uploaded picture
-        post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
+        post(API_CONTEXT + "/:userId/createnewphoto", "application/json", (request, response) -> {
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
             request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
 
             response.status(201);
-            Properties property = new Gson().fromJson(request.body(), Properties.class);
-            String userId = property.getProperty("userId");
+            String userId = request.params(":userId");
 
             Part file = request.raw().getPart(UPLOAD_FILE);
             InputStream imageStream = file.getInputStream();
