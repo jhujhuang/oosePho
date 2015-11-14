@@ -62,7 +62,8 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
-
+        Response r = request("POST", "/createnewphoto", content);
+        assertEquals("Fail to create new photo", 201, r.httpStatus);
         // TODO
     }
 
@@ -174,8 +175,10 @@ public class TestPhoServer {
             if (http.getResponseCode() < 400) {
                 String responseBody = IOUtils.toString(http.getInputStream());
                 return new Response(http.getResponseCode(), responseBody);
-            } else
-                return new Response(http.getResponseCode(), "");
+            } else {
+                String responseBody = IOUtils.toString(http.getErrorStream());
+                return new Response(http.getResponseCode(), responseBody);
+            }
         } catch (IOException e) {
             e.printStackTrace();
             fail("Sending request failed: " + e.getMessage());
