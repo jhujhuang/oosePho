@@ -57,32 +57,6 @@ public class TestPhoServer {
     }
 
     @Test
-<<<<<<< HEAD
-    public void testLogin() throws Exception {
-        Map<String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
-        Response r = request("POST", "/login", content);
-        assertEquals("Fail to login", 200, r.httpStatus);
-        Type type = (new TypeToken<Map<String, String>>(){}).getType();
-
-        content.clear();
-        content.put("userId", "scott");
-        content.put("password", "hello");
-        r = request("POST", "/login", content);
-        //assertEquals("Fail to recognize wrong password", 401, r.httpStatus);
-
-        content.clear();
-        content.put("userId", "david");
-        content.put("userId", "hello");
-        r = request("POST", "/login", content);
-        //assertEquals("Fail to recognize wrong id", 401, r.httpStatus);
-    }
-
-    @Test
-=======
->>>>>>> 3e7d72e6101a67c84354e787fdfcf65202d865c5
     public void testCreateNewPhoto() throws Exception {
         Map<String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
