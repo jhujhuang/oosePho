@@ -43,6 +43,7 @@ public class PhoController {
      * Sets up the endpoints.
      */
     private void setupEndpoints() {
+        // Register a new user
         post(API_CONTEXT + "/register", "application/json", (request, response) -> {
             try {
                 response.status(201);
@@ -58,6 +59,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Create a new photo from uploaded picture
         post(API_CONTEXT + "/createnewphoto", "application/json", (request, response) -> {
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
             request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
@@ -77,6 +79,7 @@ public class PhoController {
             return returnMessage;
         }, new JsonTransformer());
 
+        // List all photos of the user
         post(API_CONTEXT + "/listphotos", "application/json", (request, response) -> {
             response.status(200);
             Properties property = new Gson().fromJson(request.body(), Properties.class);
@@ -84,6 +87,7 @@ public class PhoController {
             return phoService.listPhotosOfCurrentUser(userId);
         }, new JsonTransformer());
 
+        // Join an editing session for a specific photo
         post(API_CONTEXT + "/edit/:pId", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -99,6 +103,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Edit the title of the photo in the current editing session
         post(API_CONTEXT + "/edit/:pId/edittitle", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -112,6 +117,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Edit the photo (make a change)
         post(API_CONTEXT + "/edit/:pId/change", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -144,6 +150,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Fetch editing session status, including canvas image data
         get(API_CONTEXT + "/edit/:pId/fetch", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -156,6 +163,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Leave a comment
         post(API_CONTEXT + "/edit/:pId/comment", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -172,6 +180,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // List all versions of the photo
         post(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -185,6 +194,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Revert photo to a specific version
         post(API_CONTEXT + "/edit/:pId/versions/revert", "application/json", (request, response) -> {
             try {
                 response.status(200);
@@ -205,6 +215,7 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Save a version of photo
         post(API_CONTEXT + "/edit/:pId/save", "application/json", (request, response) -> {
             try {
                 response.status(200);
