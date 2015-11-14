@@ -97,7 +97,7 @@ public class TestPhoServer {
 
         // List again and check pId
         r = request("POST", "/listphotos", content);
-        assertEquals("Fail to list photos when no photos", 200, r.httpStatus);
+        assertEquals("Fail to list photos when has photos", 200, r.httpStatus);
         listResult = new Gson().fromJson(r.content, listType);
         assertEquals(1, listResult.get("photos").size());
         assertEquals(pId, listResult.get("photos").get(0));
