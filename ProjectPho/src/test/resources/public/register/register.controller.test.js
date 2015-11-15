@@ -31,7 +31,6 @@ describe("Register", function() {
             password: "D"
         }
         var successMessage = "Registration successful";
-        var url = "/api/register";
 
         registerController.register(stubUser);
         deferred.resolve();

@@ -21,7 +21,9 @@ module.exports = function(config) {
       'src/main/resources/public/js/angular-cookies.js',
       'src/main/resources/public/app.js',
       'src/main/resources/public/register/register.controller.js',
-      'src/test/resources/public/register/register.controller.test.js'
+      'src/main/resources/public/login/login.controller.js',
+      'src/test/resources/public/register/register.controller.test.js',
+      'src/test/resources/public/login/login.controller.test.js'
     ],
 
 
