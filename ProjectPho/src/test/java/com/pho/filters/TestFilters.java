@@ -49,7 +49,7 @@ public class TestFilters {
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
-            return new BlurFilter(params);
+            return new ChangeContrastFilter(params);
         }
     };
 
@@ -58,7 +58,7 @@ public class TestFilters {
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
-            return new BlurFilter(params);
+            return new EdgeDetectionFilter(params);
         }
     };
 
