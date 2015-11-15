@@ -23,7 +23,7 @@ import static spark.Spark.post;
  */
 public class PhoController {
 
-    private static final String API_CONTEXT = "";  // TODO: confirm
+    private static final String API_CONTEXT = "/api";  // TODO: confirm
     private static final String UPLOAD_FILE = "file";  // name of upload form
 
     private final PhoService phoService;
