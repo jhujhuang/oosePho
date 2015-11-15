@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$scope'];
-    function HomeController(UserService, $rootScope, $scope) {
+    HomeController.$inject = ['UserService', '$rootScope'];
+    function HomeController(UserService, $rootScope) {
         var vm = this;
 
         vm.user = null;
@@ -15,7 +15,7 @@
 
         initController();
 
-        $scope.tapFilter = function() {
+        vm.tapFilter = function() {
             console.log("I tapped the filter!");
         }
 
