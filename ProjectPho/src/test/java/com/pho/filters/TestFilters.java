@@ -54,7 +54,7 @@ public class TestFilters {
     };
 
     @DataPoint
-    public static final Fixture EdgeDetection = new Fixture() {
+    public static final Fixture edgeDetection = new Fixture() {
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
@@ -70,7 +70,7 @@ public class TestFilters {
         f.applyToRectangle(50, 100, 50, 100);
         BufferedImage p2 = f.getImage();
 
-        assertTrue(isDifferent(p1, p2));
+        assertTrue(this.isDifferent(p1, p2));
     }
 
     @Theory

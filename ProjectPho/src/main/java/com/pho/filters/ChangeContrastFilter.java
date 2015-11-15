@@ -23,7 +23,7 @@ public class ChangeContrastFilter extends Filter {
         // apply filtering to offscreen first
         BufferedImage offscreen = deepCopy(image);
 
-        Double contrast = params.get("contrast");
+        Double contrast = params.get("value");
         if (contrast >= 0) {
             if (contrast == 1)
                 return;
