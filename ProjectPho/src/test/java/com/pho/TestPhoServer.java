@@ -11,19 +11,26 @@ import org.junit.Test;
 import spark.Spark;
 import spark.utils.IOUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class TestPhoServer {
+
+    static final String TEST_IMG_FILE = "test.jpg";
+    static final int TEST_HEIGHT = 600;
+    static final int TEST_WIDTH = 800;
 
     //------------------------------------------------------------------------//
     // Setup
@@ -68,7 +75,7 @@ public class TestPhoServer {
         content.put("password", "oose");
         request("POST", "/register", content);
         // Create a new photo
-        Response r = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Response r = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         Properties property = new Gson().fromJson(r.content, Properties.class);
         String pId = property.getProperty("pId");
@@ -91,7 +98,7 @@ public class TestPhoServer {
         assertEquals(0, listResult.get("photos").size());
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
@@ -110,7 +117,7 @@ public class TestPhoServer {
         content.put("password", "oose");
         request("POST", "/register", content);
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
@@ -132,7 +139,7 @@ public class TestPhoServer {
         request("POST", "/register", content);
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
@@ -158,25 +165,38 @@ public class TestPhoServer {
     }
 
     @Test
-    public void testFetch() {
+    public void testFetch() throws IOException {
         Map <String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", "test.jpg");
+        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
+        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+
         // Fetch
-        // TODO: WHY /edit/8Q/fetch not found?
-        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", Collections.EMPTY_MAP);
-        System.out.println(fetchResult.content);
-        System.out.println(fetchResult.httpStatus);
-        Properties fetched = new Gson().fromJson(fetchResult.content, Properties.class);
-        String base64 =  fetched.getProperty("canvasData");
-        // TODO
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
+        assertEquals(200, fetchResult.httpStatus);
+
+        // Check fetch results
+        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+
+        String base64 =  fetched.canvasData;
+        byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
+        InputStream in = new ByteArrayInputStream(bytes);
+        BufferedImage imgFetched = ImageIO.read(in);
+        // Currently we just check the height and width of image
+        assertEquals(TEST_HEIGHT, imgFetched.getHeight());
+        assertEquals(TEST_WIDTH, imgFetched.getWidth());
+        // TODO: Other fetched results checks (some already in other tests)
+
+        // Fetch again of a non-existing photo
+        fetchResult = request("GET", "/edit/csf/fetch", null);
+        assertEquals(404, fetchResult.httpStatus);
     }
 
     @Test
