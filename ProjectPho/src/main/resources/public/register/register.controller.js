@@ -13,9 +13,13 @@
 
         function register() {
             vm.dataLoading = true;
+
             UserService.Create(vm.user)
                 .then(function (response) {
                     if (response.success) {
+                        console.log(UserService.Create(vm.user));
+                        console.log(response);
+                        console.log("Hi, im registering!");
                         FlashService.Success('Registration successful', true);
                         $location.path('/login');
                     } else {

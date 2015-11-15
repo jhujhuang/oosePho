@@ -17,7 +17,6 @@
         service.Delete = Delete;
 
         return service;
-
         function GetAll() {
             return $http.get('/api/users').then(handleSuccess, handleError('Error getting all users'));
         }
@@ -30,8 +29,9 @@
             return $http.get('/api/users/' + username).then(handleSuccess, handleError('Error getting user by username'));
         }
 
+
         function Create(user) {
-            return $http.post('/api/users', user).then(handleSuccess, handleError('Error creating user'));
+            return $http.post('/api/register', user).then(handleSuccess, handleError('Error creating user'));
         }
 
         function Update(user) {
@@ -53,6 +53,7 @@
                 return { success: false, message: error };
             };
         }
+
     }
 
 })();

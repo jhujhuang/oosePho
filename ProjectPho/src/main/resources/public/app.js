@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular
+    var app = angular
         .module('app', ['ngRoute', 'ngCookies'])
         .config(config)
         .run(run);
