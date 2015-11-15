@@ -58,7 +58,7 @@ public class TestPhoServer {
     //------------------------------------------------------------------------//
 
     @Test
-    public void testRegister() throws Exception {
+    public void testRegister() {
         Map<String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
         content.put("password", "oose");
@@ -69,7 +69,7 @@ public class TestPhoServer {
     }
 
     @Test
-    public void testCreateNewPhoto() throws Exception {
+    public void testCreateNewPhoto() throws IOException {
         Map<String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
         content.put("password", "oose");
@@ -96,7 +96,7 @@ public class TestPhoServer {
     }
 
     @Test
-    public void testListPhotos() throws Exception {
+    public void testListPhotos() {
         Map <String, String> content = new HashMap<String, String>();
         content.put("userId", "scott");
         content.put("password", "oose");
