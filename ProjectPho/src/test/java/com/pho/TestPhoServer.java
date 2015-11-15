@@ -74,12 +74,25 @@ public class TestPhoServer {
         content.put("userId", "scott");
         content.put("password", "oose");
         request("POST", "/register", content);
+
         // Create a new photo
         Response r = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         Properties property = new Gson().fromJson(r.content, Properties.class);
         String pId = property.getProperty("pId");
-        // TODO: fetch and check image data
+
+        // Fetch and check image data
+        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
+        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+
+        String base64 =  fetched.canvasData;
+        byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
+        InputStream in = new ByteArrayInputStream(bytes);
+        BufferedImage imgFetched = ImageIO.read(in);
+        // Currently we just check the height and width of image
+        assertEquals(TEST_HEIGHT, imgFetched.getHeight());
+        assertEquals(TEST_WIDTH, imgFetched.getWidth());
     }
 
     @Test
@@ -130,7 +143,6 @@ public class TestPhoServer {
         assertEquals("Fail to recognize non-existing pId", 404, joinResponse.httpStatus);
     }
 
-
     @Test
     public void testChangePhotoTitle() {
         Map <String, String> content = new HashMap<String, String>();
@@ -149,6 +161,12 @@ public class TestPhoServer {
         content.put("title", newTitle);
         Response titleResponse = request("POST", "/edit/" + pId + "/edittitle", content);
         assertEquals("Fail to change title", 200, titleResponse.httpStatus);
+
+        // Fetch and check new title
+        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
+        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        assertEquals(newTitle, fetched.title);
 
         // Non-existing photo
         titleResponse = request("POST", "/edit/csf/edittitle", content);
