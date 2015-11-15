@@ -260,7 +260,7 @@ public class TestPhoServer {
 
     private Response request(String method, String path, Object content) {
         try {
-            URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, path);
+            URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, "/api" + path);
             System.out.println(url);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod(method);
@@ -290,7 +290,7 @@ public class TestPhoServer {
 
     private Response multipartRequest(String path, String filename) {
         try {
-            URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, path);
+            URL url = new URL("http", Bootstrap.IP_ADDRESS, Bootstrap.PORT, "/api" + path);
             System.out.println(url);
             HttpURLConnection http = (HttpURLConnection) url.openConnection();
             http.setRequestMethod("POST");
