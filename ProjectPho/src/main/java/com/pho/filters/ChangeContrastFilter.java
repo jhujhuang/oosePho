@@ -25,8 +25,6 @@ public class ChangeContrastFilter extends Filter {
 
         Double contrast = params.get("value");
         if (contrast >= 0) {
-            if (contrast == 1)
-                return;
             double averageLuminance = 0;
             int count = 0;
             for (int i = y1; i < y2; i++) {

@@ -2,6 +2,7 @@ package com.pho.filters;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -85,7 +86,7 @@ public class TestFilters {
     }
 
     @Theory
-    public void testFilterIO(Fixture fix) throws IOException {
+    public void testFilterIOSuccess(Fixture fix) throws IOException {
         String imageName = "test.jpg";
         Filter f = fix.init();
         BufferedImage p1 = ImageIO.read(new File(imageName));
@@ -94,6 +95,14 @@ public class TestFilters {
 
         assertFalse(this.isDifferent(p1, p2));
     }
+
+    @Theory
+    public void testFilterIOFail(Fixture fix) throws IOException {
+        String imageName = "does not exist";
+        Filter f = fix.init();
+        f.loadImage(imageName);
+    }
+
 
     // Helper method for checking if two images are equal
     private boolean isDifferent(BufferedImage p1, BufferedImage p2) {
