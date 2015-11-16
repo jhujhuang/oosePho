@@ -7,6 +7,13 @@
 
     HomeController.$inject = ['UserService', '$rootScope'];
     function HomeController(UserService, $rootScope) {
+
+        // some jQuery to make a link serve as an input option
+        $("#upload_link").on('click', function(e){
+            e.preventDefault();
+            $("#upload:hidden").trigger('click');
+        });
+
         var vm = this;
 
         vm.user = null;
