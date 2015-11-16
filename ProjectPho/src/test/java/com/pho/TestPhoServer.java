@@ -32,6 +32,9 @@ public class TestPhoServer {
     static final int TEST_HEIGHT = 600;
     static final int TEST_WIDTH = 800;
 
+    static final String TEST_USERID = "scott";
+    static final String TEST_PASSWORD = "oose";
+
     //------------------------------------------------------------------------//
     // Setup
     //------------------------------------------------------------------------//
@@ -59,9 +62,9 @@ public class TestPhoServer {
 
     @Test
     public void testRegister() {
-        Map<String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
+        content.put("password", TEST_PASSWORD);
         Response r = request("POST", "/register", content);
         assertEquals("Fail to register", 201, r.httpStatus);
         r = request("POST", "/register", content);
@@ -70,13 +73,10 @@ public class TestPhoServer {
 
     @Test
     public void testCreateNewPhoto() throws IOException {
-        Map<String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
 
         // Create a new photo
-        Response r = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
+        Response r = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         Properties property = new Gson().fromJson(r.content, Properties.class);
         String pId = property.getProperty("pId");
@@ -97,21 +97,19 @@ public class TestPhoServer {
 
     @Test
     public void testListPhotos() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
-
+        registerUser();
         Type listType = new TypeToken<Map<String, List<String>>>() {}.getType();
 
         // List photos of user
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
         Response r = request("POST", "/listphotos", content);
         assertEquals("Fail to list photos when no photos", 200, r.httpStatus);
         Map<String, List<String>> listResult = new Gson().fromJson(r.content, listType);
         assertEquals(0, listResult.get("photos").size());
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
+        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
@@ -125,16 +123,16 @@ public class TestPhoServer {
 
     @Test
     public void testJoinEditSession() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
+
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
+        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
         // Join editing session
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
         Response joinResponse = request("POST", "/edit/" + pId, content);
         assertEquals("Fail to join editing session", 200, joinResponse.httpStatus);
 
@@ -145,19 +143,16 @@ public class TestPhoServer {
 
     @Test
     public void testChangePhotoTitle() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
+        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
         // Change title
         String newTitle = "New Title";
-        content = new HashMap<>();
+        Map<String, String> content = new HashMap<>();
         content.put("title", newTitle);
         Response titleResponse = request("POST", "/edit/" + pId + "/edittitle", content);
         assertEquals("Fail to change title", 200, titleResponse.httpStatus);
@@ -175,22 +170,16 @@ public class TestPhoServer {
 
     @Test
     public void testEdit() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
         // TODO
     }
 
     @Test
     public void testFetch() throws IOException {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
 
         // Create a new photo
-        Response pResponse = multipartRequest("/scott/createnewphoto", TEST_IMG_FILE);
+        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
         Properties property = new Gson().fromJson(pResponse.content, Properties.class);
         String pId = property.getProperty("pId");
 
@@ -219,37 +208,25 @@ public class TestPhoServer {
 
     @Test
     public void testMakeComment() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
         // TODO
     }
 
     @Test
     public void testSeeRevisions() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
         // TODO
     }
 
     @Test
     public void testSaveVersion() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
         // TODO
     }
 
     @Test
     public void testRevertVersion() {
-        Map <String, String> content = new HashMap<String, String>();
-        content.put("userId", "scott");
-        content.put("password", "oose");
-        request("POST", "/register", content);
+        registerUser();
         // TODO
     }
 
@@ -257,6 +234,14 @@ public class TestPhoServer {
     //------------------------------------------------------------------------//
     // Generic Helper Methods and classes
     //------------------------------------------------------------------------//
+
+    /** Register a user. **/
+    private void registerUser() {
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
+        content.put("password", TEST_PASSWORD);
+        request("POST", "/register", content);
+    }
 
     private Response request(String method, String path, Object content) {
         try {
