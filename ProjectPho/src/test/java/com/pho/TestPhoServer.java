@@ -108,10 +108,7 @@ public class TestPhoServer {
         Map<String, List<String>> listResult = new Gson().fromJson(r.content, listType);
         assertEquals(0, listResult.get("photos").size());
 
-        // Create a new photo
-        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
-        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
-        String pId = property.getProperty("pId");
+        String pId = createNewPhoto();
 
         // List again and check pId
         r = request("POST", "/listphotos", content);
@@ -124,11 +121,7 @@ public class TestPhoServer {
     @Test
     public void testJoinEditSession() {
         registerUser();
-
-        // Create a new photo
-        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
-        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
-        String pId = property.getProperty("pId");
+        String pId = createNewPhoto();
 
         // Join editing session
         Map<String, String> content = new HashMap<>();
@@ -144,11 +137,7 @@ public class TestPhoServer {
     @Test
     public void testChangePhotoTitle() {
         registerUser();
-
-        // Create a new photo
-        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
-        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
-        String pId = property.getProperty("pId");
+        String pId = createNewPhoto();
 
         // Change title
         String newTitle = "New Title";
@@ -177,11 +166,7 @@ public class TestPhoServer {
     @Test
     public void testFetch() throws IOException {
         registerUser();
-
-        // Create a new photo
-        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
-        Properties property = new Gson().fromJson(pResponse.content, Properties.class);
-        String pId = property.getProperty("pId");
+        String pId = createNewPhoto();
 
         Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
 
@@ -241,6 +226,12 @@ public class TestPhoServer {
         content.put("userId", TEST_USERID);
         content.put("password", TEST_PASSWORD);
         request("POST", "/register", content);
+    }
+
+    /** Create a photo and return the photo Id. */
+    private String createNewPhoto() {
+        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
+        return new Gson().fromJson(pResponse.content, Properties.class).getProperty("pId");
     }
 
     private Response request(String method, String path, Object content) {
