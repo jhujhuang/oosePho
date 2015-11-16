@@ -26,7 +26,7 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-public class TestPhoServer {
+public class TestPhoController {
 
     static final String TEST_IMG_FILE = "test.jpg";
     static final int TEST_HEIGHT = 600;
