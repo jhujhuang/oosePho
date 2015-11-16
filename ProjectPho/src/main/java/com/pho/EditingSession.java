@@ -9,7 +9,7 @@ import java.util.List;
  */
 public class EditingSession {
     private Photo photo;
-    private static String canvasId;
+    private String canvasId;
     private List<User> collaborators;
 
     /**
