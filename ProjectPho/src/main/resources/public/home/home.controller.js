@@ -7,6 +7,17 @@
 
     HomeController.$inject = ['UserService', '$rootScope'];
     function HomeController(UserService, $rootScope) {
+
+        // some jQuery to make a link serve as an input option
+        $("#upload_link").on('click', function(e){
+            e.preventDefault();
+            $("#upload:hidden").trigger('click');
+        });
+
+        $("#upload:hidden").on('change', function(e){
+            uploadImage();
+        });
+
         var vm = this;
 
         vm.user = null;
@@ -49,7 +60,11 @@
             });
         }
 
+        function register() {
+        }
+
         function uploadImage(images) {
+            alert("haha!");
             console.log("upload images");
             var imageWithJson = new FormData();
             imageWithJson.append("file", files[0]);
