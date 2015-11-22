@@ -2,9 +2,9 @@ package com.pho;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import org.apache.http.entity.mime.HttpMultipartMode;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.MultipartEntityBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -76,7 +76,7 @@ public class TestPhoController {
         registerUser();
 
         // Create a new photo
-        Response r = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
+        Response r = multipartRequest("/createnewphoto", TEST_IMG_FILE);
         assertEquals("Fail to create new photo", 201, r.httpStatus);
         Properties property = new Gson().fromJson(r.content, Properties.class);
         String pId = property.getProperty("pId");
@@ -230,7 +230,7 @@ public class TestPhoController {
 
     /** Create a photo and return the photo Id. */
     private String createNewPhoto() {
-        Response pResponse = multipartRequest("/" + TEST_USERID + "/createnewphoto", TEST_IMG_FILE);
+        Response pResponse = multipartRequest("/createnewphoto", TEST_IMG_FILE);
         return new Gson().fromJson(pResponse.content, Properties.class).getProperty("pId");
     }
 
@@ -273,14 +273,15 @@ public class TestPhoController {
             http.setDoInput(true);
             http.setDoOutput(true);
 
-            FileBody fileBody = new FileBody(new File(filename));
-            MultipartEntity multipartEntity = new MultipartEntity(HttpMultipartMode.STRICT);
-            multipartEntity.addPart("file", fileBody);
+            MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
+            multipartEntityBuilder.addBinaryBody("file", new File(filename));
+            multipartEntityBuilder.addTextBody("userId", TEST_USERID);  // Add userId to request
+            HttpEntity httpEntity = multipartEntityBuilder.build();
 
-            http.setRequestProperty("Content-Type", multipartEntity.getContentType().getValue());
+            http.setRequestProperty("Content-Type", ContentType.get(httpEntity).toString());
             OutputStream out = http.getOutputStream();
             try {
-                multipartEntity.writeTo(out);
+                httpEntity.writeTo(out);
             } finally {
                 out.close();
             }
