@@ -60,17 +60,17 @@ public class PhoController {
         }, new JsonTransformer());
 
         // Create a new photo from uploaded picture
-        post(API_CONTEXT + "/:userId/createnewphoto", "application/json", (request, response) -> {
+        post(API_CONTEXT + "/createnewphoto", "multipart/form-data", (request, response) -> {
             MultipartConfigElement multipartConfigElement = new MultipartConfigElement("/tmp");
             request.raw().setAttribute("org.eclipse.multipartConfig", multipartConfigElement);
 
             response.status(201);
-            String userId = request.params(":userId");
 
+            // Get file FIRST, THEN userId. TODO: Don't ask me why because I don't know
             Part file = request.raw().getPart(UPLOAD_FILE);
+            String userId = request.raw().getParameter("userId");
             InputStream imageStream = file.getInputStream();
             BufferedImage img = ImageIO.read(imageStream);
-            // TODO Check correctness of converted img
 
             String photoId = phoService.createNewPhoto(userId, img);
             Map<String, String> returnMessage = new HashMap<>();
