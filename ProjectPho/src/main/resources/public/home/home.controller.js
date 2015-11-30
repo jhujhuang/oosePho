@@ -81,7 +81,7 @@
             var imageWithJson = new FormData();
             imageWithJson.append("file", selectedFile);
             imageWithJson.append("userId", vm.user);
-            $http.post("/api/createNewPhoto", imageWithJson, {
+            $http.post("/api/createNewPhoto/", imageWithJson, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
