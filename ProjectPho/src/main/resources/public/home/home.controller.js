@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope'];
-    function HomeController(UserService, $rootScope) {
+    HomeController.$inject = ['UserService', '$rootScope', '$http'];
+    function HomeController(UserService, $rootScope, $http) {
 
         // some jQuery to make a link serve as an input option
         $("#upload_link").on('click', function(e){
@@ -15,7 +15,12 @@
         });
 
         $("#upload:hidden").on('change', function(e){
-            uploadImage();
+            // var selectedFile = this.files[0];
+            // selectedFile.convertToBase64(function(base64){
+            //    alert(base64);
+            // })
+            var selectedFile = $('#upload')[0].files[0];
+            uploadImage(selectedFile);
         });
 
         var vm = this;
@@ -63,12 +68,29 @@
         function register() {
         }
 
-        function uploadImage(images) {
-            alert("haha!");
+         File.prototype.convertToBase64 = function(callback){
+                    var FR= new FileReader();
+                    FR.onload = function(e) {
+                         callback(e.target.result)
+                    };
+                    FR.readAsDataURL(this);
+         }
+
+        function uploadImage(selectedFile) {
             console.log("upload images");
             var imageWithJson = new FormData();
-            imageWithJson.append("file", files[0]);
-            imageWithJson.append("userId", "haha");
+            imageWithJson.append("file", selectedFile);
+            imageWithJson.append("userId", vm.user);
+            $http.post("/api/createNewPhoto", imageWithJson, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function(){
+                alert("Upload success!");
+            })
+            .error(function(){
+            });
         }
     }
 
