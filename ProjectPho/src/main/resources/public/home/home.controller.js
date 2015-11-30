@@ -64,22 +64,19 @@
             });
         }
 
-        function register() {
-        }
-
-         File.prototype.convertToBase64 = function(callback){
-                    var FR= new FileReader();
-                    FR.onload = function(e) {
-                         callback(e.target.result)
-                    };
-                    FR.readAsDataURL(this);
-         }
+         // File.prototype.convertToBase64 = function(callback){
+         //           var FR= new FileReader();
+         //           FR.onload = function(e) {
+         //                callback(e.target.result)
+         //           };
+         //           FR.readAsDataURL(this);
+         // }
 
         function uploadImage() {
             console.log("upload images");
             var imageWithJson = new FormData();
             imageWithJson.append('file', $('#upload')[0].files[0]);
-            imageWithJson.append('userId', "haha");
+            imageWithJson.append('userId', vm.user.username);
             alert($('#upload')[0].files[0].name);
             $http.post("/api/createnewphoto", imageWithJson, {
                 withCredentials: true,
@@ -87,7 +84,7 @@
                 transformRequest: angular.identity
             })
             .success(function(){
-                alert("Upload success!");
+                // alert("Upload success!");
             })
             .error(function(){
             });

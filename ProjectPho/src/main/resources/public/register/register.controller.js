@@ -5,8 +5,8 @@
         .module('app')
         .controller('RegisterController', RegisterController);
 
-    RegisterController.$inject = ['UserService', '$location', '$rootScope', 'FlashService'];
-    function RegisterController(UserService, $location, $rootScope, FlashService) {
+    RegisterController.$inject = ['UserService', '$location', '$rootScope', 'FlashService', '$http'];
+    function RegisterController(UserService, $location, $rootScope, FlashService, $http) {
         var vm = this;
 
         vm.register = register;
@@ -27,6 +27,19 @@
                         vm.dataLoading = false;
                     }
                 });
+
+            var userCredentials = {
+                "userId": vm.user.username,
+                "password": vm.user.password
+            };
+
+            alert(JSON.stringify(userCredentials));
+
+            $http.post("/api/register", JSON.stringify(userCredentials))
+            .success(function(){
+            })
+            .error(function(){
+            });
         }
     }
 
