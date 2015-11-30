@@ -19,8 +19,7 @@
             // selectedFile.convertToBase64(function(base64){
             //    alert(base64);
             // })
-            var selectedFile = $('#upload')[0].files[0];
-            uploadImage(selectedFile);
+            uploadImage();
         });
 
         var vm = this;
@@ -76,14 +75,15 @@
                     FR.readAsDataURL(this);
          }
 
-        function uploadImage(selectedFile) {
+        function uploadImage() {
             console.log("upload images");
             var imageWithJson = new FormData();
-            imageWithJson.append("file", selectedFile);
-            imageWithJson.append("userId", vm.user);
+            imageWithJson.append('file', $('#upload')[0].files[0]);
+            imageWithJson.append('userId', "haha");
+            alert($('#upload')[0].files[0].name);
             $http.post("/api/createnewphoto", imageWithJson, {
                 withCredentials: true,
-                headers: {'Content-Type': 'multipart/form-data' },
+                headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
             })
             .success(function(){
