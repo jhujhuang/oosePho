@@ -19,13 +19,10 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestPhoController {
 
@@ -83,9 +80,7 @@ public class TestPhoController {
         String pId = property.getProperty("pId");
 
         // Fetch and check image data
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
-        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
-        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        EditingSession.FetchResult fetched = getFetchResult(pId);
 
         String base64 =  fetched.canvasData;
         byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
@@ -148,9 +143,7 @@ public class TestPhoController {
         assertEquals("Fail to change title", 200, titleResponse.httpStatus);
 
         // Fetch and check new title
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
-        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
-        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        EditingSession.FetchResult fetched = getFetchResult(pId);
         assertEquals(newTitle, fetched.title);
 
         // Non-existing photo
@@ -161,6 +154,17 @@ public class TestPhoController {
     @Test
     public void testEdit() {
         registerUser();
+        String pId = createNewPhoto();
+
+        EditingSession.FetchResult fetched = getFetchResult(pId);
+
+        String oldBase64 = fetched.canvasData;
+        String oldCanvasId = fetched.canvasId;
+
+        // Make change
+        Map<String, String> content = new HashMap<>();
+        content.put("")
+        Response editResponse = request("POST", "/edit/" + pId + "/change", content);
         // TODO
     }
 
@@ -233,6 +237,13 @@ public class TestPhoController {
     private String createNewPhoto() {
         Response pResponse = multipartRequest("/createnewphoto", TEST_IMG_FILE);
         return new Gson().fromJson(pResponse.content, Properties.class).getProperty("pId");
+    }
+
+    /** Get fetch result by sending a fetch request. **/
+    private EditingSession.FetchResult getFetchResult(String pId) {
+        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
+        return new Gson().fromJson(fetchResult.content, fetchType);
     }
 
     private Response request(String method, String path, Object content) {
