@@ -179,12 +179,18 @@ public class PhoService {
      * @param userId the user ID
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
-    public Map<String, List<String>> listPhotosOfCurrentUser(String userId) {
+    public Map<String, Map<String, String>> listPhotosOfCurrentUser(String userId) throws InvalidPhotoIdException {
         User usr = findByUserId(userId);
-        Map<String, List<String>> result = new HashMap<>();
-        List<String> l = new ArrayList<>();
+        Map<String, Map<String, String>> result = new HashMap<>();
+        Map<String, String> l = new HashMap<>();
         for (Photo p: usr.getPhotos()) {
-            l.add(p.getPhotoId());
+            String pId = p.getPhotoId();
+            EditingSession e = findByPhotoId(pId);
+            try {
+                l.put(pId, e.getImageBytes());
+            } catch (IOException e1) {
+                e1.printStackTrace();  // TODO: handle
+            }
         }
         result.put("photos", l);
         return result;

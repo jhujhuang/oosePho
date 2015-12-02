@@ -48,27 +48,27 @@ public class TestPhoService {
     }
 
     @Test
-    public void testCreatePhoto() throws PhoService.PhoServiceException {
+    public void testCreatePhoto() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
         String userId = "scott";
         phoService.register(userId, "password");
-        Map<String, List<String>> map = phoService.listPhotosOfCurrentUser(userId);
+        Map<String, Map<String, String>> map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(0, map.get("photos").size());
         String pId = phoService.createNewPhoto(userId, testImg);
         map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(1, map.get("photos").size());
-        assertEquals(pId, map.get("photos").get(0));
+        assertTrue(map.get("photos").containsKey(pId));
     }
 
     @Test
-    public void testListPhotosOfCurrentUserInitial() throws PhoService.PhoServiceException {
+    public void testListPhotosOfCurrentUserInitial() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
         String userId = "scott";
         phoService.register(userId, "password");
-        Map<String, List<String>> map = phoService.listPhotosOfCurrentUser(userId);
+        Map<String, Map<String, String>> map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(0, map.get("photos").size());
     }
 
     @Test
-    public void testListPhotosOfCurrentUserAdded() throws PhoService.PhoServiceException {
+    public void testListPhotosOfCurrentUserAdded() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
         String userId = "scott";
         phoService.register(userId, "password");
         int num = TEST_NUM;
@@ -76,10 +76,10 @@ public class TestPhoService {
         for (int i = 0; i < num; i++) {
             pIds[i] = phoService.createNewPhoto(userId, testImg);
         }
-        Map<String, List<String>> map = phoService.listPhotosOfCurrentUser(userId);
+        Map<String, Map<String, String>> map = phoService.listPhotosOfCurrentUser(userId);
         assertEquals(num, map.get("photos").size());
         for (int i = 0; i < num; i++) {
-            assertEquals(pIds[i], map.get("photos").get(i));
+            assertTrue(map.get("photos").containsKey(pIds[i]));
         }
     }
 

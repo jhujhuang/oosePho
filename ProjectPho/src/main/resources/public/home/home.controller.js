@@ -14,6 +14,13 @@
             $("#upload:hidden").trigger('click');
         });
 
+        $("#open_link").on('click', function(e){
+            e.preventDefault();
+            $("#open:hidden").show();
+            // getAllNewest
+        });
+
+
         $("#upload:hidden").on('change', function(e){
             // var selectedFile = this.files[0];
             // selectedFile.convertToBase64(function(base64){
@@ -92,11 +99,16 @@
 
         function openImage(){
             /* Check for the various File API support.*/
-            if (window.File && window.FileReader && window.FileList && window.Blob) {
+            /*if (window.File && window.FileReader && window.FileList && window.Blob) {
               // Great success! All the File APIs are supported.
             } else {
               alert('The File APIs are not fully supported in this browser.');
-            }
+            }*/
+
+        }
+
+        function saveVersion(){
+
         }
     }
 

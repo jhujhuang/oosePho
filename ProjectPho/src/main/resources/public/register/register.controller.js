@@ -40,7 +40,7 @@
                 console.log("Registration success.");
             })
             .error(function(){
-                console.log("Failed to store user info!")
+                console.log("Failed to store user info!");
             });
         }
     }

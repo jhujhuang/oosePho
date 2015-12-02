@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 public class TestPhoController {
@@ -98,14 +99,14 @@ public class TestPhoController {
     @Test
     public void testListPhotos() {
         registerUser();
-        Type listType = new TypeToken<Map<String, List<String>>>() {}.getType();
+        Type listType = new TypeToken<Map<String, Map<String, String>>>() {}.getType();
 
         // List photos of user
         Map<String, String> content = new HashMap<>();
         content.put("userId", TEST_USERID);
         Response r = request("POST", "/listphotos", content);
         assertEquals("Fail to list photos when no photos", 200, r.httpStatus);
-        Map<String, List<String>> listResult = new Gson().fromJson(r.content, listType);
+        Map<String, Map<String, String>> listResult = new Gson().fromJson(r.content, listType);
         assertEquals(0, listResult.get("photos").size());
 
         String pId = createNewPhoto();
@@ -115,7 +116,7 @@ public class TestPhoController {
         assertEquals("Fail to list photos when has photos", 200, r.httpStatus);
         listResult = new Gson().fromJson(r.content, listType);
         assertEquals(1, listResult.get("photos").size());
-        assertEquals(pId, listResult.get("photos").get(0));
+        assertTrue(listResult.get("photos").containsKey(pId));
     }
 
     @Test
