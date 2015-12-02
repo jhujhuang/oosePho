@@ -73,7 +73,6 @@
          // }
 
         function uploadImage() {
-            console.log("upload images");
             var imageWithJson = new FormData();
             imageWithJson.append('file', $('#upload')[0].files[0]);
             imageWithJson.append('userId', vm.user.username);
