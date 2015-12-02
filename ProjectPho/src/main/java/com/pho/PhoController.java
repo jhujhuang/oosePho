@@ -69,7 +69,6 @@ public class PhoController {
             // Get file FIRST, THEN userId. TODO: Don't ask me why because I don't know
             Part file = request.raw().getPart(UPLOAD_FILE);
             String userId = request.raw().getParameter("userId");
-            System.out.println("hi:" + userId);
             InputStream imageStream = file.getInputStream();
             BufferedImage img = ImageIO.read(imageStream);
 

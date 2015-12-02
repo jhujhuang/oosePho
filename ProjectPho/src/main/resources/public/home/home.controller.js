@@ -93,7 +93,7 @@
                 console.log("Upload success.");
             })
             .error(function(){
-                console.log("Failed to send the image to server!");
+                // console.log("Failed to send the image to server!");
             });
         }
 

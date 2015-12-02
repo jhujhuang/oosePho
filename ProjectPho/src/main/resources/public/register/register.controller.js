@@ -37,10 +37,10 @@
 
             $http.post("/api/register", JSON.stringify(userCredentials))
             .success(function(){
-                console.log("Registration success.");
+                // console.log("yay!");
             })
             .error(function(){
-                console.log("Failed to store user info!");
+                // console.log("crap!");
             });
         }
     }
