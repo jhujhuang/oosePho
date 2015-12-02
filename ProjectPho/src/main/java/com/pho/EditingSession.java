@@ -13,6 +13,7 @@ import java.util.List;
  */
 public class EditingSession {
     private Photo photo;
+    private int canvasIdInt;
     private String canvasId;
     private List<User> collaborators;
     private BufferedImage canvas;
@@ -25,7 +26,9 @@ public class EditingSession {
         this.photo = photo;
         this.canvas = photo.getCurrentVersion().getImage();
         collaborators = new ArrayList<>();
-        // TODO: initialize canvasId
+        // Initialize canvasId
+        canvasIdInt = 0;
+        canvasId = "" + canvasIdInt++;
     }
 
     /**
