@@ -2,7 +2,6 @@ package com.pho.filters;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.experimental.theories.DataPoint;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
@@ -21,13 +20,16 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Theories.class)
 public class TestFilters {
 
+    private BufferedImage testImage;
+
     // Anonymous class for testing filters
     private interface Fixture {
         Filter init();
     }
 
     @Before
-    public void setup() {
+    public void setup() throws IOException {
+        this.testImage = ImageIO.read(new File("test.jpg"));
         // setup for filters
     }
 
@@ -66,7 +68,7 @@ public class TestFilters {
     @Theory
     public void testFilterRectangle(Fixture fix) {
         Filter f = fix.init();
-        f.loadImage("test.jpg");
+        f.loadImage(testImage);
         BufferedImage p1 = f.getImage();
         f.applyToRectangle(50, 100, 50, 100);
         BufferedImage p2 = f.getImage();
@@ -77,7 +79,7 @@ public class TestFilters {
     @Theory
     public void testFilterCircle(Fixture fix) {
         Filter f = fix.init();
-        f.loadImage("test.jpg");
+        f.loadImage(testImage);
         BufferedImage p1 = f.getImage();
         f.applyToCircle(50, 50, 100);
         BufferedImage p2 = f.getImage();
@@ -87,20 +89,17 @@ public class TestFilters {
 
     @Theory
     public void testFilterIOSuccess(Fixture fix) throws IOException {
-        String imageName = "test.jpg";
         Filter f = fix.init();
-        BufferedImage p1 = ImageIO.read(new File(imageName));
-        f.loadImage(imageName);
+        f.loadImage(testImage);
         BufferedImage p2 = f.getImage();
 
-        assertFalse(this.isDifferent(p1, p2));
+        assertFalse(this.isDifferent(testImage, p2));
     }
 
     @Theory
     public void testFilterIOFail(Fixture fix) throws IOException {
-        String imageName = "does not exist";
         Filter f = fix.init();
-        f.loadImage(imageName);
+        // TODO: When we actually handle it
     }
 
 
