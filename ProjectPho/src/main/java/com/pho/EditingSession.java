@@ -73,8 +73,9 @@ public class EditingSession {
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
         result.setTitle(photo.getTitle());
-        Version currentVersion = photo.getCurrentVersion();
         result.setCanvasData(canvas);
+        // TODO: Do we need versionId fetched?
+        Version currentVersion = photo.getCurrentVersion();
         result.setVersionId(currentVersion);
         return result;
     }
