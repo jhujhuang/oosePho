@@ -88,7 +88,7 @@ public class EditingSession {
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
         result.setTitle(photo.getTitle());
-        result.setCanvasData(canvas);
+        result.setCanvasData(getImageBytes());
         // TODO: Do we need versionId fetched?
         Version currentVersion = photo.getCurrentVersion();
         result.setVersionId(currentVersion);
@@ -131,8 +131,8 @@ public class EditingSession {
             this.title = title;
         }
 
-        void setCanvasData(BufferedImage img) throws IOException {
-            this.canvasData = getImageBytes();  // TODO: clean up code
+        void setCanvasData(String bytes) {
+            this.canvasData = bytes;
         }
 
         void setVersionId(Version v) {
