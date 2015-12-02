@@ -7,6 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Editing session.
@@ -28,6 +29,10 @@ public class EditingSession {
         collaborators = new ArrayList<>();
         // Initialize canvasId
         canvasIdInt = 0;
+        updateCanvasId();
+    }
+
+    private void updateCanvasId() {
         canvasId = "" + canvasIdInt++;
     }
 
@@ -64,6 +69,13 @@ public class EditingSession {
      */
     Photo getPhoto() {
         return photo;
+    }
+
+    // TODO: Add docstring
+    public String edit(String userId, String editType, Map<String, String> params) {
+        // TODO: make changes and store new canvas image
+        updateCanvasId();
+        return canvasId;
     }
 
     /**
