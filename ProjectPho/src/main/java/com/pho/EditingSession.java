@@ -1,5 +1,9 @@
 package com.pho;
 
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +15,7 @@ public class EditingSession {
     private Photo photo;
     private String canvasId;
     private List<User> collaborators;
+    private BufferedImage canvas;
 
     /**
      * Constructor for the EditingSessions class
@@ -18,6 +23,7 @@ public class EditingSession {
      */
     public EditingSession(Photo photo) {
         this.photo = photo;
+        this.canvas = photo.getCurrentVersion().getImage();
         collaborators = new ArrayList<>();
         // TODO: initialize canvasId
     }
@@ -68,7 +74,7 @@ public class EditingSession {
         result.setCollaborators(collaborators);
         result.setTitle(photo.getTitle());
         Version currentVersion = photo.getCurrentVersion();
-        result.setCanvasData(currentVersion);
+        result.setCanvasData(canvas);
         result.setVersionId(currentVersion);
         return result;
     }
@@ -83,6 +89,20 @@ public class EditingSession {
         String canvasData;  // img converted to base 64 string
         String versionId;
 
+        /**
+         * Get the image in the form of base 64 bytes.
+         * @return base 64 string
+         * @throws IOException
+         */
+        private String getImageBytes(BufferedImage img) throws IOException {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(img, "jpg", baos);
+            baos.flush();
+            byte[] imageInByteArray = baos.toByteArray();
+            baos.close();
+            return DatatypeConverter.printBase64Binary(imageInByteArray);
+        }
+
         void setCanvasId(String canvasId) {
             this.canvasId = canvasId;
         }
@@ -95,8 +115,8 @@ public class EditingSession {
             this.title = title;
         }
 
-        void setCanvasData(Version v) throws IOException {
-            this.canvasData = v.getImageBytes();
+        void setCanvasData(BufferedImage img) throws IOException {
+            this.canvasData = getImageBytes(img);
         }
 
         void setVersionId(Version v) {
