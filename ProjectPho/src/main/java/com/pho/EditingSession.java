@@ -73,8 +73,13 @@ public class EditingSession {
         return photo;
     }
 
-    // TODO: Add docstring
-    public void edit(String userId, String editType, Map<String, Double> params)
+    /**
+     * Apply filter to photo, and update canvas.
+     * @param editType String of filter type.
+     * @param params Map of filter parameters.
+     * @throws PhoService.PhoServiceException when editType is not found.
+     */
+    public void edit(String editType, Map<String, Double> params)
             throws PhoService.PhoServiceException {
         Filter f;
         try {

@@ -227,7 +227,7 @@ public class PhoService {
         if (!canvasId.equals(e.getCanvasId())) {
             throw new PhoSyncException("Canvas is out of date.", null);
         }
-        e.edit(userId, editType, params);
+        e.edit(editType, params);
         return e.getCanvasId();
     }
 
