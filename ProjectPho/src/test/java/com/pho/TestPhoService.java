@@ -171,5 +171,47 @@ public class TestPhoService {
         phoService.edit(userId, pId, newCanvasId, "EdgeDetectionFilter", Collections.EMPTY_MAP);
     }
 
+    @Test(expected = PhoService.InvalidPhotoIdException.class)
+    public void testEditInvalidPhotoId() throws PhoService.PhoServiceException,
+            PhoService.InvalidPhotoIdException, PhoService.PhoSyncException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        String wrongId = "csf";
+        assert(!pId.equals(wrongId));
+        phoService.edit(userId, wrongId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+    }
+
+    @Test(expected = PhoService.PhoSyncException.class)
+    public void testEditOutOfDate() throws PhoService.PhoServiceException,
+            PhoService.PhoSyncException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+    }
+
+    @Test(expected = PhoService.PhoServiceException.class)
+    public void testEditWrongFilterType() throws PhoService.PhoSyncException,
+            PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        phoService.edit(userId, pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP);
+    }
+
     // TODO: more tests
 }
