@@ -73,7 +73,6 @@
          // }
 
         function uploadImage() {
-            console.log("upload images");
             var imageWithJson = new FormData();
             imageWithJson.append('file', $('#upload')[0].files[0]);
             imageWithJson.append('userId', vm.user.username);
@@ -84,10 +83,20 @@
                 transformRequest: angular.identity
             })
             .success(function(){
-                // alert("Upload success!");
+                console.log("Upload success.");
             })
             .error(function(){
+                console.log("Failed to send the image to server!");
             });
+        }
+
+        function openImage(){
+            /* Check for the various File API support.*/
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
+              // Great success! All the File APIs are supported.
+            } else {
+              alert('The File APIs are not fully supported in this browser.');
+            }
         }
     }
 

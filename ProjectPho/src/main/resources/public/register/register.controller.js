@@ -33,12 +33,14 @@
                 "password": vm.user.password
             };
 
-            alert(JSON.stringify(userCredentials));
+            /* alert(JSON.stringify(userCredentials));*/
 
             $http.post("/api/register", JSON.stringify(userCredentials))
             .success(function(){
+                console.log("Registration success.");
             })
             .error(function(){
+                console.log("Failed to store user info!")
             });
         }
     }
