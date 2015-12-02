@@ -1,5 +1,7 @@
 package com.pho;
 
+import com.pho.filters.Filter;
+
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
@@ -72,8 +74,16 @@ public class EditingSession {
     }
 
     // TODO: Add docstring
-    public String edit(String userId, String editType, Map<String, String> params) {
+    public String edit(String userId, String editType, Map<String, Double> params)
+            throws PhoService.PhoServiceException {
+        try {
+            Filter f = Filter.getFilter(editType, params);
+        } catch (Filter.UnknownFilterException e) {
+            throw new PhoService.PhoServiceException("Unknown filterType", e);
+        }
+
         // TODO: make changes and store new canvas image
+
         updateCanvasId();
         return canvasId;
     }

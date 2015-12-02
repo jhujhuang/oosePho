@@ -6,6 +6,7 @@ import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * An abstract class for filters.
@@ -13,6 +14,18 @@ import java.io.IOException;
 public abstract class Filter {
 
     protected BufferedImage image = null;
+
+    public static Filter getFilter(String filterType, Map<String, Double> params) throws UnknownFilterException {
+        if (filterType.equals("BlurFilter")) {
+            return new BlurFilter(params);
+        } else if (filterType.equals("ChangeContrastFilter")) {
+            return new ChangeContrastFilter(params);
+        } else if (filterType.equals("EdgeDetectionDilter")) {
+            return new EdgeDetectionFilter(params);
+        } else {
+            throw new UnknownFilterException("Unknown filterType", null);
+        }
+    }
 
     /**
      * Apply filter to a rectangular area.
@@ -58,4 +71,15 @@ public abstract class Filter {
         WritableRaster raster = bi.copyData(null);
         return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
     }
+
+    //-----------------------------------------------------------------------------//
+    // Helper Classes and Methods
+    //-----------------------------------------------------------------------------//
+
+    public static class UnknownFilterException extends Exception {
+        public UnknownFilterException(String message, Throwable cause) {
+            super(message, cause);
+        }
+    }
+
 }
