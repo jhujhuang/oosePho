@@ -76,13 +76,19 @@ public class EditingSession {
     // TODO: Add docstring
     public String edit(String userId, String editType, Map<String, Double> params)
             throws PhoService.PhoServiceException {
+        Filter f;
         try {
-            Filter f = Filter.getFilter(editType, params);
+            f = Filter.getFilter(editType, params);
         } catch (Filter.UnknownFilterException e) {
             throw new PhoService.PhoServiceException("Unknown filterType", e);
         }
+        f.loadImage(canvas);
 
-        // TODO: make changes and store new canvas image
+        // Make changes and store new canvas image
+        // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
+        f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
+
+        canvas = f.getImage();
 
         updateCanvasId();
         return canvasId;

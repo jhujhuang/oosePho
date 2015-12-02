@@ -1,11 +1,8 @@
 package com.pho.filters;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -46,14 +43,10 @@ public abstract class Filter {
 
     /**
      * Load the img of the photo in the filter instance.
-     * @param pId The pId of the photo to load with this filter.
+     * @param img the BufferedImage to load with this filter.
      */
-    public void loadImage (String pId) {
-        try {
-            image = ImageIO.read(new File(pId));
-        } catch (IOException E) {
-            System.out.println("Unable to read image");
-        }
+    public void loadImage (BufferedImage img) {
+        image = img;
     }
 
     /**
