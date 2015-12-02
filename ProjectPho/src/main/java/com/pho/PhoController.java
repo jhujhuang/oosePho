@@ -129,7 +129,7 @@ public class PhoController {
                 String moreParams = property.getProperty("moreParams");
                 HashMap<String, Double> paramMap = new Gson().fromJson(moreParams, HashMap.class);
                 String photoId = request.params(":pId");
-                phoService.edit(userId, photoId, canvasId, editType, paramMap);
+                phoService.edit(photoId, canvasId, editType, paramMap);
 
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {

@@ -211,7 +211,6 @@ public class PhoService {
     /**
      * Make an edit to a photo.
      *
-     * @param userId the user ID
      * @param photoId the photo ID
      * @param canvasId the canvas ID
      * @param editType the edit type
@@ -221,7 +220,7 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      * @return newCanvasId the new canvas ID
      */
-    public String edit(String userId, String photoId, String canvasId, String editType, Map<String, Double> params)
+    public String edit(String photoId, String canvasId, String editType, Map<String, Double> params)
             throws InvalidPhotoIdException, PhoSyncException, PhoServiceException {
         EditingSession e = findByPhotoId(photoId);
         if (!canvasId.equals(e.getCanvasId())) {

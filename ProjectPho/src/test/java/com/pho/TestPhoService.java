@@ -159,7 +159,7 @@ public class TestPhoService {
         EditingSession.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
-        String newCanvasId = phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        String newCanvasId = phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
         // Check that canvas id has been updated
         assertNotEquals(newCanvasId, oldCanvasId);
         // That image has been changed is checked in TestFilters
@@ -167,8 +167,8 @@ public class TestPhoService {
         // Other filters do not fail:
         HashMap<String, Double> changeContrastParams = new HashMap<>();
         changeContrastParams.put("value", 0.5);
-        newCanvasId = phoService.edit(userId, pId, newCanvasId, "ChangeContrastFilter", changeContrastParams);
-        phoService.edit(userId, pId, newCanvasId, "EdgeDetectionFilter", Collections.EMPTY_MAP);
+        newCanvasId = phoService.edit(pId, newCanvasId, "ChangeContrastFilter", changeContrastParams);
+        phoService.edit(pId, newCanvasId, "EdgeDetectionFilter", Collections.EMPTY_MAP);
     }
 
     @Test(expected = PhoService.InvalidPhotoIdException.class)
@@ -183,7 +183,7 @@ public class TestPhoService {
 
         String wrongId = "csf";
         assert(!pId.equals(wrongId));
-        phoService.edit(userId, wrongId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(wrongId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
     }
 
     @Test(expected = PhoService.PhoSyncException.class)
@@ -196,8 +196,8 @@ public class TestPhoService {
         EditingSession.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
-        phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
-        phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
     }
 
     @Test(expected = PhoService.PhoServiceException.class)
@@ -210,7 +210,7 @@ public class TestPhoService {
         EditingSession.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
-        phoService.edit(userId, pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP);
     }
 
     // TODO: more tests
