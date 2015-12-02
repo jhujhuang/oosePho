@@ -152,6 +152,7 @@ public class PhoController {
 
         // Fetch editing session status, including canvas image data
         get(API_CONTEXT + "/edit/:pId/fetch", "application/json", (request, response) -> {
+            // TODO: Consider split fetch to fetchCanvasId and fetchOtherData, only do the latter when needed
             try {
                 response.status(200);
                 String photoId = request.params(":pId");
