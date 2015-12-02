@@ -81,6 +81,20 @@ public class EditingSession {
     }
 
     /**
+     * Get the image in the form of base 64 bytes.
+     * @return base 64 string
+     * @throws IOException
+     */
+    public String getImageBytes() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(canvas, "jpg", baos);
+        baos.flush();
+        byte[] imageInByteArray = baos.toByteArray();
+        baos.close();
+        return DatatypeConverter.printBase64Binary(imageInByteArray);
+    }
+
+    /**
      * An helper object for fetch result that is ready to convert to JSON response.
      */
     class FetchResult {
@@ -89,20 +103,6 @@ public class EditingSession {
         String title;
         String canvasData;  // img converted to base 64 string
         String versionId;
-
-        /**
-         * Get the image in the form of base 64 bytes.
-         * @return base 64 string
-         * @throws IOException
-         */
-        private String getImageBytes(BufferedImage img) throws IOException {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(img, "jpg", baos);
-            baos.flush();
-            byte[] imageInByteArray = baos.toByteArray();
-            baos.close();
-            return DatatypeConverter.printBase64Binary(imageInByteArray);
-        }
 
         void setCanvasId(String canvasId) {
             this.canvasId = canvasId;
@@ -117,7 +117,7 @@ public class EditingSession {
         }
 
         void setCanvasData(BufferedImage img) throws IOException {
-            this.canvasData = getImageBytes(img);
+            this.canvasData = getImageBytes();  // TODO: clean up code
         }
 
         void setVersionId(Version v) {

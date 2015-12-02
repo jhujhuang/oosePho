@@ -84,6 +84,7 @@ public class PhoController {
             response.status(200);
             Properties property = new Gson().fromJson(request.body(), Properties.class);
             String userId = property.getProperty("userId");
+
             return phoService.listPhotosOfCurrentUser(userId);
         }, new JsonTransformer());
 
