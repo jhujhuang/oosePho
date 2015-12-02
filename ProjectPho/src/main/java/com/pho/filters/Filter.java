@@ -17,7 +17,7 @@ public abstract class Filter {
             return new BlurFilter(params);
         } else if (filterType.equals("ChangeContrastFilter")) {
             return new ChangeContrastFilter(params);
-        } else if (filterType.equals("EdgeDetectionDilter")) {
+        } else if (filterType.equals("EdgeDetectionFilter")) {
             return new EdgeDetectionFilter(params);
         } else {
             throw new UnknownFilterException("Unknown filterType", null);

@@ -127,7 +127,7 @@ public class PhoController {
                 String canvasId = property.getProperty("canvasId");
                 String editType = property.getProperty("editType");
                 String moreParams = property.getProperty("moreParams");
-                HashMap<String, String> paramMap = new Gson().fromJson(moreParams, HashMap.class);
+                HashMap<String, Double> paramMap = new Gson().fromJson(moreParams, HashMap.class);
                 String photoId = request.params(":pId");
                 phoService.edit(userId, photoId, canvasId, editType, paramMap);
 

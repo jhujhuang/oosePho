@@ -74,7 +74,7 @@ public class EditingSession {
     }
 
     // TODO: Add docstring
-    public String edit(String userId, String editType, Map<String, Double> params)
+    public void edit(String userId, String editType, Map<String, Double> params)
             throws PhoService.PhoServiceException {
         Filter f;
         try {
@@ -91,7 +91,6 @@ public class EditingSession {
         canvas = f.getImage();
 
         updateCanvasId();
-        return canvasId;
     }
 
     /**

@@ -10,11 +10,12 @@ import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class TestPhoService {
@@ -145,6 +146,29 @@ public class TestPhoService {
         String wrongId = "csf";
         assert(!pId.equals(wrongId));
         phoService.fetch(wrongId);
+    }
+
+
+    @Test
+    public void testEdit() throws PhoService.PhoServiceException,
+            PhoService.InvalidPhotoIdException, PhoService.PhoSyncException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        String newCanvasId = phoService.edit(userId, pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        // Check that canvas id has been updated
+        assertNotEquals(newCanvasId, oldCanvasId);
+        // That image has been changed is checked in TestFilters
+
+        // Other filters do not fail:
+        HashMap<String, Double> changeContrastParams = new HashMap<>();
+        changeContrastParams.put("value", 0.5);
+        newCanvasId = phoService.edit(userId, pId, newCanvasId, "ChangeContrastFilter", changeContrastParams);
+        phoService.edit(userId, pId, newCanvasId, "EdgeDetectionFilter", Collections.EMPTY_MAP);
     }
 
     // TODO: more tests
