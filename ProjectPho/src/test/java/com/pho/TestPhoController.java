@@ -18,6 +18,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -163,8 +164,16 @@ public class TestPhoController {
 
         // Make change
         Map<String, String> content = new HashMap<>();
-        content.put("")
+        content.put("canvasId", oldCanvasId);
+        content.put("editType", "BlurFilter");
+        content.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
         Response editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to apply filter on photo", 200, editResponse.httpStatus);
+
+        // Fetch and check
+        fetched = getFetchResult(pId);
+        assertNotEquals("Fail to update canvasId", oldCanvasId, fetched.canvasId);
+        assertNotEquals("Fail to edit image", oldBase64, fetched.canvasData);
         // TODO
     }
 
