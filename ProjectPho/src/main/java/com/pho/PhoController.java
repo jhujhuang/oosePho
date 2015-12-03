@@ -141,10 +141,12 @@ public class PhoController {
                 response.status(410);
                 return createFailureContent(ex.getMessage());
             } catch (PhoService.PhoServiceException ex) {
-                if (ex.getMessage().equals("Invalid editing type")) {
+                if (ex.getMessage().contains("type")) {
                     logger.error("Invalid editing type");
-                } else {
+                } else if (ex.getMessage().contains("param")) {
                     logger.error("Invalid editing parameters");
+                } else {
+                    logger.error(ex.getMessage());
                 }
                 response.status(400);
                 return createFailureContent(ex.getMessage());

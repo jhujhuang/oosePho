@@ -85,7 +85,7 @@ public class EditingSession {
         try {
             f = Filter.getFilter(editType, params);
         } catch (Filter.UnknownFilterException e) {
-            throw new PhoService.PhoServiceException("Unknown filterType", e);
+            throw new PhoService.PhoServiceException("Invalid editing type", e);
         }
         f.loadImage(canvas);
 
