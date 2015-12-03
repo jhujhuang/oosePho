@@ -228,6 +228,7 @@ public class PhoService {
         }
         e.edit(editType, params);
         return e.getCanvasId();
+        // TODO: Consider change to void since edit()'s returned canvasId is not used other than in tests.
     }
 
     /**
