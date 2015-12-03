@@ -174,7 +174,16 @@ public class TestPhoController {
         fetched = getFetchResult(pId);
         assertNotEquals("Fail to update canvasId", oldCanvasId, fetched.canvasId);
         assertNotEquals("Fail to edit image", oldBase64, fetched.canvasData);
-        // TODO
+
+        // Failure cases
+        editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to recognize synchronization error", 410, editResponse.httpStatus);
+        content.put("canvasId", fetched.canvasId);
+        editResponse = request("POST", "/edit/csf/change", content);
+        assertEquals("Fail to recognize non-existing pId", 404, editResponse.httpStatus);
+        content.put("editType", "NotAFilter");
+        editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to recognize invalid filter type", 400, editResponse.httpStatus);
     }
 
     @Test
