@@ -18,14 +18,12 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class TestPhoController {
 
@@ -83,9 +81,7 @@ public class TestPhoController {
         String pId = property.getProperty("pId");
 
         // Fetch and check image data
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
-        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
-        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        EditingSession.FetchResult fetched = getFetchResult(pId);
 
         String base64 =  fetched.canvasData;
         byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
@@ -148,9 +144,7 @@ public class TestPhoController {
         assertEquals("Fail to change title", 200, titleResponse.httpStatus);
 
         // Fetch and check new title
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
-        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
-        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        EditingSession.FetchResult fetched = getFetchResult(pId);
         assertEquals(newTitle, fetched.title);
 
         // Non-existing photo
@@ -161,7 +155,35 @@ public class TestPhoController {
     @Test
     public void testEdit() {
         registerUser();
-        // TODO
+        String pId = createNewPhoto();
+
+        EditingSession.FetchResult fetched = getFetchResult(pId);
+
+        String oldBase64 = fetched.canvasData;
+        String oldCanvasId = fetched.canvasId;
+
+        // Make change
+        Map<String, String> content = new HashMap<>();
+        content.put("canvasId", oldCanvasId);
+        content.put("editType", "BlurFilter");
+        content.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
+        Response editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to apply filter on photo", 200, editResponse.httpStatus);
+
+        // Fetch and check
+        fetched = getFetchResult(pId);
+        assertNotEquals("Fail to update canvasId", oldCanvasId, fetched.canvasId);
+        assertNotEquals("Fail to edit image", oldBase64, fetched.canvasData);
+
+        // Failure cases
+        editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to recognize synchronization error", 410, editResponse.httpStatus);
+        content.put("canvasId", fetched.canvasId);
+        editResponse = request("POST", "/edit/csf/change", content);
+        assertEquals("Fail to recognize non-existing pId", 404, editResponse.httpStatus);
+        content.put("editType", "NotAFilter");
+        editResponse = request("POST", "/edit/" + pId + "/change", content);
+        assertEquals("Fail to recognize invalid filter type", 400, editResponse.httpStatus);
     }
 
     @Test
@@ -233,6 +255,13 @@ public class TestPhoController {
     private String createNewPhoto() {
         Response pResponse = multipartRequest("/createnewphoto", TEST_IMG_FILE);
         return new Gson().fromJson(pResponse.content, Properties.class).getProperty("pId");
+    }
+
+    /** Get fetch result by sending a fetch request. **/
+    private EditingSession.FetchResult getFetchResult(String pId) {
+        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+        Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
+        return new Gson().fromJson(fetchResult.content, fetchType);
     }
 
     private Response request(String method, String path, Object content) {

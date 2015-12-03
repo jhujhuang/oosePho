@@ -123,14 +123,14 @@ public class PhoController {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");
                 String canvasId = property.getProperty("canvasId");
                 String editType = property.getProperty("editType");
                 String moreParams = property.getProperty("moreParams");
-                HashMap<String, String> paramMap = new Gson().fromJson(moreParams, HashMap.class);
+                Map<String, Double> paramMap = new Gson().fromJson(moreParams, HashMap.class);
                 String photoId = request.params(":pId");
-                phoService.edit(userId, photoId, canvasId, editType, paramMap);
+                phoService.edit(photoId, canvasId, editType, paramMap);
 
+                // DO NOT return canvasId; rather frontend will get new info by fetching.
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
@@ -141,10 +141,12 @@ public class PhoController {
                 response.status(410);
                 return createFailureContent(ex.getMessage());
             } catch (PhoService.PhoServiceException ex) {
-                if (ex.getMessage().equals("Invalid editing type")) {
+                if (ex.getMessage().contains("type")) {
                     logger.error("Invalid editing type");
-                } else {
+                } else if (ex.getMessage().contains("param")) {
                     logger.error("Invalid editing parameters");
+                } else {
+                    logger.error(ex.getMessage());
                 }
                 response.status(400);
                 return createFailureContent(ex.getMessage());

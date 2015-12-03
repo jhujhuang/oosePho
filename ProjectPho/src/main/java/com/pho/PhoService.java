@@ -211,7 +211,6 @@ public class PhoService {
     /**
      * Make an edit to a photo.
      *
-     * @param userId the user ID
      * @param photoId the photo ID
      * @param canvasId the canvas ID
      * @param editType the edit type
@@ -221,10 +220,15 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      * @return newCanvasId the new canvas ID
      */
-    public String edit(String userId, String photoId, String canvasId, String editType, Map<String, String> params)
+    public String edit(String photoId, String canvasId, String editType, Map<String, Double> params)
             throws InvalidPhotoIdException, PhoSyncException, PhoServiceException {
-        // TODO: Implement
-        return "new canvas ID";
+        EditingSession e = findByPhotoId(photoId);
+        if (!canvasId.equals(e.getCanvasId())) {
+            throw new PhoSyncException("Canvas is out of date.", null);
+        }
+        e.edit(editType, params);
+        return e.getCanvasId();
+        // TODO: Consider change to void since edit()'s returned canvasId is not used other than in tests.
     }
 
     /**
