@@ -1,5 +1,7 @@
 package com.pho;
 
+import com.pho.filters.Filter;
+
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
@@ -7,12 +9,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Editing session.
  */
 public class EditingSession {
     private Photo photo;
+    private int canvasIdInt;
     private String canvasId;
     private List<User> collaborators;
     private BufferedImage canvas;
@@ -25,7 +29,13 @@ public class EditingSession {
         this.photo = photo;
         this.canvas = photo.getCurrentVersion().getImage();
         collaborators = new ArrayList<>();
-        // TODO: initialize canvasId
+        // Initialize canvasId
+        canvasIdInt = 0;
+        updateCanvasId();
+    }
+
+    private void updateCanvasId() {
+        canvasId = "" + canvasIdInt++;
     }
 
     /**
@@ -64,6 +74,31 @@ public class EditingSession {
     }
 
     /**
+     * Apply filter to photo, and update canvas.
+     * @param editType String of filter type.
+     * @param params Map of filter parameters.
+     * @throws PhoService.PhoServiceException when editType is not found.
+     */
+    public void edit(String editType, Map<String, Double> params)
+            throws PhoService.PhoServiceException {
+        Filter f;
+        try {
+            f = Filter.getFilter(editType, params);
+        } catch (Filter.UnknownFilterException e) {
+            throw new PhoService.PhoServiceException("Invalid editing type", e);
+        }
+        f.loadImage(canvas);
+
+        // Make changes and store new canvas image
+        // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
+        f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
+
+        canvas = f.getImage();
+
+        updateCanvasId();
+    }
+
+    /**
      * Retrieves the result for fetch
      * @return FetchResult object
      * @throws IOException
@@ -73,7 +108,7 @@ public class EditingSession {
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
         result.setTitle(photo.getTitle());
-        result.setCanvasData(canvas);
+        result.setCanvasData(getImageBytes());
         // TODO: Do we need versionId fetched?
         Version currentVersion = photo.getCurrentVersion();
         result.setVersionId(currentVersion);
@@ -116,8 +151,8 @@ public class EditingSession {
             this.title = title;
         }
 
-        void setCanvasData(BufferedImage img) throws IOException {
-            this.canvasData = getImageBytes();  // TODO: clean up code
+        void setCanvasData(String bytes) {
+            this.canvasData = bytes;
         }
 
         void setVersionId(Version v) {
