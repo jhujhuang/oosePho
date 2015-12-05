@@ -103,7 +103,7 @@ public class EditingSession {
      * @return FetchResult object
      * @throws IOException
      */
-    public FetchResult getFetchResults() throws IOException {
+    FetchResult getFetchResults() throws IOException {
         FetchResult result = new FetchResult();
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
