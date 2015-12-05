@@ -60,7 +60,7 @@ public class PhoService {
     }
 
     /**
-     * Find a user in the users list by userId.
+     * Look for a user in the users list by userId.
      * @param userId the userId string
      * @return user a User object, or null if not found
      */
@@ -71,6 +71,21 @@ public class PhoService {
             }
         }
         return null;
+    }
+
+    /**
+     * Find a user in the users list by userId.
+     * @param userId the userId String
+     * @return user a User object
+     * @throws IllegalArgumentException when user is not found
+     */
+    private User getUser(String userId) {
+        User usr = findByUserId(userId);
+
+        if (usr == null) {
+            throw new IllegalArgumentException("Invalid user id");  // Should never happen
+        }
+        return usr;
     }
 
     /**
@@ -142,11 +157,7 @@ public class PhoService {
      * @return the photo ID
      */
     public String createNewPhoto(String userId, BufferedImage image) throws PhoServiceException {
-        User usr = findByUserId(userId);
-
-        if (usr == null) {
-            throw new IllegalArgumentException("Invalid user id");  // Should never happen
-        }
+        User usr = getUser(userId);
 
         String pId = getStringId(pIdTracker);
 
@@ -172,7 +183,7 @@ public class PhoService {
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
         EditingSession e = findByPhotoId(photoId);
-        User usr = findByUserId(userId);
+        User usr = getUser(userId);
         e.addCollaborator(usr);
     }
 
@@ -182,7 +193,7 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
     public Map<String, Map<String, String>> listPhotosOfCurrentUser(String userId) throws InvalidPhotoIdException {
-        User usr = findByUserId(userId);
+        User usr = getUser(userId);
         Map<String, Map<String, String>> result = new HashMap<>();
         Map<String, String> l = new HashMap<>();
         for (Photo p: usr.getPhotos()) {
