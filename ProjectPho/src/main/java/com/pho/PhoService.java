@@ -143,14 +143,16 @@ public class PhoService {
      */
     public String createNewPhoto(String userId, BufferedImage image) throws PhoServiceException {
         User usr = findByUserId(userId);
-        String pId = getStringId(pIdTracker);
-        Photo p = new Photo(pId);
 
-        // Add version based on given image
-        String vId = p.getNextVId();
+        if (usr == null) {
+            throw new IllegalArgumentException("Invalid user id");  // Should never happen
+        }
+
+        String pId = getStringId(pIdTracker);
+
+        // Add photo based on given image
         String time = "0000-00"; // TODO: Get actual time
-        Version v0 = new Version(vId, time, userId, image);
-        p.addVersion(v0);
+        Photo p = new Photo(pId, time, userId, image);
 
         usr.addPhoto(p);  // User is authenticated at this point.
 

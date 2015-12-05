@@ -1,5 +1,6 @@
 package com.pho;
 
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +20,19 @@ public class Photo {
     /**
      * Creates a new photo (empty with no version) associated with a unique pId.
      * @param photoId string, a unique pId given by the server at creation time.
+     * @param time string
+     * @param userId string
+     * @param img BufferedImage
      */
-    public Photo(String photoId) {
+    public Photo(String photoId, String time, String userId, BufferedImage img) {
         // TODO: Extended Feature: initialize with given title.
         this.title = INITIAL_PHOTO_TITLE;
         this.photoId = photoId;
 
         this.nextVId = 0;
         this.versions = new ArrayList<>();
+
+        addVersion(time, userId, img);
     }
 
     /**
@@ -63,12 +69,14 @@ public class Photo {
 
     /**
      * Adds a newest version to the versions list of this photo.
-     * @param version Version, a new version of this photo.
+     * @param time string
+     * @param userId string
+     * @param img BufferedImage
      */
-    public void addVersion(Version version) {
-        // TODO: handle the assignment of VId in here rather than in PhoService
-        this.versions.add(version);
-        assert(version.getVersionId().equals("" + nextVId));  // TODO: Handle better, or let it go
+    public void addVersion(String time, String userId, BufferedImage img) {
+        String vId = getNextVId();
+        Version v = new Version(vId, time, userId, img);
+        this.versions.add(v);
         nextVId++;
     }
 
