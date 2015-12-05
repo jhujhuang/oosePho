@@ -38,6 +38,10 @@ public class EditingSession {
         canvasId = "" + canvasIdInt++;
     }
 
+    public String getPId() {
+        return photo.getPhotoId();
+    }
+
     /**
      * Add a collaborator to an editing session. Does nothing if user is already in.
      * @param collaborator User to add to the editing session.

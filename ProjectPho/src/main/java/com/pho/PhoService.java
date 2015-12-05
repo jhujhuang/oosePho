@@ -165,12 +165,12 @@ public class PhoService {
         String time = "0000-00"; // TODO: Get actual time
         Photo p = new Photo(pId, time, userId, image);
 
-        usr.addPhoto(p);  // User is authenticated at this point.
-
         // Add editing session associated with the new photo.
         EditingSession e = new EditingSession(p);
         editingSessions.add(pIdTracker, e);
         pIdTracker++;
+
+        usr.addPhoto(e);  // User is authenticated at this point.
 
         return pId;
     }
@@ -196,9 +196,8 @@ public class PhoService {
         User usr = getUser(userId);
         Map<String, Map<String, String>> result = new HashMap<>();
         Map<String, String> l = new HashMap<>();
-        for (Photo p: usr.getPhotos()) {
-            String pId = p.getPhotoId();
-            EditingSession e = findByPhotoId(pId);
+        for (EditingSession e: usr.getPhotos()) {
+            String pId = e.getPId();
             try {
                 l.put(pId, e.getImageBytes());
             } catch (IOException e1) {
