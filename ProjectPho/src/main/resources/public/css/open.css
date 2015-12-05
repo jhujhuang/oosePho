@@ -1,0 +1,7 @@
+.open_box_container {
+  display: flex;
+  justify-content: center;
+}
+.open_box_center {
+  width: 800px;
+}

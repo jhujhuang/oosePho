@@ -16,8 +16,9 @@
 
         $("#open_link").on('click', function(e){
             e.preventDefault();
-            $("#open:hidden").show();
-            // getAllNewest
+            $("#open").css('display', 'block');
+            // get all newest versions of the user's photos.
+            openImage();
         });
 
 
@@ -32,6 +33,7 @@
         var vm = this;
 
         vm.user = null;
+        vm.photosOfUser = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
 
@@ -104,6 +106,15 @@
             } else {
               alert('The File APIs are not fully supported in this browser.');
             }*/
+            $http.post("/api/listphotos", JSON.stringify({userId : vm.user.username}), {
+            })
+            .success(function(response){
+                vm.photosOfUser = response;
+                console.log(JSON.stringify(vm.photosOfUser, null, 2));
+            })
+            .error(function(){
+                // console.log("Failed to send the image to server!");
+            });
 
         }
 
