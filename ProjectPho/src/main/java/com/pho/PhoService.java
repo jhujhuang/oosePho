@@ -59,76 +59,6 @@ public class PhoService {
     }
 
     /**
-     * Look for a user in the users list by userId.
-     * @param userId the userId string
-     * @return user a User object, or null if not found
-     */
-    private User findByUserId(String userId) {
-        for (User usr: users) {
-            if (usr.getUserId().equals(userId)) {
-                return usr;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Find a user in the users list by userId.
-     * @param userId the userId String
-     * @return user a User object
-     * @throws IllegalArgumentException when user is not found
-     */
-    private User getUser(String userId) {
-        User usr = findByUserId(userId);
-
-        if (usr == null) {
-            throw new IllegalArgumentException("Invalid user id");  // Should never happen
-        }
-        return usr;
-    }
-
-    /**
-     * Find an a specific photo, by decoding the string pId.
-     * @param pId the pId string
-     * @return Photo
-     * @throws InvalidPhotoIdException when cannot find by given pId
-     * @throws IllegalArgumentException when pId is successfully decoded but photo record is not found
-     */
-    private Photo findByPhotoId(String pId) throws InvalidPhotoIdException {
-        int index = getIntId(pId);
-        Photo p = allPhotos.get(index);
-        if (p == null) {  // Should never happen per current implementation
-            throw new IllegalArgumentException("Cannot find valid photo by given pId.");
-        }
-        return p;
-    }
-
-    /**
-     * Generate unique non-guessable strings based on a unique number.
-     * @param num int, a number the generated string id will correspond to
-     * @return string
-     */
-    private String getStringId(int num) {
-        Hashids hashids = new Hashids(HASH_SALT);
-        return hashids.encode(num);
-    }
-
-    /**
-     * Decode generated hashids strings back to integer.
-     * @param pId string, a valid hashids string generated with HASH_SALT
-     * @throws InvalidPhotoIdException when string given is illegal
-     * @return int
-     */
-    private int getIntId(String pId) throws InvalidPhotoIdException {
-        Hashids hashids = new Hashids(HASH_SALT);
-        long[] decode =  hashids.decode(pId);
-        if (decode.length != 1) {  // Was encoded with one integer (pIdTracker)
-            throw new InvalidPhotoIdException("Given string was not encoded with same hashids", null);
-        }
-        return (int) decode[0];
-    }
-
-    /**
      * Register new account
      * @param userId the user ID
      * @param password the user's password
@@ -308,6 +238,76 @@ public class PhoService {
     //-----------------------------------------------------------------------------//
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
+
+    /**
+     * Look for a user in the users list by userId.
+     * @param userId the userId string
+     * @return user a User object, or null if not found
+     */
+    private User findByUserId(String userId) {
+        for (User usr: users) {
+            if (usr.getUserId().equals(userId)) {
+                return usr;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find a user in the users list by userId.
+     * @param userId the userId String
+     * @return user a User object
+     * @throws IllegalArgumentException when user is not found
+     */
+    private User getUser(String userId) {
+        User usr = findByUserId(userId);
+
+        if (usr == null) {
+            throw new IllegalArgumentException("Invalid user id");  // Should never happen
+        }
+        return usr;
+    }
+
+    /**
+     * Find an a specific photo, by decoding the string pId.
+     * @param pId the pId string
+     * @return Photo
+     * @throws InvalidPhotoIdException when cannot find by given pId
+     * @throws IllegalArgumentException when pId is successfully decoded but photo record is not found
+     */
+    private Photo findByPhotoId(String pId) throws InvalidPhotoIdException {
+        int index = getIntId(pId);
+        Photo p = allPhotos.get(index);
+        if (p == null) {  // Should never happen per current implementation
+            throw new IllegalArgumentException("Cannot find valid photo by given pId.");
+        }
+        return p;
+    }
+
+    /**
+     * Generate unique non-guessable strings based on a unique number.
+     * @param num int, a number the generated string id will correspond to
+     * @return string
+     */
+    private String getStringId(int num) {
+        Hashids hashids = new Hashids(HASH_SALT);
+        return hashids.encode(num);
+    }
+
+    /**
+     * Decode generated hashids strings back to integer.
+     * @param pId string, a valid hashids string generated with HASH_SALT
+     * @throws InvalidPhotoIdException when string given is illegal
+     * @return int
+     */
+    private int getIntId(String pId) throws InvalidPhotoIdException {
+        Hashids hashids = new Hashids(HASH_SALT);
+        long[] decode =  hashids.decode(pId);
+        if (decode.length != 1) {  // Was encoded with one integer (pIdTracker)
+            throw new InvalidPhotoIdException("Given string was not encoded with same hashids", null);
+        }
+        return (int) decode[0];
+    }
 
     public static class PhoServiceException extends Exception {
         public PhoServiceException(String message, Throwable cause) {
