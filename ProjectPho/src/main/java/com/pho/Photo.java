@@ -15,25 +15,24 @@ import java.util.Map;
  * Editing session.
  */
 public class Photo {
-    // Variables to help manage synchronization
-    private int canvasIdInt;
-    private String canvasId;
+    private static final String INITIAL_PHOTO_TITLE = "Untitled";
 
-    // Collaborators of the photo
-    private List<User> collaborators;
+    private final String photoId;
+    private String title;
 
     // Current canvas image of this photo
     private BufferedImage canvas;
 
-    // TODO: Fields below are from the old Photo class, rearrange maybe?
-    private static final String INITIAL_PHOTO_TITLE = "Untitled";
-
-    private String photoId;
-    private String title;
+    // Variables to help manage synchronization
+    private int canvasIdInt;
+    private String canvasId;
 
     // Variables to help manage version control
     private int nextVId;
     private List<Version> versions;
+
+    // Collaborators of the photo
+    private List<User> collaborators;
 
     // Comments made to this photo through collaboratively editing panel
     private List<Comment> comments;
@@ -143,7 +142,7 @@ public class Photo {
      * Return the next versionId string unique among versions for this photo
      * @return string
      */
-    String getNextVId() {
+    private String getNextVId() {
         return "" + nextVId;  // TODO: Consider change how to make this versionId
     }
 
