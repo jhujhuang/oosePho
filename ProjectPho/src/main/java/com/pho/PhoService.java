@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 
 /**
@@ -91,7 +92,8 @@ public class PhoService {
         String pId = getStringId(pIdTracker);
 
         // Add new photo associated with the given image.
-        String time = "0000-00"; // TODO: Get actual time
+
+        String time = getTime(); // TODO: Get actual time
         Photo p = new Photo(pId, time, userId, image);
         allPhotos.add(pIdTracker, p);
         pIdTracker++;
@@ -237,8 +239,7 @@ public class PhoService {
             throw new PhoSyncException("Canvas is out of date.", null);
         }
 
-        
-        // TODO: Implement
+        p.addVersion(getTime(), userId);
     }
 
     //-----------------------------------------------------------------------------//
@@ -315,6 +316,12 @@ public class PhoService {
         return (int) decode[0];
     }
 
+    private String getTime() {
+        Date d = new Date();
+        return d.toString();
+    }
+
+
     public static class PhoServiceException extends Exception {
         public PhoServiceException(String message, Throwable cause) {
             super(message, cause);
@@ -332,5 +339,4 @@ public class PhoService {
             super(message, cause);
         }
     }
-
 }
