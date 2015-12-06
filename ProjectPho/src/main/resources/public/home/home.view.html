@@ -49,10 +49,7 @@
 <div class="open_box_container">
     <div id="open" style="display:none;" class="open_box_center">
         <!--<div class="col-xs-6 col-md-3">-->
-        <a class="thumbnail">
-            <img sr="..." alt="...">
-            <img >
-        </a>
+        <img ng-click="" class="col-sm-6 col-md-4" data-ng-repeat="(key, value) in vm.photosOfUser" data-ng-src="data:image/png;base64, {{value}}" data-err-src="./images/icon.png"><!--alt="{{key}}"-->
         <!--</div>-->
     </div>
 </div>

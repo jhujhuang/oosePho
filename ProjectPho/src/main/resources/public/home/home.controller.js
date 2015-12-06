@@ -109,7 +109,7 @@
             $http.post("/api/listphotos", JSON.stringify({userId : vm.user.username}), {
             })
             .success(function(response){
-                vm.photosOfUser = response;
+                vm.photosOfUser = response['photos'];
                 console.log(JSON.stringify(vm.photosOfUser, null, 2));
             })
             .error(function(){
