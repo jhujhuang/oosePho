@@ -15,6 +15,7 @@ import java.util.Map;
  * Editing session.
  */
 public class EditingSession {
+    // TODO: Move Photo here and rename this class Photo
     private Photo photo;
     private int canvasIdInt;
     private String canvasId;
