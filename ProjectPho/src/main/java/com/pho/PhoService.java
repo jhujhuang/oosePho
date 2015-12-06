@@ -60,7 +60,7 @@ public class PhoService {
     }
 
     /**
-     * Find a user in the users list by userId.
+     * Look for a user in the users list by userId.
      * @param userId the userId string
      * @return user a User object, or null if not found
      */
@@ -71,6 +71,21 @@ public class PhoService {
             }
         }
         return null;
+    }
+
+    /**
+     * Find a user in the users list by userId.
+     * @param userId the userId String
+     * @return user a User object
+     * @throws IllegalArgumentException when user is not found
+     */
+    private User getUser(String userId) {
+        User usr = findByUserId(userId);
+
+        if (usr == null) {
+            throw new IllegalArgumentException("Invalid user id");  // Should never happen
+        }
+        return usr;
     }
 
     /**
@@ -142,22 +157,20 @@ public class PhoService {
      * @return the photo ID
      */
     public String createNewPhoto(String userId, BufferedImage image) throws PhoServiceException {
-        User usr = findByUserId(userId);
+        User usr = getUser(userId);
+
         String pId = getStringId(pIdTracker);
-        Photo p = new Photo(pId);
 
-        // Add version based on given image
-        String vId = p.getNextVId();
+        // Add photo based on given image
         String time = "0000-00"; // TODO: Get actual time
-        Version v0 = new Version(vId, time, userId, image);
-        p.addVersion(v0);
-
-        usr.addPhoto(p);  // User is authenticated at this point.
+        Photo p = new Photo(pId, time, userId, image);
 
         // Add editing session associated with the new photo.
         EditingSession e = new EditingSession(p);
         editingSessions.add(pIdTracker, e);
         pIdTracker++;
+
+        usr.addPhoto(e);  // User is authenticated at this point.
 
         return pId;
     }
@@ -170,7 +183,7 @@ public class PhoService {
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
         EditingSession e = findByPhotoId(photoId);
-        User usr = findByUserId(userId);
+        User usr = getUser(userId);
         e.addCollaborator(usr);
     }
 
@@ -180,12 +193,11 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
     public Map<String, Map<String, String>> listPhotosOfCurrentUser(String userId) throws InvalidPhotoIdException {
-        User usr = findByUserId(userId);
+        User usr = getUser(userId);
         Map<String, Map<String, String>> result = new HashMap<>();
         Map<String, String> l = new HashMap<>();
-        for (Photo p: usr.getPhotos()) {
-            String pId = p.getPhotoId();
-            EditingSession e = findByPhotoId(pId);
+        for (EditingSession e: usr.getPhotos()) {
+            String pId = e.getPId();
             try {
                 l.put(pId, e.getImageBytes());
             } catch (IOException e1) {
