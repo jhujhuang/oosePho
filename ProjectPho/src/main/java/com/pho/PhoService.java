@@ -232,6 +232,10 @@ public class PhoService {
      */
     public void saveVersion(String userId, String photoId, String canvasId)
             throws InvalidPhotoIdException, PhoSyncException {
+        EditingSession e = findByPhotoId(photoId);
+        if (!canvasId.equals(e.getCanvasId())) {
+            throw new PhoSyncException("Canvas is out of date.", null);
+        }
         // TODO: Implement
     }
 
