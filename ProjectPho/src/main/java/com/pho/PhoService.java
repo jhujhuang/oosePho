@@ -16,15 +16,14 @@ import java.util.Map;
  * pho service. The model ("M") of the MVC model.
  */
 public class PhoService {
-    // TODO: Consider to maintain users & editingSessions lists in an order for fast lookup.
-
     // TODO: Confirm hash salt before using.
     private static final String HASH_SALT = "AlWaYs UnIqUe NeVeR ChAnGe";
 
     private Sql2o db;
     private List<User> users;
-    private List<EditingSession> editingSessions;
-    // Since we store all editing sessions in a List, cannot scale up to long now
+    // All photos in allPhotos list are stored in an order
+    private List<Photo> allPhotos;
+    // Since we store all photos in a List, cannot scale up to long now
     private int pIdTracker;
 
     /**
@@ -33,9 +32,9 @@ public class PhoService {
      * @throws PhoServiceException when failures occur
      */
     public PhoService(DataSource dataSource) throws PhoServiceException {
-        // Initializes users & editingSessions lists
+        // Initializes users & allPhotos lists
         users = new ArrayList<>();
-        editingSessions = new ArrayList<>();
+        allPhotos = new ArrayList<>();
 
         // TODO: track pId with persistence layer
         pIdTracker = 0;
@@ -43,7 +42,7 @@ public class PhoService {
         // create a new database
         db = new Sql2o(dataSource);
 
-        // TODO: Load users from database & load editingSessions from database
+        // TODO: Load users from database & load allPhotos from database
 
         // TODO: Implement
         //Create the schema for the database if necessary. This allows this
@@ -57,76 +56,6 @@ public class PhoService {
             logger.error("Failed to create schema at startup", ex);
             throw new GameServiceException("Failed to create schema at startup", ex);
         }*/
-    }
-
-    /**
-     * Look for a user in the users list by userId.
-     * @param userId the userId string
-     * @return user a User object, or null if not found
-     */
-    private User findByUserId(String userId) {
-        for (User usr: users) {
-            if (usr.getUserId().equals(userId)) {
-                return usr;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Find a user in the users list by userId.
-     * @param userId the userId String
-     * @return user a User object
-     * @throws IllegalArgumentException when user is not found
-     */
-    private User getUser(String userId) {
-        User usr = findByUserId(userId);
-
-        if (usr == null) {
-            throw new IllegalArgumentException("Invalid user id");  // Should never happen
-        }
-        return usr;
-    }
-
-    /**
-     * Find an editing session for a specific photo, by decoding the string pId.
-     * @param pId the pId string
-     * @return editing session
-     * @throws InvalidPhotoIdException when cannot find by given pId
-     * @throws IllegalArgumentException when pId is successfully decoded but photo record is not found
-     */
-    private EditingSession findByPhotoId(String pId) throws InvalidPhotoIdException {
-        int index = getIntId(pId);
-        EditingSession e = editingSessions.get(index);
-        if (e == null) {  // Should never happen per current implementation
-            throw new IllegalArgumentException("Cannot find valid photo by given pId.");
-        }
-        return e;
-    }
-
-    /**
-     * Generate unique non-guessable strings based on a unique number.
-     * @param num int, a number the generated string id will correspond to
-     * @return string
-     */
-    private String getStringId(int num) {
-        Hashids hashids = new Hashids(HASH_SALT);
-        return hashids.encode(num);
-    }
-
-    /**
-     * Decode generated hashids strings back to integer.
-     * @param pId string, a valid hashids string generated with HASH_SALT
-     * @throws InvalidPhotoIdException when string given is illegal
-     * @return int
-     */
-    private int getIntId(String pId) throws InvalidPhotoIdException {
-        Hashids hashids = new Hashids(HASH_SALT);
-        long[] decode =  hashids.decode(pId);
-        if (decode.length != 1) {  // Was encoded with one integer (pIdTracker)
-            throw new InvalidPhotoIdException("Given string was not encoded with same hashids", null);
-        }
-        return (int) decode[0];
     }
 
     /**
@@ -161,28 +90,25 @@ public class PhoService {
 
         String pId = getStringId(pIdTracker);
 
-        // Add photo based on given image
+        // Add new photo associated with the given image.
         String time = "0000-00"; // TODO: Get actual time
         Photo p = new Photo(pId, time, userId, image);
-
-        // Add editing session associated with the new photo.
-        EditingSession e = new EditingSession(p);
-        editingSessions.add(pIdTracker, e);
+        allPhotos.add(pIdTracker, p);
         pIdTracker++;
 
-        usr.addPhoto(e);  // User is authenticated at this point.
+        usr.addPhoto(p);  // User is authenticated at this point.
 
         return pId;
     }
 
     /**
-     * Join editing session
+     * Join editing session of a Photo
      * @param userId the user ID
      * @param photoId the photo ID
      * @throws InvalidPhotoIdException when failures occur
      */
     public void joinEditingSession(String userId, String photoId) throws InvalidPhotoIdException {
-        EditingSession e = findByPhotoId(photoId);
+        Photo e = findByPhotoId(photoId);
         User usr = getUser(userId);
         e.addCollaborator(usr);
     }
@@ -196,10 +122,10 @@ public class PhoService {
         User usr = getUser(userId);
         Map<String, Map<String, String>> result = new HashMap<>();
         Map<String, String> l = new HashMap<>();
-        for (EditingSession e: usr.getPhotos()) {
-            String pId = e.getPId();
+        for (Photo p: usr.getPhotos()) {
+            String pId = p.getPId();
             try {
-                l.put(pId, e.getImageBytes());
+                l.put(pId, p.getImageBytes());
             } catch (IOException e1) {
                 e1.printStackTrace();  // TODO: handle
             }
@@ -215,8 +141,7 @@ public class PhoService {
      * @throws InvalidPhotoIdException when photo id is invalid
      */
     public void editPhotoTitle(String photoId, String title) throws InvalidPhotoIdException {
-        EditingSession e = findByPhotoId(photoId);
-        Photo p = e.getPhoto();
+        Photo p = findByPhotoId(photoId);
         p.setTitle(title);
     }
 
@@ -234,26 +159,26 @@ public class PhoService {
      */
     public String edit(String photoId, String canvasId, String editType, Map<String, Double> params)
             throws InvalidPhotoIdException, PhoSyncException, PhoServiceException {
-        EditingSession e = findByPhotoId(photoId);
-        if (!canvasId.equals(e.getCanvasId())) {
+        Photo p = findByPhotoId(photoId);
+        if (!canvasId.equals(p.getCanvasId())) {
             throw new PhoSyncException("Canvas is out of date.", null);
         }
-        e.edit(editType, params);
-        return e.getCanvasId();
+        p.edit(editType, params);
+        return p.getCanvasId();
         // TODO: Consider change to void since edit()'s returned canvasId is not used other than in tests.
     }
 
     /**
-     * Handles the fetch of current contents about a photo's editing session.
+     * Handles the fetch of current contents about a photo.
      *
      * @param photoId the photo ID
      * @throws InvalidPhotoIdException when photo id is invalid
-     * @return EditingSession.FetchResult content to be included in the response to fetch
+     * @return Photo.FetchResult content to be included in the response to fetch
      */
-    public EditingSession.FetchResult fetch(String photoId) throws InvalidPhotoIdException {
-        EditingSession e = findByPhotoId(photoId);
+    public Photo.FetchResult fetch(String photoId) throws InvalidPhotoIdException {
+        Photo p = findByPhotoId(photoId);
         try {
-            return e.getFetchResults();
+            return p.getFetchResults();
         } catch (IOException ex) {
             throw new RuntimeException("Something went wrong when we try to write image to bytes.");
         }
@@ -278,7 +203,7 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of Version instances.
      */
     public Map<String, List<Version>> getRevisions(String photoId) throws InvalidPhotoIdException {
-        Photo p = findByPhotoId(photoId).getPhoto();
+        Photo p = findByPhotoId(photoId);
         List<Version> versions = p.getVersions();
         Map<String, List<Version>> map = new HashMap<>();
         map.put("versions", versions);
@@ -313,6 +238,76 @@ public class PhoService {
     //-----------------------------------------------------------------------------//
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
+
+    /**
+     * Look for a user in the users list by userId.
+     * @param userId the userId string
+     * @return user a User object, or null if not found
+     */
+    private User findByUserId(String userId) {
+        for (User usr: users) {
+            if (usr.getUserId().equals(userId)) {
+                return usr;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Find a user in the users list by userId.
+     * @param userId the userId String
+     * @return user a User object
+     * @throws IllegalArgumentException when user is not found
+     */
+    private User getUser(String userId) {
+        User usr = findByUserId(userId);
+
+        if (usr == null) {
+            throw new IllegalArgumentException("Invalid user id");  // Should never happen
+        }
+        return usr;
+    }
+
+    /**
+     * Find an a specific photo, by decoding the string pId.
+     * @param pId the pId string
+     * @return Photo
+     * @throws InvalidPhotoIdException when cannot find by given pId
+     * @throws IllegalArgumentException when pId is successfully decoded but photo record is not found
+     */
+    private Photo findByPhotoId(String pId) throws InvalidPhotoIdException {
+        int index = getIntId(pId);
+        Photo p = allPhotos.get(index);
+        if (p == null) {  // Should never happen per current implementation
+            throw new IllegalArgumentException("Cannot find valid photo by given pId.");
+        }
+        return p;
+    }
+
+    /**
+     * Generate unique non-guessable strings based on a unique number.
+     * @param num int, a number the generated string id will correspond to
+     * @return string
+     */
+    private String getStringId(int num) {
+        Hashids hashids = new Hashids(HASH_SALT);
+        return hashids.encode(num);
+    }
+
+    /**
+     * Decode generated hashids strings back to integer.
+     * @param pId string, a valid hashids string generated with HASH_SALT
+     * @throws InvalidPhotoIdException when string given is illegal
+     * @return int
+     */
+    private int getIntId(String pId) throws InvalidPhotoIdException {
+        Hashids hashids = new Hashids(HASH_SALT);
+        long[] decode =  hashids.decode(pId);
+        if (decode.length != 1) {  // Was encoded with one integer (pIdTracker)
+            throw new InvalidPhotoIdException("Given string was not encoded with same hashids", null);
+        }
+        return (int) decode[0];
+    }
 
     public static class PhoServiceException extends Exception {
         public PhoServiceException(String message, Throwable cause) {

@@ -1,24 +1,45 @@
 package com.pho;
 
+import com.pho.filters.Filter;
+
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
- * A photo object.
+ * Editing session.
  */
 public class Photo {
     private static final String INITIAL_PHOTO_TITLE = "Untitled";
 
-    private String photoId;
+    private final String photoId;
     private String title;
+
+    // Current canvas image of this photo
+    private BufferedImage canvas;
+
+    // Variables to help manage synchronization
+    private int canvasIdInt;
+    private String canvasId;
+
+    // Variables to help manage version control
     private int nextVId;
     private List<Version> versions;
-    // TODO: Maybe store and handle comments under EditingSession instead
+
+    // Collaborators of the photo
+    private List<User> collaborators;
+
+    // Comments made to this photo through collaboratively editing panel
     private List<Comment> comments;
 
+
     /**
-     * Creates a new photo (empty with no version) associated with a unique pId.
+     * Constructor for the EditingSessions class, initialized with the first image version
      * @param photoId string, a unique pId given by the server at creation time.
      * @param time string
      * @param userId string
@@ -33,15 +54,28 @@ public class Photo {
         this.versions = new ArrayList<>();
 
         addVersion(time, userId, img);
+
+        // Set up canvas and initialize with 0 collaborators
+        this.canvas = getCurrentVersion().getImage();
+        collaborators = new ArrayList<>();
+
+        // Initialize canvasId
+        canvasIdInt = 0;
+        updateCanvasId();
     }
 
     /**
-     * Retrieves the pId for this photo.
-     * @return string, the unique pId of this photo.
+     * Return the photoId of the photo
+     * @return String
      */
-    public String getPhotoId() {
-        return this.photoId;
+    public String getPId() {
+        return photoId;
     }
+
+    //-----------------------------------------------------------------------------//
+    // Methods for the old Photo class
+    //-----------------------------------------------------------------------------//
+
 
     /**
      * Retrieves the title of this photo.
@@ -93,7 +127,7 @@ public class Photo {
      * @param comment Comment, a new comment just created.
      */
     public void addComment(Comment comment) {
-	this.comments.add(comment);
+        this.comments.add(comment);
     }
 
     /**
@@ -104,11 +138,139 @@ public class Photo {
         this.title = newTitle;
     }
 
+
+    //-----------------------------------------------------------------------------//
+    // Methods for the old EditingSession class
+    //-----------------------------------------------------------------------------//
+
+
+    /**
+     * Add a collaborator to an editing session. Does nothing if user is already in.
+     * @param collaborator User to add to the editing session.
+     */
+    public void addCollaborator(User collaborator) {
+        if (collaborators.contains(collaborator)) {
+            return;
+        }
+        collaborators.add(collaborator);
+    }
+
+    /**
+     * Get the list of all collaborators
+     * @return a list of User
+     */
+    public List<User> getCollaborators() {
+        return collaborators;
+    }
+
+    /**
+     * Get the canvas Id
+     * @return canvas Id
+     */
+    public String getCanvasId() {
+        return canvasId;
+    }
+
+    /**
+     * Apply filter to photo, and update canvas.
+     * @param editType String of filter type.
+     * @param params Map of filter parameters.
+     * @throws PhoService.PhoServiceException when editType is not found.
+     */
+    public void edit(String editType, Map<String, Double> params)
+            throws PhoService.PhoServiceException {
+        Filter f;
+        try {
+            f = Filter.getFilter(editType, params);
+        } catch (Filter.UnknownFilterException e) {
+            throw new PhoService.PhoServiceException("Invalid editing type", e);
+        }
+        f.loadImage(canvas);
+
+        // Make changes and store new canvas image
+        // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
+        f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
+
+        canvas = f.getImage();
+
+        updateCanvasId();
+    }
+
+    /**
+     * Retrieves the result for fetch
+     * @return FetchResult object
+     * @throws IOException
+     */
+    FetchResult getFetchResults() throws IOException {
+        FetchResult result = new FetchResult();
+        result.setCanvasId(canvasId);
+        result.setCollaborators(collaborators);
+        result.setTitle(title);
+        result.setCanvasData(getImageBytes());
+        // TODO: Do we need versionId fetched?
+        Version currentVersion = getCurrentVersion();
+        result.setVersionId(currentVersion);
+        return result;
+    }
+
+    /**
+     * Get the image in the form of base 64 bytes.
+     * @return base 64 string
+     * @throws IOException
+     */
+    public String getImageBytes() throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(canvas, "jpg", baos);
+        baos.flush();
+        byte[] imageInByteArray = baos.toByteArray();
+        baos.close();
+        return DatatypeConverter.printBase64Binary(imageInByteArray);
+    }
+
+    //-----------------------------------------------------------------------------//
+    // Helper Classes and Methods
+    //-----------------------------------------------------------------------------//
+
+    private void updateCanvasId() {
+        canvasId = "" + canvasIdInt++;
+    }
+
     /**
      * Return the next versionId string unique among versions for this photo
      * @return string
      */
-    String getNextVId() {
+    private String getNextVId() {
         return "" + nextVId;  // TODO: Consider change how to make this versionId
+    }
+
+    /**
+     * An helper object for fetch result that is ready to convert to JSON response.
+     */
+    class FetchResult {
+        String canvasId;
+        List<User> collaborators;
+        String title;
+        String canvasData;  // img converted to base 64 string
+        String versionId;
+
+        void setCanvasId(String canvasId) {
+            this.canvasId = canvasId;
+        }
+
+        void setCollaborators(List<User> collaborators) {
+            this.collaborators = collaborators;
+        }
+
+        void setTitle(String title) {
+            this.title = title;
+        }
+
+        void setCanvasData(String bytes) {
+            this.canvasData = bytes;
+        }
+
+        void setVersionId(Version v) {
+            this.versionId = v.getVersionId();
+        }
     }
 }
