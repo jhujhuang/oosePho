@@ -53,11 +53,12 @@ public class Photo {
         this.nextVId = 0;
         this.versions = new ArrayList<>();
 
-        addVersion(time, userId, img);
-
         // Set up canvas and initialize with 0 collaborators
-        this.canvas = getCurrentVersion().getImage();
+        this.canvas = img;
         collaborators = new ArrayList<>();
+
+        // Add the initial version to the versions list
+        addVersion(time, userId);
 
         // Initialize canvasId
         canvasIdInt = 0;
@@ -105,11 +106,10 @@ public class Photo {
      * Adds a newest version to the versions list of this photo.
      * @param time string
      * @param userId string
-     * @param img BufferedImage
      */
-    public void addVersion(String time, String userId, BufferedImage img) {
+    public void addVersion(String time, String userId) {
         String vId = getNextVId();
-        Version v = new Version(vId, time, userId, img);
+        Version v = new Version(vId, time, userId, canvas);
         this.versions.add(v);
         nextVId++;
     }
