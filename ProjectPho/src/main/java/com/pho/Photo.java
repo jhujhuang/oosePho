@@ -15,11 +15,14 @@ import java.util.Map;
  * Editing session.
  */
 public class Photo {
-    // TODO: Move Photo here and rename this class Photo
-
+    // Variables to help manage synchronization
     private int canvasIdInt;
     private String canvasId;
+
+    // Collaborators of the photo
     private List<User> collaborators;
+
+    // Current canvas image of this photo
     private BufferedImage canvas;
 
     // TODO: Fields below are from the old Photo class, rearrange maybe?
@@ -27,8 +30,12 @@ public class Photo {
 
     private String photoId;
     private String title;
+
+    // Variables to help manage version control
     private int nextVId;
     private List<Version> versions;
+
+    // Comments made to this photo through collaboratively editing panel
     private List<Comment> comments;
 
 
@@ -142,7 +149,7 @@ public class Photo {
 
 
     //-----------------------------------------------------------------------------//
-    // Methods for the old Photo class
+    // Methods for the old EditingSession class
     //-----------------------------------------------------------------------------//
 
 
@@ -228,6 +235,10 @@ public class Photo {
         baos.close();
         return DatatypeConverter.printBase64Binary(imageInByteArray);
     }
+
+    //-----------------------------------------------------------------------------//
+    // Helper Classes
+    //-----------------------------------------------------------------------------//
 
     /**
      * An helper object for fetch result that is ready to convert to JSON response.
