@@ -131,7 +131,7 @@ public class TestPhoService {
         String s = DatatypeConverter.printBase64Binary(bytes);
 
         String pId = phoService.createNewPhoto(userId, testImg);
-        EditingSession.FetchResult response = phoService.fetch(pId);
+        Photo.FetchResult response = phoService.fetch(pId);
         assertTrue(response.canvasData != null);
         assertEquals(s, response.canvasData);
         assertEquals("0", response.versionId);
@@ -156,7 +156,7 @@ public class TestPhoService {
         phoService.register(userId, "password");
 
         String pId = phoService.createNewPhoto(userId, testImg);
-        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
         String newCanvasId = phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
@@ -178,7 +178,7 @@ public class TestPhoService {
         phoService.register(userId, "password");
 
         String pId = phoService.createNewPhoto(userId, testImg);
-        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
         String wrongId = "csf";
@@ -193,7 +193,7 @@ public class TestPhoService {
         phoService.register(userId, "password");
 
         String pId = phoService.createNewPhoto(userId, testImg);
-        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
         phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
@@ -207,7 +207,7 @@ public class TestPhoService {
         phoService.register(userId, "password");
 
         String pId = phoService.createNewPhoto(userId, testImg);
-        EditingSession.FetchResult fetchResult = phoService.fetch(pId);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
         phoService.edit(pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP);

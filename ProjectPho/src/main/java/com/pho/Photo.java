@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Editing session.
  */
-public class EditingSession {
+public class Photo {
     // TODO: Move Photo here and rename this class Photo
 
     private int canvasIdInt;
@@ -39,7 +39,7 @@ public class EditingSession {
      * @param userId string
      * @param img BufferedImage
      */
-    public EditingSession(String photoId, String time, String userId, BufferedImage img) {
+    public Photo(String photoId, String time, String userId, BufferedImage img) {
         // TODO: Extended Feature: initialize with given title.
         this.title = INITIAL_PHOTO_TITLE;
         this.photoId = photoId;
@@ -142,7 +142,7 @@ public class EditingSession {
 
 
     //-----------------------------------------------------------------------------//
-    // Methods for the old EditingSession class
+    // Methods for the old Photo class
     //-----------------------------------------------------------------------------//
 
 

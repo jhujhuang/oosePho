@@ -81,7 +81,7 @@ public class TestPhoController {
         String pId = property.getProperty("pId");
 
         // Fetch and check image data
-        EditingSession.FetchResult fetched = getFetchResult(pId);
+        Photo.FetchResult fetched = getFetchResult(pId);
 
         String base64 =  fetched.canvasData;
         byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
@@ -144,7 +144,7 @@ public class TestPhoController {
         assertEquals("Fail to change title", 200, titleResponse.httpStatus);
 
         // Fetch and check new title
-        EditingSession.FetchResult fetched = getFetchResult(pId);
+        Photo.FetchResult fetched = getFetchResult(pId);
         assertEquals(newTitle, fetched.title);
 
         // Non-existing photo
@@ -157,7 +157,7 @@ public class TestPhoController {
         registerUser();
         String pId = createNewPhoto();
 
-        EditingSession.FetchResult fetched = getFetchResult(pId);
+        Photo.FetchResult fetched = getFetchResult(pId);
 
         String oldBase64 = fetched.canvasData;
         String oldCanvasId = fetched.canvasId;
@@ -191,14 +191,14 @@ public class TestPhoController {
         registerUser();
         String pId = createNewPhoto();
 
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+        Type fetchType = new TypeToken<Photo.FetchResult>() {}.getType();
 
         // Fetch
         Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
         assertEquals(200, fetchResult.httpStatus);
 
         // Check fetch results
-        EditingSession.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
+        Photo.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
 
         String base64 =  fetched.canvasData;
         byte[] bytes = DatatypeConverter.parseBase64Binary(base64);
@@ -258,8 +258,8 @@ public class TestPhoController {
     }
 
     /** Get fetch result by sending a fetch request. **/
-    private EditingSession.FetchResult getFetchResult(String pId) {
-        Type fetchType = new TypeToken<EditingSession.FetchResult>() {}.getType();
+    private Photo.FetchResult getFetchResult(String pId) {
+        Type fetchType = new TypeToken<Photo.FetchResult>() {}.getType();
         Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
         return new Gson().fromJson(fetchResult.content, fetchType);
     }
