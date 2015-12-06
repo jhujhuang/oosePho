@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class User {
     private final String userId;
-    private List<Photo> photos;
+    private List<EditingSession> photos;
 
     /**
      * Constructor for the User class
@@ -31,14 +31,14 @@ public class User {
     /** Get the list of photos of the user.
      * @return the array containing the photos of the user
      */
-    public List<Photo> getPhotos() {
+    public List<EditingSession> getPhotos() {
 	return this.photos;
     }
     
     /** Add a photo to a user's collection of photo.
      * @param p the photo to add
      */
-    public void addPhoto(Photo p) {
+    public void addPhoto(EditingSession p) {
 	this.photos.add(p);
     }
 }

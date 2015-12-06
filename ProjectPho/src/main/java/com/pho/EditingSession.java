@@ -38,6 +38,10 @@ public class EditingSession {
         canvasId = "" + canvasIdInt++;
     }
 
+    public String getPId() {
+        return photo.getPhotoId();
+    }
+
     /**
      * Add a collaborator to an editing session. Does nothing if user is already in.
      * @param collaborator User to add to the editing session.
@@ -103,7 +107,7 @@ public class EditingSession {
      * @return FetchResult object
      * @throws IOException
      */
-    public FetchResult getFetchResults() throws IOException {
+    FetchResult getFetchResults() throws IOException {
         FetchResult result = new FetchResult();
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
