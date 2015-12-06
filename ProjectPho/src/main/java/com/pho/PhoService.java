@@ -161,12 +161,9 @@ public class PhoService {
 
         String pId = getStringId(pIdTracker);
 
-        // Add photo based on given image
-        String time = "0000-00"; // TODO: Get actual time
-        Photo p = new Photo(pId, time, userId, image);
-
         // Add editing session associated with the new photo.
-        EditingSession e = new EditingSession(p);
+        String time = "0000-00"; // TODO: Get actual time
+        EditingSession e = new EditingSession(pId, time, userId, image);
         editingSessions.add(pIdTracker, e);
         pIdTracker++;
 
@@ -215,8 +212,7 @@ public class PhoService {
      * @throws InvalidPhotoIdException when photo id is invalid
      */
     public void editPhotoTitle(String photoId, String title) throws InvalidPhotoIdException {
-        EditingSession e = findByPhotoId(photoId);
-        Photo p = e.getPhoto();
+        EditingSession p = findByPhotoId(photoId);
         p.setTitle(title);
     }
 
@@ -278,7 +274,7 @@ public class PhoService {
      * @return map of content to be included in the response, where the list is a list of Version instances.
      */
     public Map<String, List<Version>> getRevisions(String photoId) throws InvalidPhotoIdException {
-        Photo p = findByPhotoId(photoId).getPhoto();
+        EditingSession p = findByPhotoId(photoId);
         List<Version> versions = p.getVersions();
         Map<String, List<Version>> map = new HashMap<>();
         map.put("versions", versions);

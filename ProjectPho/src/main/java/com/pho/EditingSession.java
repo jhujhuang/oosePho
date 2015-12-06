@@ -16,20 +16,43 @@ import java.util.Map;
  */
 public class EditingSession {
     // TODO: Move Photo here and rename this class Photo
-    private Photo photo;
+
     private int canvasIdInt;
     private String canvasId;
     private List<User> collaborators;
     private BufferedImage canvas;
 
+    // TODO: Fields below are from the old Photo class, rearrange maybe?
+    private static final String INITIAL_PHOTO_TITLE = "Untitled";
+
+    private String photoId;
+    private String title;
+    private int nextVId;
+    private List<Version> versions;
+    private List<Comment> comments;
+
+
     /**
-     * Constructor for the EditingSessions class
-     * @param photo the photo used in this editing session
+     * Constructor for the EditingSessions class, initialized with the first image version
+     * @param photoId string, a unique pId given by the server at creation time.
+     * @param time string
+     * @param userId string
+     * @param img BufferedImage
      */
-    public EditingSession(Photo photo) {
-        this.photo = photo;
-        this.canvas = photo.getCurrentVersion().getImage();
+    public EditingSession(String photoId, String time, String userId, BufferedImage img) {
+        // TODO: Extended Feature: initialize with given title.
+        this.title = INITIAL_PHOTO_TITLE;
+        this.photoId = photoId;
+
+        this.nextVId = 0;
+        this.versions = new ArrayList<>();
+
+        addVersion(time, userId, img);
+
+        // Set up canvas and initialize with 0 collaborators
+        this.canvas = getCurrentVersion().getImage();
         collaborators = new ArrayList<>();
+
         // Initialize canvasId
         canvasIdInt = 0;
         updateCanvasId();
@@ -40,8 +63,88 @@ public class EditingSession {
     }
 
     public String getPId() {
-        return photo.getPhotoId();
+        return photoId;
     }
+
+    //-----------------------------------------------------------------------------//
+    // Methods for the old Photo class
+    //-----------------------------------------------------------------------------//
+
+
+    /**
+     * Retrieves the title of this photo.
+     * @return string, the title of the photo.
+     */
+    public String getTitle() {
+        return this.title;
+    }
+
+    /**
+     * Retrieves all the versions of this photo.
+     * @return list of versions
+     */
+    public List<Version> getVersions() {
+        return this.versions;
+    }
+
+    /**
+     * Retrieves the latest version of this photo
+     * @return Version
+     */
+    public Version getCurrentVersion() {
+        return versions.get(versions.size() - 1);
+    }
+
+    /**
+     * Adds a newest version to the versions list of this photo.
+     * @param time string
+     * @param userId string
+     * @param img BufferedImage
+     */
+    public void addVersion(String time, String userId, BufferedImage img) {
+        String vId = getNextVId();
+        Version v = new Version(vId, time, userId, img);
+        this.versions.add(v);
+        nextVId++;
+    }
+
+    /**
+     * Retrieves all the comments of this photo.
+     * @return list of comments
+     */
+    public List<Comment> getComments() {
+        return this.comments;
+    }
+
+    /**
+     * Adds a new comment to the photo.
+     * @param comment Comment, a new comment just created.
+     */
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
+    /**
+     * Change the photo title.
+     * @param newTitle string, the new desired title of this photo.
+     */
+    public void setTitle(String newTitle) {
+        this.title = newTitle;
+    }
+
+    /**
+     * Return the next versionId string unique among versions for this photo
+     * @return string
+     */
+    String getNextVId() {
+        return "" + nextVId;  // TODO: Consider change how to make this versionId
+    }
+
+
+    //-----------------------------------------------------------------------------//
+    // Methods for the old EditingSession class
+    //-----------------------------------------------------------------------------//
+
 
     /**
      * Add a collaborator to an editing session. Does nothing if user is already in.
@@ -68,14 +171,6 @@ public class EditingSession {
      */
     public String getCanvasId() {
         return canvasId;
-    }
-
-    /**
-     * Get the photo associated with this editing session
-     * @return Photo
-     */
-    Photo getPhoto() {
-        return photo;
     }
 
     /**
@@ -112,10 +207,10 @@ public class EditingSession {
         FetchResult result = new FetchResult();
         result.setCanvasId(canvasId);
         result.setCollaborators(collaborators);
-        result.setTitle(photo.getTitle());
+        result.setTitle(title);
         result.setCanvasData(getImageBytes());
         // TODO: Do we need versionId fetched?
-        Version currentVersion = photo.getCurrentVersion();
+        Version currentVersion = getCurrentVersion();
         result.setVersionId(currentVersion);
         return result;
     }
