@@ -64,10 +64,10 @@ public class Photo {
         updateCanvasId();
     }
 
-    private void updateCanvasId() {
-        canvasId = "" + canvasIdInt++;
-    }
-
+    /**
+     * Return the photoId of the photo
+     * @return String
+     */
     public String getPId() {
         return photoId;
     }
@@ -136,14 +136,6 @@ public class Photo {
      */
     public void setTitle(String newTitle) {
         this.title = newTitle;
-    }
-
-    /**
-     * Return the next versionId string unique among versions for this photo
-     * @return string
-     */
-    private String getNextVId() {
-        return "" + nextVId;  // TODO: Consider change how to make this versionId
     }
 
 
@@ -236,8 +228,20 @@ public class Photo {
     }
 
     //-----------------------------------------------------------------------------//
-    // Helper Classes
+    // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
+
+    private void updateCanvasId() {
+        canvasId = "" + canvasIdInt++;
+    }
+
+    /**
+     * Return the next versionId string unique among versions for this photo
+     * @return string
+     */
+    private String getNextVId() {
+        return "" + nextVId;  // TODO: Consider change how to make this versionId
+    }
 
     /**
      * An helper object for fetch result that is ready to convert to JSON response.
