@@ -148,7 +148,6 @@
             vm.pId = Object.keys(vm.photosOfUser)[idx];
             vm.url = "http://localhost:8080/#/edit/" + pId;
             isInSession = true;
-            console.log("fck!!!")
         }
 
         function fetchAndUpdate(){
