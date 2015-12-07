@@ -5,8 +5,8 @@
         .module('app')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['UserService', '$rootScope', '$http'];
-    function HomeController(UserService, $rootScope, $http) {
+    HomeController.$inject = ['UserService', '$rootScope', '$http', '$routeParams'];
+    function HomeController(UserService, $rootScope, $http, $routeParams) {
 
         // some jQuery to make a link serve as an input option
         $("#upload_link").on('click', function(e){
@@ -100,10 +100,24 @@
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
 
-        if (vm.isInSession) {
-            window.setInterval(fetchAndUpdate(), 4000);
-        }   else {
-            console.log("Currently no editing session is in place.");
+
+        if($routeParams.pId) {
+            console.log(vm.user);
+            console.log($rootScope.globals.currentUser);
+            joinEditingSession($routeParams.pId);
+
+            console.log("Is in session: " + vm.isInSession);
+        }
+
+        checkIsInSession();
+
+        function checkIsInSession() {
+            console.log("Checking is in session: " + vm.isInSession)
+            if (vm.isInSession) {
+                window.setInterval(fetchAndUpdate(), 4000);
+            }   else {
+                console.log("Currently no editing session is in place.");
+            }
         }
 
         function uploadImage() {
@@ -143,17 +157,43 @@
             });
         }
 
-        function initiateEditingSession(idx){
+        function joinEditingSession(pId){
             $("#open").css('display', 'none');
-            vm.pId = Object.keys(vm.photosOfUser)[idx];
-            vm.url = "http://localhost:8080/#/edit/" + pId;
-            isInSession = true;
+
+            console.log($rootScope.globals.currentUser.username + " is entering Editing Session: " + pId);
+
+            //alert(vm.user);  // TODO: Why is null? Just use user form scope now
+            //$http.post("/api/edit/" + pId, JSON.stringify({userId : vm.user.username}), {})
+            $http.post("/api/edit/" + pId, JSON.stringify({userId : $rootScope.globals.currentUser.username}), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                vm.pId = pId;
+                vm.url = "http://localhost:8080/#/edit/" + pId;
+                vm.isInSession = true;
+                console.log("join success");
+
+                console.log(vm.isInSession);
+                console.log(vm.pId);
+
+                checkIsInSession();
+            })
+            .error(function() {
+                console.log("Photo does not exist! Not joining any editing session.");
+                alert("Photo does not exist! Not joining any editing session.");
+            });
         }
 
         function fetchAndUpdate(){
-            $http.post("http://localhost:8080/#/edit/" + pId + "/fetch", {
+            $http.get("/api/edit/" + vm.pId + "/fetch", {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
             })
             .success(function(response){
+                console.log("Fetch success");
 
                 vm.canvasId = response['canvasId'];
                 vm.collaborator = response['collaborators'];
@@ -168,7 +208,9 @@
                 image.src = "data:image/png;base64; " + vm.canvasData;
 
             })
-            .error();
+            .error(function() {
+                console.log("Fetch failed");
+            });
         }
 
         function saveVersion(){
