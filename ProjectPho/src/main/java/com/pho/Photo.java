@@ -115,7 +115,7 @@ public class Photo {
 
 
     /**
-     * Adds a newest version that has same image as an old version specified.
+     * Revert to an old version, and adds a newest version that has same image.
      * @param time string
      * @param versionId string
      * @param userId string
@@ -125,8 +125,13 @@ public class Photo {
     public void revertVersion(String time, String versionId, String userId) {
         int versionIndex = Integer.parseInt(versionId);  // We use same version id as list index
         Version v = versions.get(versionIndex);
-        Version nV = new Version(getNextVId(), time, userId, v.getImage());
+        BufferedImage img = v.getImage();
+
+        Version nV = new Version(getNextVId(), time, userId, img);
         versions.add(nV);
+
+        // Update canvas
+        canvas = img;
     }
 
 

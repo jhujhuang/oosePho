@@ -290,5 +290,36 @@ public class TestPhoService {
         phoService.saveVersion(userId, wrongId, oldCanvasId);
     }
 
+    @Test
+    public void testRevertTo() throws PhoService.PhoSyncException,
+            PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
+        String initialCanvas = fetchResult.canvasData;
+
+        // Let someone change the photo and save a version
+        String canvasId = fetchResult.canvasId;
+        String otherUser = "TestUser";
+
+        canvasId = phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.saveVersion(otherUser, pId, canvasId);
+
+        // Revert to the previous version
+        List<Version> listed = (phoService.getRevisions(pId)).get("versions");
+        assertEquals(2, listed.size());
+        String revertTo = listed.get(0).getVersionId();
+
+        phoService.revertToSelectedVersion(pId, revertTo, userId);
+        listed = (phoService.getRevisions(pId).get("versions"));
+        assertEquals(3, listed.size());
+
+        // Fetch again and check data
+        fetchResult = phoService.fetch(pId);
+        assertEquals(initialCanvas, fetchResult.canvasData);
+    }
+
     // TODO: more tests
 }
