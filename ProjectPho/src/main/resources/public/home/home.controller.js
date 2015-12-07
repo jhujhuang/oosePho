@@ -134,7 +134,8 @@
         function checkIsInSession() {
             console.log("Checking is in session: " + vm.isInSession)
             if (vm.isInSession) {
-                window.setInterval(fetchAndUpdate(), 4000);
+                console.log("Set interval to fetch.");
+                window.setInterval(fetchAndUpdate, 4000);
             }   else {
                 console.log("Currently no editing session is in place.");
             }
