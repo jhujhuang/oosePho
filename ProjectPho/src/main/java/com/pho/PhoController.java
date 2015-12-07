@@ -205,7 +205,7 @@ public class PhoController {
                 String userId = property.getProperty("userId");  // TODO: store who reverted
                 String photoId = request.params(":pId");
                 String versionId = property.getProperty("versionId");
-                phoService.revertToSelectedVersion(photoId, versionId);
+                phoService.revertToSelectedVersion(photoId, versionId, userId);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
