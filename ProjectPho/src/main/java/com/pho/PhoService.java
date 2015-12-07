@@ -217,12 +217,16 @@ public class PhoService {
      * @param photoId the photo ID
      * @param versionId the version ID
      * @throws InvalidPhotoIdException when photo id is invalid
-     * @throws PhoServiceException when failures occur
+     * @throws PhoServiceException when versionId is invalid
      */
     public void revertToSelectedVersion(String photoId, String versionId, String userId)
             throws InvalidPhotoIdException, PhoServiceException {
         Photo p = findByPhotoId(photoId);
-        p.revertVersion(getTime(), versionId, userId);
+        try {
+            p.revertVersion(getTime(), versionId, userId);
+        } catch (IndexOutOfBoundsException|NumberFormatException ex) {
+            throw new PhoServiceException("Invalid versionId", ex);
+        }
     }
 
     /**

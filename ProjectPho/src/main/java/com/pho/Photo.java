@@ -114,13 +114,19 @@ public class Photo {
     }
 
 
+    /**
+     * Adds a newest version that has same image as an old version specified.
+     * @param time string
+     * @param versionId string
+     * @param userId string
+     * @throws NumberFormatException when versionId cannot convert to number
+     * @throws IndexOutOfBoundsException when versionId is not found
+     */
     public void revertVersion(String time, String versionId, String userId) {
-        for (Version v : this.versions) {
-            if (v.getVersionId().equals(versionId)) {
-                Version nV = new Version(getNextVId(), time, userId, v.getImage());
-                this.versions.add(nV);
-            }
-        }
+        int versionIndex = Integer.parseInt(versionId);  // We use same version id as list index
+        Version v = versions.get(versionIndex);
+        Version nV = new Version(getNextVId(), time, userId, v.getImage());
+        versions.add(nV);
     }
 
 

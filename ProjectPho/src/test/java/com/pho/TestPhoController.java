@@ -222,12 +222,12 @@ public class TestPhoController {
         registerUser();
         String pId = createNewPhoto();
 
-        Type revisionsType = new TypeToken<Map<String, List<Version>>>() {}.getType();
+        Type revisionsType = new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType();
 
         Response revisionsResult = request("GET", "/edit/" + pId + "/versions", null);
         assertEquals("Fail to list revisions", 200, revisionsResult.httpStatus);
 
-        Map<String, List<Version>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
+        Map<String, List<Map<String, String>>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
         assertEquals(1, map.get("versions").size());
 
         // For failure
@@ -240,7 +240,7 @@ public class TestPhoController {
         registerUser();
         String pId = createNewPhoto();
 
-        List<Version> listed = getListedVersions(pId);
+        List<Map<String, String>> listed = getListedVersions(pId);
         assertEquals(1, listed.size());
 
         Photo.FetchResult fetched = getFetchResult(pId);
@@ -274,7 +274,43 @@ public class TestPhoController {
     @Test
     public void testRevertVersion() {
         registerUser();
-        // TODO
+        String pId = createNewPhoto();
+
+        Photo.FetchResult fetched = getFetchResult(pId);
+
+        // Make change
+        Map<String, String> editContent = new HashMap<>();
+        editContent.put("canvasId", fetched.canvasId);
+        editContent.put("editType", "BlurFilter");
+        editContent.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
+        request("POST", "/edit/" + pId + "/change", editContent);
+
+        fetched = getFetchResult(pId);
+
+        // Save a version
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
+        content.put("pId", pId);
+        content.put("canvasId", fetched.canvasId);
+        request("POST", "/edit/" + pId + "/save", content);
+
+        List<Map<String, String>> listed = getListedVersions(pId);
+        String revertTo = listed.get(0).get("versionId");
+        content.put("versionId", revertTo);
+        Response revertResult = request("POST", "/edit/" + pId + "/versions/revert", content);
+        assertEquals("Fail to revert", 200, revertResult.httpStatus);
+
+        // Non-existing photoId
+        revertResult = request("POST", "/edit/csf/versions/revert", content);
+        assertEquals("Fail to recognize invalid photoId", 404, revertResult.httpStatus);
+
+        // Non-existing versionId
+        content.put("versionId", "WrongVersion");
+        revertResult = request("POST", "/edit/" + pId + "/versions/revert", content);
+        assertEquals("Fail to recognize invalid versionId", 401, revertResult.httpStatus);
+        content.put("versionId", "500");
+        revertResult = request("POST", "/edit/" + pId + "/versions/revert", content);
+        assertEquals("Fail to recognize invalid versionId", 401, revertResult.httpStatus);
     }
 
 
@@ -304,10 +340,10 @@ public class TestPhoController {
     }
 
     /** Get list of versions of a photo. **/
-    private List<Version> getListedVersions(String pId) {
-        Type revisionsType = new TypeToken<Map<String, List<Version>>>() {}.getType();
+    private List<Map<String, String>> getListedVersions(String pId) {
+        Type revisionsType = new TypeToken<Map<String, List<Map<String, String>>>>() {}.getType();
         Response revisionsResult = request("GET", "/edit/" + pId + "/versions", null);
-        Map<String, List<Version>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
+        Map<String, List<Map<String, String>>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
 
         return map.get("versions");
     }
