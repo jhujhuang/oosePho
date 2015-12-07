@@ -67,15 +67,26 @@
         <div id="toolbar" class="my-toolbar btn-group-vertical btn-group-lg btn-block" role="toolbar">
             <!-- TODO: Maybe make dropdown, for filter type selection, etc. -->
             <button type="button" ng-click="vm.tapFilter()" class="btn btn-lg btn-default btn-block">Filters</button>
-            <button type="button" class="btn btn-lg btn-default btn-block">Selection</button>
-            <button type="button" class="btn btn-lg btn-default btn-block">Pencil</button>
+            <button type="button" ng-click="vm.tapSelection()" class="btn btn-lg btn-default btn-block">Selection</button>
+            <button type="button" ng-click="vm.tapPencil()" class="btn btn-lg btn-default btn-block">Pencil</button>
         </div>
         <div id="tools-parameters">
-            <!-- TODO: Show inputs of parameters, depending on which tool is selected -->
+            <div id="tool-filter" class="my-toolbar btn-group-vertical btn-group-lg btn-block" ng-hide="vm.hideFilter">
+                <button type="button" ng-click="vm.blur()" class="btn btn-lg btn-default btn-block">Blur</button>
+                <button type="button" ng-click="vm.changeContrast()" class="btn btn-lg btn-default btn-block">ChangeContrast</button>
+                <button type="button" ng-click="vm.edgeDetect()" class="btn btn-lg btn-default btn-block">EdgeDetection</button>
+            </div>
+            <div id="tool-selection" ng-hide="vm.hideSelection">
+
+            </div>
+            <div id="tool-pencil" ng-hide="vm.hidePencil">
+
+            </div>
         </div>
     </div>
     <div>
-        <canvas id="canvas"></canvas>
+        <canvas id="canvas">
+        </canvas>
         <!-- TODO: "Make a comment" form -->
         <div id="comments">
             <!-- TODO: Show list of comments -->

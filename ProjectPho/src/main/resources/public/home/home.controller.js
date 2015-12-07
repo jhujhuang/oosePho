@@ -43,9 +43,29 @@
 
         initController();
 
+        // Left panel starts here
+
+
         vm.tapFilter = function() {
             console.log("I tapped the filter!");
+            vm.hideFilter = false;
+            vm.hideSelection = true;
+            vm.hidePencil = true;
         }
+
+        vm.tapSelection = function() {
+            vm.hideFilter = true;
+            vm.hideSelection = false;
+            vm.hidePencil = true;
+        }
+
+        vm.tapPencil = function() {
+            vm.hideFilter = true;
+            vm.hideSelection = true;
+            vm.hidePencil = false;
+        }
+
+        // Left panel ends here
 
         function initController() {
             console.log("Initialize the controller");
