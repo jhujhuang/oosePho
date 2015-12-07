@@ -105,20 +105,6 @@ public class TestPhoService {
     }
 
     @Test
-    public void testGetRevisionsInitial() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
-        String userId = "scott";
-        phoService.register(userId, "password");
-        String pId = phoService.createNewPhoto(userId, testImg);
-
-        Map<String, List<Version>> map = phoService.getRevisions(pId);
-        assertEquals(1, map.get("versions").size());
-        // Check that the image stored in the first version is correct
-        assertEquals(testImg, map.get("versions").get(0).getImage());
-        // Check that the author of the first version is the creator
-        assertEquals(userId, map.get("versions").get(0).getUserId());
-    }
-
-    @Test
     public void testFetch() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException, IOException {
         String userId = "scott";
         phoService.register(userId, "password");
@@ -211,6 +197,128 @@ public class TestPhoService {
         String oldCanvasId = fetchResult.canvasId;
 
         phoService.edit(pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP);
+    }
+
+    @Test
+    public void testGetRevisionsInitial() throws PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        Map<String, List<Version>> map = phoService.getRevisions(pId);
+        assertEquals(1, map.get("versions").size());
+        // Check that the image stored in the first version is correct
+        assertEquals(testImg, map.get("versions").get(0).getImage());
+        // Check that the author of the first version is the creator
+        assertEquals(userId, map.get("versions").get(0).getUserId());
+    }
+
+    @Test(expected = PhoService.InvalidPhotoIdException.class)
+    public void testGetRevisionsInvalidPhotoId() throws PhoService.InvalidPhotoIdException, PhoService.PhoServiceException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        String wrongId = "csf";
+        assertNotEquals(wrongId, pId);
+        phoService.getRevisions(wrongId);
+    }
+
+    @Test
+    public void testSaveVersion() throws PhoService.PhoServiceException,
+            PhoService.InvalidPhotoIdException, PhoService.PhoSyncException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        Map<String, List<Version>> map = phoService.getRevisions(pId);
+        assertEquals(1, map.get("versions").size());
+
+        Photo.FetchResult response = phoService.fetch(pId);
+        String canvasId = response.canvasId;
+
+        String otherUser = "TestUser";
+        phoService.saveVersion(otherUser, pId, canvasId);
+
+        map = phoService.getRevisions(pId);
+        assertEquals(2, map.get("versions").size());
+
+        canvasId = phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.saveVersion(otherUser, pId, canvasId);
+
+        map = phoService.getRevisions(pId);
+        assertEquals(3, map.get("versions").size());
+
+        // Check that the image stored in the first version is correct
+        assertEquals(testImg, map.get("versions").get(0).getImage());
+        // Check that the author of the first version is the creator
+        assertEquals(userId, map.get("versions").get(0).getUserId());
+        // Check that the image stored in the second version is correct
+        assertEquals(testImg, map.get("versions").get(1).getImage());
+        // Check that the author of the second version is the otherUser
+        assertEquals(otherUser, map.get("versions").get(1).getUserId());
+        // Check that the image stored in the new version is different
+        assertNotEquals(testImg, map.get("versions").get(2).getImage());
+    }
+
+    @Test(expected = PhoService.PhoSyncException.class)
+    public void testSaveVersionOutOfDate() throws PhoService.PhoSyncException,
+            PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.saveVersion(userId, pId, oldCanvasId);
+    }
+
+    @Test(expected = PhoService.InvalidPhotoIdException.class)
+    public void testSaveVersionInvalidPhotoId() throws PhoService.PhoServiceException,
+            PhoService.InvalidPhotoIdException, PhoService.PhoSyncException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+
+        String pId = phoService.createNewPhoto(userId, testImg);
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
+        String oldCanvasId = fetchResult.canvasId;
+
+        String wrongId = "csf";
+        assert(!pId.equals(wrongId));
+        phoService.saveVersion(userId, wrongId, oldCanvasId);
+    }
+
+    @Test
+    public void testRevertTo() throws PhoService.PhoSyncException,
+            PhoService.PhoServiceException, PhoService.InvalidPhotoIdException {
+        String userId = "scott";
+        phoService.register(userId, "password");
+        String pId = phoService.createNewPhoto(userId, testImg);
+
+        Photo.FetchResult fetchResult = phoService.fetch(pId);
+        String initialCanvas = fetchResult.canvasData;
+
+        // Let someone change the photo and save a version
+        String canvasId = fetchResult.canvasId;
+        String otherUser = "TestUser";
+
+        canvasId = phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.saveVersion(otherUser, pId, canvasId);
+
+        // Revert to the previous version
+        List<Version> listed = (phoService.getRevisions(pId)).get("versions");
+        assertEquals(2, listed.size());
+        String revertTo = listed.get(0).getVersionId();
+
+        phoService.revertToSelectedVersion(pId, revertTo, userId);
+        listed = (phoService.getRevisions(pId).get("versions"));
+        assertEquals(3, listed.size());
+
+        // Fetch again and check data
+        fetchResult = phoService.fetch(pId);
+        assertEquals(initialCanvas, fetchResult.canvasData);
     }
 
     // TODO: more tests

@@ -111,8 +111,29 @@ public class Photo {
         String vId = getNextVId();
         Version v = new Version(vId, time, userId, canvas);
         this.versions.add(v);
-        nextVId++;
     }
+
+
+    /**
+     * Revert to an old version, and adds a newest version that has same image.
+     * @param time string
+     * @param versionId string
+     * @param userId string
+     * @throws NumberFormatException when versionId cannot convert to number
+     * @throws IndexOutOfBoundsException when versionId is not found
+     */
+    public void revertVersion(String time, String versionId, String userId) {
+        int versionIndex = Integer.parseInt(versionId);  // We use same version id as list index
+        Version v = versions.get(versionIndex);
+        BufferedImage img = v.getImage();
+
+        Version nV = new Version(getNextVId(), time, userId, img);
+        versions.add(nV);
+
+        // Update canvas
+        canvas = img;
+    }
+
 
     /**
      * Retrieves all the comments of this photo.
@@ -240,7 +261,7 @@ public class Photo {
      * @return string
      */
     private String getNextVId() {
-        return "" + nextVId;  // TODO: Consider change how to make this versionId
+        return "" + nextVId++;  // TODO: Consider change how to make this versionId
     }
 
     /**

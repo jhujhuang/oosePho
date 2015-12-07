@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
 
 
 /**
@@ -91,7 +92,8 @@ public class PhoService {
         String pId = getStringId(pIdTracker);
 
         // Add new photo associated with the given image.
-        String time = "0000-00"; // TODO: Get actual time
+
+        String time = getTime();
         Photo p = new Photo(pId, time, userId, image);
         allPhotos.add(pIdTracker, p);
         pIdTracker++;
@@ -215,11 +217,16 @@ public class PhoService {
      * @param photoId the photo ID
      * @param versionId the version ID
      * @throws InvalidPhotoIdException when photo id is invalid
-     * @throws PhoServiceException when failures occur
+     * @throws PhoServiceException when versionId is invalid
      */
-    public void revertToSelectedVersion(String photoId, String versionId)
+    public void revertToSelectedVersion(String photoId, String versionId, String userId)
             throws InvalidPhotoIdException, PhoServiceException {
-        // TODO: Implement
+        Photo p = findByPhotoId(photoId);
+        try {
+            p.revertVersion(getTime(), versionId, userId);
+        } catch (IndexOutOfBoundsException|NumberFormatException ex) {
+            throw new PhoServiceException("Invalid versionId", ex);
+        }
     }
 
     /**
@@ -232,7 +239,12 @@ public class PhoService {
      */
     public void saveVersion(String userId, String photoId, String canvasId)
             throws InvalidPhotoIdException, PhoSyncException {
-        // TODO: Implement
+        Photo p = findByPhotoId(photoId);
+        if (!canvasId.equals(p.getCanvasId())) {
+            throw new PhoSyncException("Canvas is out of date.", null);
+        }
+
+        p.addVersion(getTime(), userId);
     }
 
     //-----------------------------------------------------------------------------//
@@ -309,6 +321,12 @@ public class PhoService {
         return (int) decode[0];
     }
 
+    private String getTime() {
+        Date d = new Date();
+        return d.toString();
+    }
+
+
     public static class PhoServiceException extends Exception {
         public PhoServiceException(String message, Throwable cause) {
             super(message, cause);
@@ -326,5 +344,4 @@ public class PhoService {
             super(message, cause);
         }
     }
-
 }

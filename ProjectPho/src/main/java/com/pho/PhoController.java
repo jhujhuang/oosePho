@@ -184,10 +184,9 @@ public class PhoController {
         }, new JsonTransformer());
 
         // List all versions of the photo
-        post(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
+        get(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
             try {
                 response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String photoId = request.params(":pId");
                 return phoService.getRevisions(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {
@@ -202,10 +201,10 @@ public class PhoController {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");  // TODO: store who reverted
+                String userId = property.getProperty("userId");
                 String photoId = request.params(":pId");
                 String versionId = property.getProperty("versionId");
-                phoService.revertToSelectedVersion(photoId, versionId);
+                phoService.revertToSelectedVersion(photoId, versionId, userId);
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
