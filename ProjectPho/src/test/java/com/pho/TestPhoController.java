@@ -223,6 +223,14 @@ public class TestPhoController {
     @Test
     public void testSeeRevisions() {
         registerUser();
+        String pId = createNewPhoto();
+
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
+
+        // TODO!!!!!!!!
+        Photo.FetchResult fetched = getFetchResult(pId);
+
         // TODO
     }
 
