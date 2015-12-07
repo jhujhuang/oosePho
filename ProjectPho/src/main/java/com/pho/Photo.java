@@ -220,7 +220,7 @@ public class Photo {
     /**
      * Retrieves the result for fetch
      * @return FetchResult object
-     * @throws IOException
+     * @throws IOException when fails to get image bytes
      */
     FetchResult getFetchResults() throws IOException {
         FetchResult result = new FetchResult();
@@ -237,7 +237,7 @@ public class Photo {
     /**
      * Get the image in the form of base 64 bytes.
      * @return base 64 string
-     * @throws IOException
+     * @throws IOException when fails to get image bytes
      */
     public String getImageBytes() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
