@@ -184,10 +184,9 @@ public class PhoController {
         }, new JsonTransformer());
 
         // List all versions of the photo
-        post(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
+        get(API_CONTEXT + "/edit/:pId/versions", "application/json", (request, response) -> {
             try {
                 response.status(200);
-                Properties property = new Gson().fromJson(request.body(), Properties.class);
                 String photoId = request.params(":pId");
                 return phoService.getRevisions(photoId);
             } catch (PhoService.InvalidPhotoIdException ex) {

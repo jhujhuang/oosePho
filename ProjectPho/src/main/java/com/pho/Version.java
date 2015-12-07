@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
  */
 public class Version {
     private String versionId, createdTime, userId;
-    private BufferedImage img;
+    private transient BufferedImage img;  // Won't be serialized when converted to Json
     
     /**
      * Constructor for the Version class.

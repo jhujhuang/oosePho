@@ -18,10 +18,7 @@ import java.io.*;
 import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -221,17 +218,17 @@ public class TestPhoController {
     }
 
     @Test
-    public void testSeeRevisions() {
+    public void testSeeRevisionsInitial() {
         registerUser();
         String pId = createNewPhoto();
 
-        Map<String, String> content = new HashMap<>();
-        content.put("userId", TEST_USERID);
+        Type revisionsType = new TypeToken<Map<String, List<Version>>>() {}.getType();
 
-        // TODO!!!!!!!!
-        Photo.FetchResult fetched = getFetchResult(pId);
+        Response revisionsResult = request("GET", "/edit/" + pId + "/versions", null);
+        assertEquals(200, revisionsResult.httpStatus);
 
-        // TODO
+        Map<String, List<Version>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
+        assertEquals(1, map.get("versions").size());
     }
 
     @Test
