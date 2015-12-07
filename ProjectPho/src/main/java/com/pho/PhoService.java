@@ -120,7 +120,7 @@ public class PhoService {
      * @param userId the user ID
      * @return map of content to be included in the response, where the list is a list of userId's
      */   
-    public Map<String, Map<String, String>> listPhotosOfCurrentUser(String userId) throws InvalidPhotoIdException {
+    public Map<String, Map<String, String>> listPhotosOfCurrentUser(String userId) {
         User usr = getUser(userId);
         Map<String, Map<String, String>> result = new HashMap<>();
         Map<String, String> l = new HashMap<>();
@@ -215,6 +215,7 @@ public class PhoService {
     /**
      * Revert to selected version
      * @param photoId the photo ID
+     * @param userId the user ID of the user who requests the revert
      * @param versionId the version ID
      * @throws InvalidPhotoIdException when photo id is invalid
      * @throws PhoServiceException when versionId is invalid
