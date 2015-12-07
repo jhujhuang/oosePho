@@ -219,9 +219,10 @@ public class PhoService {
      * @throws InvalidPhotoIdException when photo id is invalid
      * @throws PhoServiceException when failures occur
      */
-    public void revertToSelectedVersion(String photoId, String versionId)
+    public void revertToSelectedVersion(String photoId, String versionId, String userId)
             throws InvalidPhotoIdException, PhoServiceException {
-        // TODO: Implement
+        Photo p = findByPhotoId(photoId);
+        p.revertVersion(getTime(), versionId, userId);
     }
 
     /**

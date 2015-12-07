@@ -111,8 +111,18 @@ public class Photo {
         String vId = getNextVId();
         Version v = new Version(vId, time, userId, canvas);
         this.versions.add(v);
-        nextVId++;
     }
+
+
+    public void revertVersion(String time, String versionId, String userId) {
+        for (Version v : this.versions) {
+            if (v.getVersionId().equals(versionId)) {
+                Version nV = new Version(getNextVId(), time, userId, v.getImage());
+                this.versions.add(nV);
+            }
+        }
+    }
+
 
     /**
      * Retrieves all the comments of this photo.
@@ -240,7 +250,7 @@ public class Photo {
      * @return string
      */
     private String getNextVId() {
-        return "" + nextVId;  // TODO: Consider change how to make this versionId
+        return "" + nextVId++;  // TODO: Consider change how to make this versionId
     }
 
     /**
