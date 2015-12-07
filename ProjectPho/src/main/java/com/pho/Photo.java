@@ -269,7 +269,7 @@ public class Photo {
      */
     class FetchResult {
         String canvasId;
-        List<User> collaborators;
+        transient List<User> collaborators;  // TODO: include in the result normally
         String title;
         String canvasData;  // img converted to base 64 string
         String versionId;

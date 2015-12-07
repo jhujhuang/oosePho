@@ -158,7 +158,8 @@ public class PhoController {
             try {
                 response.status(200);
                 String photoId = request.params(":pId");
-                return phoService.fetch(photoId);
+                Photo.FetchResult fetched = phoService.fetch(photoId);
+                return fetched;
             } catch (PhoService.InvalidPhotoIdException ex) {
                 logger.error("Invalid photo Id");
                 response.status(404);

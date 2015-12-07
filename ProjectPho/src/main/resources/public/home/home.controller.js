@@ -118,7 +118,7 @@
         vm.canvasData = "";
         vm.versionId = "";
         var canvas = document.getElementById("canvas");
-        var ctx = canvas.getContext("2d");
+        //var ctx = canvas.getContext("2d");
 
 
         if($routeParams.pId) {
@@ -221,11 +221,11 @@
                 vm.canvasData = response['canvasData'];
                 vm.versionId = response['versionId'];
 
-                var image = new Image();
-                image.onload = function() {
-                    ctx.drawImage(image, 0, 0);
-                };
-                image.src = "data:image/png;base64; " + vm.canvasData;
+                //var image = new Image();
+                //image.onload = function() {
+                //    ctx.drawImage(image, 0, 0);
+                //};
+                //image.src = "data:image/png;base64; " + vm.canvasData;
 
             })
             .error(function() {
