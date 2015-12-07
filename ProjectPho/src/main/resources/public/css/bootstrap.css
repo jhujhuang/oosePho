@@ -4360,7 +4360,9 @@ a.list-group-item.active > .badge,
 .jumbotron {
   padding: 30px;
   margin-bottom: 30px;
-  color: inherit;
+  margin-left: 240px;
+  margin-right: 10px;
+  color: black;
   background-color: #eeeeee;
 }
 .jumbotron h1,
