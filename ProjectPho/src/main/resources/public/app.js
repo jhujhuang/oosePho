@@ -30,7 +30,17 @@
                 title: 'Register'
             })
 
-            .otherwise({ redirectTo: '/login/login.view.html' });
+            .when('/edit/:pId', {
+                templateUrl: 'home/home.view.html',
+                controller: 'HomeController',
+                controllerAs: 'vm',
+                title: 'Editing'
+            })
+
+            .otherwise({
+                redirectTo: '/login/login.view.html',
+                title: 'Login'
+            });
     }
 
     run.$inject = ['$rootScope', '$location', '$cookieStore', '$http'];
