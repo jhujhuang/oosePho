@@ -93,7 +93,7 @@ public class PhoService {
 
         // Add new photo associated with the given image.
 
-        String time = getTime(); // TODO: Get actual time
+        String time = getTime();
         Photo p = new Photo(pId, time, userId, image);
         allPhotos.add(pIdTracker, p);
         pIdTracker++;

@@ -201,7 +201,7 @@ public class PhoController {
             try {
                 response.status(200);
                 Properties property = new Gson().fromJson(request.body(), Properties.class);
-                String userId = property.getProperty("userId");  // TODO: store who reverted
+                String userId = property.getProperty("userId");
                 String photoId = request.params(":pId");
                 String versionId = property.getProperty("versionId");
                 phoService.revertToSelectedVersion(photoId, versionId, userId);
