@@ -21,6 +21,11 @@
             openImage();
         });
 
+        $("#invite_link").on('click', function(e){
+            e.preventDefault();
+            $("#invite_message").css('display', 'block');
+        });
+
 
         $("#upload:hidden").on('change', function(e){
             // var selectedFile = this.files[0];
@@ -33,7 +38,6 @@
         var vm = this;
 
         vm.user = null;
-        vm.photosOfUser = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
 
@@ -81,6 +85,27 @@
          //           FR.readAsDataURL(this);
          // }
 
+        /* Editing related variables and logic. */
+
+        vm.photosOfUser = null;
+        vm.pid = "";
+        vm.url = "";
+        vm.html = "";
+        vm.isInSession = false;
+        vm.canvasId = "";
+        vm.collaborators = [];
+        vm.title = "";
+        vm.canvasData = "";
+        vm.versionId = "";
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        if (vm.isInSession) {
+            window.setInterval(fetchAndUpdate(), 4000);
+        }   else {
+            console.log("Currently no editing session is in place.");
+        }
+
         function uploadImage() {
             var imageWithJson = new FormData();
             imageWithJson.append('file', $('#upload')[0].files[0]);
@@ -110,12 +135,41 @@
             })
             .success(function(response){
                 vm.photosOfUser = response['photos'];
-                console.log(JSON.stringify(vm.photosOfUser, null, 2));
+                /* Check if the response has the correct string. */
+                // console.log(JSON.stringify(vm.photosOfUser, null, 2));
             })
             .error(function(){
                 // console.log("Failed to send the image to server!");
             });
+        }
 
+        function initiateEditingSession(idx){
+            $("#open").css('display', 'none');
+            vm.pId = Object.keys(vm.photosOfUser)[idx];
+            vm.url = "http://localhost:8080/#/edit/" + pId;
+            isInSession = true;
+            console.log("fck!!!")
+        }
+
+        function fetchAndUpdate(){
+            $http.post("http://localhost:8080/#/edit/" + pId + "/fetch", {
+            })
+            .success(function(response){
+
+                vm.canvasId = response['canvasId'];
+                vm.collaborator = response['collaborators'];
+                vm.title = response['title'];
+                vm.canvasData = response['canvasData'];
+                vm.versionId = response['versionId'];
+
+                var image = new Image();
+                image.onload = function() {
+                    ctx.drawImage(image, 0, 0);
+                };
+                image.src = "data:image/png;base64; " + vm.canvasData;
+
+            })
+            .error();
         }
 
         function saveVersion(){
