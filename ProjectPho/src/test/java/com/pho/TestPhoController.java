@@ -192,7 +192,7 @@ public class TestPhoController {
 
         // Fetch
         Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
-        assertEquals(200, fetchResult.httpStatus);
+        assertEquals("Fail to get fetch results", 200, fetchResult.httpStatus);
 
         // Check fetch results
         Photo.FetchResult fetched = new Gson().fromJson(fetchResult.content, fetchType);
@@ -208,7 +208,7 @@ public class TestPhoController {
 
         // Fetch again of a non-existing photo
         fetchResult = request("GET", "/edit/csf/fetch", null);
-        assertEquals(404, fetchResult.httpStatus);
+        assertEquals("Fail to recognize invalid photo id", 404, fetchResult.httpStatus);
     }
 
     @Test
@@ -225,16 +225,50 @@ public class TestPhoController {
         Type revisionsType = new TypeToken<Map<String, List<Version>>>() {}.getType();
 
         Response revisionsResult = request("GET", "/edit/" + pId + "/versions", null);
-        assertEquals(200, revisionsResult.httpStatus);
+        assertEquals("Fail to list revisions", 200, revisionsResult.httpStatus);
 
         Map<String, List<Version>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
         assertEquals(1, map.get("versions").size());
+
+        // For failure
+        revisionsResult = request("GET", "/edit/csf/versions", null);
+        assertEquals("Fail to recognize invalid photo id", 404, revisionsResult.httpStatus);
     }
 
     @Test
     public void testSaveVersion() {
         registerUser();
-        // TODO
+        String pId = createNewPhoto();
+
+        List<Version> listed = getListedVersions(pId);
+        assertEquals(1, listed.size());
+
+        Photo.FetchResult fetched = getFetchResult(pId);
+
+        // Save a version
+        Map<String, String> content = new HashMap<>();
+        content.put("userId", TEST_USERID);
+        content.put("pId", pId);
+        content.put("canvasId", fetched.canvasId);
+
+        Response saveResult = request("POST", "/edit/" + pId + "/save", content);
+        assertEquals("Fail to save a version", 200, saveResult.httpStatus);
+
+        listed = getListedVersions(pId);
+        assertEquals(2, listed.size());
+
+        // For failures
+        saveResult = request("POST", "/edit/csf/save", content);
+        assertEquals("Fail to recognize invalid photo id", 404, saveResult.httpStatus);
+
+        // Make change
+        Map<String, String> editContent = new HashMap<>();
+        editContent.put("canvasId", fetched.canvasId);
+        editContent.put("editType", "BlurFilter");
+        editContent.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
+        request("POST", "/edit/" + pId + "/change", editContent);
+        saveResult = request("POST", "/edit/" + pId + "/save", content);
+        assertEquals("Fail to recognize synchronization error", 401, saveResult.httpStatus);
     }
 
     @Test
@@ -267,6 +301,15 @@ public class TestPhoController {
         Type fetchType = new TypeToken<Photo.FetchResult>() {}.getType();
         Response fetchResult = request("GET", "/edit/" + pId + "/fetch", null);
         return new Gson().fromJson(fetchResult.content, fetchType);
+    }
+
+    /** Get list of versions of a photo. **/
+    private List<Version> getListedVersions(String pId) {
+        Type revisionsType = new TypeToken<Map<String, List<Version>>>() {}.getType();
+        Response revisionsResult = request("GET", "/edit/" + pId + "/versions", null);
+        Map<String, List<Version>> map = new Gson().fromJson(revisionsResult.content, revisionsType);
+
+        return map.get("versions");
     }
 
     private Response request(String method, String path, Object content) {
