@@ -50,6 +50,9 @@
 
         // Left panel starts here
 
+        vm.hideFilter = true;
+        vm.hideSelection = true;
+        vm.hidePencil = true;
 
         vm.tapFilter = function() {
             console.log("I tapped the filter!");
