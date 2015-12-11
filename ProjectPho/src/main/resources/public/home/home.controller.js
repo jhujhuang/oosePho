@@ -28,7 +28,11 @@
 
         $("#invite_link").on('click', function(e){
             e.preventDefault();
-            $("#invite_message").css('display', 'block');
+            if (vm.isInSession) {
+                $("#invite_message").css('display', 'block');
+            } else {
+                alert("Please open a photo first!");
+            }
         });
 
 
