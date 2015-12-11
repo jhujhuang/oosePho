@@ -52,27 +52,49 @@
 
         initController();
 
-        // Left panel starts here
+        // Left panel starts here TODO: Make this conform to OCP
 
-        vm.hideFilter = true;
+        vm.hideBlur = true;
+        vm.hideChangeContrast = true;
+        vm.hideEdgeDetect = true;
+
         vm.hideSelection = true;
         vm.hidePencil = true;
 
-        vm.tapFilter = function() {
-            console.log("I tapped the filter!");
-            vm.hideFilter = false;
+        vm.tapBlur = function() {
+            vm.hideBlur = false;
+            vm.hideChangeContrast = true;
+            vm.hideEdgeDetect = true;
             vm.hideSelection = true;
             vm.hidePencil = true;
-        } // TODO: Split to number of filters
+        }
+        vm.tapChangeContrast = function() {
+            vm.hideBlur = true;
+            vm.hideChangeContrast = false;
+            vm.hideEdgeDetect = true;
+            vm.hideSelection = true;
+            vm.hidePencil = true;
+        }
+        vm.tapEdgeDetect = function() {
+            vm.hideBlur = true;
+            vm.hideChangeContrast = true;
+            vm.hideEdgeDetect = false;
+            vm.hideSelection = true;
+            vm.hidePencil = true;
+        }
 
         vm.tapSelection = function() {
-            vm.hideFilter = true;
+            vm.hideBlur = true;
+            vm.hideChangeContrast = true;
+            vm.hideEdgeDetect = true;
             vm.hideSelection = false;
             vm.hidePencil = true;
         }
 
         vm.tapPencil = function() {
-            vm.hideFilter = true;
+            vm.hideBlur = true;
+            vm.hideChangeContrast = true;
+            vm.hideEdgeDetect = true;
             vm.hideSelection = true;
             vm.hidePencil = false;
         }

@@ -74,9 +74,9 @@
             <button type="button" class="btn btn-lg btn-default btn-block dropdown-toggle"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filters</button>
             <ul class="dropdown-menu">
-                <li><a ng-click="vm.blur()" href="#">Blur</a></li>
-                <li><a ng-click="vm.changeContrast()" href="#">ChangeContrast</a></li>
-                <li><a ng-click="vm.edgeDetect()" href="#">EdgeDetection</a></li>
+                <li><a ng-click="vm.tapBlur()">Blur</a></li>
+                <li><a ng-click="vm.tapChangeContrast()">ChangeContrast</a></li>
+                <li><a ng-click="vm.tapEdgeDetect()">EdgeDetection</a></li>
             </ul>
             <button type="button" ng-click="vm.tapSelection()" class="btn btn-lg btn-default btn-block">Selection</button>
             <button type="button" ng-click="vm.tapPencil()" class="btn btn-lg btn-default btn-block">Pencil</button>
@@ -88,6 +88,16 @@
                 <button type="button" ng-click="vm.changeContrast()" class="btn btn-default btn-block">ChangeContrast</button>
                 <button type="button" ng-click="vm.edgeDetect()" class="btn btn-default btn-block">EdgeDetection</button>
             </div> -->
+            <div id="tool-blur" ng-hide="vm.hideBlur">
+                Coming Soon!
+            </div>
+            <div id="tool-changecontrast" ng-hide="vm.hideChangeContrast">
+                Coming Soon!
+            </div>
+            <div id="tool-edgedetect" ng-hide="vm.hideEdgeDetect">
+                Coming Soon!
+            </div>
+
             <div id="tool-selection" ng-hide="vm.hideSelection">
                 Coming Soon!
             </div>
