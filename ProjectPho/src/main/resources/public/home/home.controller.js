@@ -63,7 +63,7 @@
             vm.hideFilter = false;
             vm.hideSelection = true;
             vm.hidePencil = true;
-        }
+        } // TODO: Split to number of filters
 
         vm.tapSelection = function() {
             vm.hideFilter = true;
