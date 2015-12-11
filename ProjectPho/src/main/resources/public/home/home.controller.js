@@ -52,51 +52,12 @@
 
         initController();
 
-        // Left panel starts here TODO: Make this conform to OCP
+        // Left panel starts here
 
-        vm.hideBlur = true;
-        vm.hideChangeContrast = true;
-        vm.hideEdgeDetect = true;
+        vm.currentTool = '';
 
-        vm.hideSelection = true;
-        vm.hidePencil = true;
-
-        vm.tapBlur = function() {
-            vm.hideBlur = false;
-            vm.hideChangeContrast = true;
-            vm.hideEdgeDetect = true;
-            vm.hideSelection = true;
-            vm.hidePencil = true;
-        }
-        vm.tapChangeContrast = function() {
-            vm.hideBlur = true;
-            vm.hideChangeContrast = false;
-            vm.hideEdgeDetect = true;
-            vm.hideSelection = true;
-            vm.hidePencil = true;
-        }
-        vm.tapEdgeDetect = function() {
-            vm.hideBlur = true;
-            vm.hideChangeContrast = true;
-            vm.hideEdgeDetect = false;
-            vm.hideSelection = true;
-            vm.hidePencil = true;
-        }
-
-        vm.tapSelection = function() {
-            vm.hideBlur = true;
-            vm.hideChangeContrast = true;
-            vm.hideEdgeDetect = true;
-            vm.hideSelection = false;
-            vm.hidePencil = true;
-        }
-
-        vm.tapPencil = function() {
-            vm.hideBlur = true;
-            vm.hideChangeContrast = true;
-            vm.hideEdgeDetect = true;
-            vm.hideSelection = true;
-            vm.hidePencil = false;
+        vm.doEdgeDetect = function() {
+            // TODO
         }
 
         // Left panel ends here
