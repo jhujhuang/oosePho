@@ -21,6 +21,11 @@
             openImage();
         });
 
+        $("#hide_open_link").on('click', function(e) {
+            e.preventDefault();
+            $("#open").css('display', 'none');
+        });
+
         $("#invite_link").on('click', function(e){
             e.preventDefault();
             $("#invite_message").css('display', 'block');
