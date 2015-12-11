@@ -155,8 +155,9 @@
                 headers: {'Content-Type': undefined },
                 transformRequest: angular.identity
             })
-            .success(function(){
+            .success(function(response) {
                 console.log("Upload success.");
+                window.location.href = '#/edit/' + response['pId'];
             })
             .error(function(){
                 // console.log("Failed to send the image to server!");
