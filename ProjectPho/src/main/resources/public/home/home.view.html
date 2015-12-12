@@ -89,7 +89,10 @@
                 <button type="button" ng-click="vm.edgeDetect()" class="btn btn-default btn-block">EdgeDetection</button>
             </div> -->
             <div id="tool-blur" ng-hide="!(vm.currentTool=='blur')">
-                Coming Soon!
+                <div class="input-group">
+                    <!-- TODO: Add description/instruction -->
+                    <button type="submit" class="btn btn-default" ng-click="vm.doBlur()">Apply</button>
+                </div>
             </div>
             <div id="tool-changecontrast" ng-hide="!(vm.currentTool=='changecontrast')">
                 Coming Soon!
