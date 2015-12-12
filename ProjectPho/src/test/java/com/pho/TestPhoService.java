@@ -145,7 +145,8 @@ public class TestPhoService {
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
 
-        String newCanvasId = phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP);
+        String newCanvasId = phoService.getCanvasId(pId);
         // Check that canvas id has been updated
         assertNotEquals(newCanvasId, oldCanvasId);
         // That image has been changed is checked in TestFilters
@@ -153,7 +154,8 @@ public class TestPhoService {
         // Other filters do not fail:
         HashMap<String, Double> changeContrastParams = new HashMap<>();
         changeContrastParams.put("value", 0.5);
-        newCanvasId = phoService.edit(pId, newCanvasId, "ChangeContrastFilter", changeContrastParams);
+        phoService.edit(pId, newCanvasId, "ChangeContrastFilter", changeContrastParams);
+        newCanvasId = phoService.getCanvasId(pId);
         phoService.edit(pId, newCanvasId, "EdgeDetectionFilter", Collections.EMPTY_MAP);
     }
 
@@ -243,7 +245,8 @@ public class TestPhoService {
         map = phoService.getRevisions(pId);
         assertEquals(2, map.get("versions").size());
 
-        canvasId = phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        canvasId = phoService.getCanvasId(pId);
         phoService.saveVersion(otherUser, pId, canvasId);
 
         map = phoService.getRevisions(pId);
@@ -304,7 +307,8 @@ public class TestPhoService {
         String canvasId = fetchResult.canvasId;
         String otherUser = "TestUser";
 
-        canvasId = phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP);
+        canvasId = phoService.getCanvasId(pId);
         phoService.saveVersion(otherUser, pId, canvasId);
 
         // Revert to the previous version

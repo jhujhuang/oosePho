@@ -285,13 +285,14 @@ public class TestPhoController {
         editContent.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
         request("POST", "/edit/" + pId + "/change", editContent);
 
-        fetched = getFetchResult(pId);
+        Response canvasIdResponse = request("GET", "/edit/" + pId + "/canvasid", null);
+        String canvasId = (new Gson().fromJson(canvasIdResponse.content, Properties.class)).getProperty("canvasId");
 
         // Save a version
         Map<String, String> content = new HashMap<>();
         content.put("userId", TEST_USERID);
         content.put("pId", pId);
-        content.put("canvasId", fetched.canvasId);
+        content.put("canvasId", canvasId);
         request("POST", "/edit/" + pId + "/save", content);
 
         List<Map<String, String>> listed = getListedVersions(pId);

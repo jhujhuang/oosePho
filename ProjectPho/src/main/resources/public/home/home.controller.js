@@ -166,7 +166,7 @@
             console.log("Checking is in session: " + vm.isInSession)
             if (vm.isInSession) {
                 console.log("Set interval to fetch.");
-                window.setInterval(fetchAndUpdate, 4000);
+                window.setInterval(keepUpdated, 500);
             }   else {
                 console.log("Currently no editing session is in place.");
             }
@@ -237,6 +237,26 @@
                 console.log("Photo does not exist! Not joining any editing session.");
                 alert("Photo does not exist! Not joining any editing session.");
             });
+        }
+
+        function keepUpdated() {
+            $http.get("/api/edit/" + vm.pId + "/canvasid", {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function(response) {
+                if (vm.canvasId == response['canvasId']) {
+                    console.log("Synced!")
+                } else {
+                    console.log("Not synced, going to fetch and update canvas.")
+                    // Fetch and update everything, including canvasId
+                    fetchAndUpdate();
+                }
+            })
+            .error(function() {
+                console.log("Failed to get newest canvas id.");
+            })
         }
 
         function fetchAndUpdate(){
