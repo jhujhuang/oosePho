@@ -14,7 +14,7 @@
         <a class="navbar-brand my-navbar-brand">
             <span class="glyphicon glyphicon-pencil"></span>
         </a>
-        <form class="navbar-form my-navbar-form navbar-left" role="search">
+        <form class="navbar-form my-navbar-form navbar-left">
             <div>
                 <input id="photo-title" type="text" class="form-control" placeholder="Untitled"
                        title="Edit your photo title here." value="TITLE">
@@ -95,7 +95,10 @@
                 Coming Soon!
             </div>
             <div id="tool-edgedetect" ng-hide="!(vm.currentTool=='edgedetect')">
-                Coming Soon!
+                <div class="input-group">
+                    <!-- TODO: Add description/instruction -->
+                    <button type="submit" class="btn btn-default" ng-click="vm.doEdgeDetect()">Apply</button>
+                </div>
             </div>
 
             <div id="tool-selection" ng-hide="!(vm.currentTool=='select')">

@@ -57,7 +57,23 @@
         vm.currentTool = '';
 
         vm.doEdgeDetect = function() {
-            // TODO
+            var content = {};
+            content['canvasId'] = vm.canvasId;
+            content['editType'] = 'EdgeDetectionFilter';
+            content['moreParams'] = JSON.stringify({});
+            $http.post("/api/edit/" + vm.pId + "/change", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Filter applied. Wait for fetch and update.");
+            })
+            .error(function() {
+                console.log("Failed to apply filter.");
+            });
+            // TODO: have a helper method for all filters
+
         }
 
         // Left panel ends here
