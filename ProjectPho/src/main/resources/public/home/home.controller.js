@@ -28,7 +28,16 @@
 
         $("#invite_link").on('click', function(e){
             e.preventDefault();
-            $("#invite_message").css('display', 'block');
+            if (vm.isInSession) {
+                $("#invite_message").css('display', 'block');
+            } else {
+                alert("Please open a photo first!");
+            }
+        });
+
+        $("#hide_invite_link").on('click', function(e) {
+            e.preventDefault();
+            $("#invite_message").css('display', 'none');
         });
 
 
@@ -40,6 +49,16 @@
             uploadImage();
         });
 
+        $('#photo-title').on('change', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                changeTitle(document.getElementById('photo-title').value);
+            } else {
+                alert("Please open a photo first!");
+            }
+        })
+
+
         var vm = this;
 
         vm.user = null;
@@ -50,24 +69,32 @@
 
         // Left panel starts here
 
+        vm.currentTool = '';
 
-        vm.tapFilter = function() {
-            console.log("I tapped the filter!");
-            vm.hideFilter = false;
-            vm.hideSelection = true;
-            vm.hidePencil = true;
+        vm.doBlur = function() {
+            // TODO: Add a percentage
+            applyFilter('BlurFilter', {});
+        }
+        vm.doEdgeDetect = function() {
+            applyFilter('EdgeDetectionFilter', {});
         }
 
-        vm.tapSelection = function() {
-            vm.hideFilter = true;
-            vm.hideSelection = false;
-            vm.hidePencil = true;
-        }
-
-        vm.tapPencil = function() {
-            vm.hideFilter = true;
-            vm.hideSelection = true;
-            vm.hidePencil = false;
+        function applyFilter(filterType, params) {
+            var content = {};
+            content['canvasId'] = vm.canvasId;
+            content['editType'] = filterType;
+            content['moreParams'] = JSON.stringify(params);
+            $http.post("/api/edit/" + vm.pId + "/change", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log(filterType + " applied. Wait for fetch and update.");
+            })
+            .error(function() {
+                console.log("Failed to apply filter.");
+            });
         }
 
         // Left panel ends here
@@ -114,7 +141,7 @@
 
         vm.photosOfUser = null;
         vm.pid = "";
-        vm.url = "";
+        vm.url = "undefined";
         vm.html = "";
         vm.isInSession = false;
         vm.canvasId = "";
@@ -251,6 +278,23 @@
             }
             return true;
         }*/
+
+        function changeTitle(newTitle) {
+            console.log("Change title to: " + newTitle);
+
+            var content = {'title': newTitle};
+            $http.post("/api/edit/" + vm.pId + "/edittitle", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Title changed successfully!");
+            })
+            .error(function() {
+                console.log("Failed to change title.");
+            });
+        }
 
         function saveVersion(){
 
