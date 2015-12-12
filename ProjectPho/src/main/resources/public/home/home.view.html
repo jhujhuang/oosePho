@@ -84,12 +84,6 @@
             <button type="button" ng-click="vm.currentTool = 'pencil'" class="btn btn-lg btn-default btn-block">Pencil</button>
         </div>
         <div id="tools-parameters">
-            <!-- TODO: change ng-hide for specific filters
-            <div id="tool-filter" class="my-toolbar btn-group-vertical btn-block" ng-hide="vm.hideFilter">
-                <button type="button" ng-click="vm.blur()" class="btn btn-default btn-block">Blur</button>
-                <button type="button" ng-click="vm.changeContrast()" class="btn btn-default btn-block">ChangeContrast</button>
-                <button type="button" ng-click="vm.edgeDetect()" class="btn btn-default btn-block">EdgeDetection</button>
-            </div> -->
             <div id="tool-blur" ng-hide="!(vm.currentTool=='blur')">
                 <div class="input-group">
                     <!-- TODO: Add description/instruction -->
