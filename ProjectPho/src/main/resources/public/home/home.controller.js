@@ -93,7 +93,7 @@
                 console.log(filterType + " applied. Wait for fetch and update.");
             })
             .error(function() {
-                console.log("Failed to apply filter.");
+                alert("Failed to apply filter.");
             });
         }
 
