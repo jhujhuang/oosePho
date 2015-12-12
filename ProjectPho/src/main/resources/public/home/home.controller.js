@@ -44,6 +44,16 @@
             uploadImage();
         });
 
+        $('#photo-title').on('change', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                changeTitle(document.getElementById('photo-title').value);
+            } else {
+                alert("Please open a photo first!");
+            }
+        })
+
+
         var vm = this;
 
         vm.user = null;
@@ -263,6 +273,23 @@
             }
             return true;
         }*/
+
+        function changeTitle(newTitle) {
+            console.log("Change title to: " + newTitle);
+
+            var content = {'title': newTitle};
+            $http.post("/api/edit/" + vm.pId + "/edittitle", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Title changed successfully!");
+            })
+            .error(function() {
+                console.log("Failed to change title.");
+            });
+        }
 
         function saveVersion(){
 
