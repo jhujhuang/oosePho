@@ -171,6 +171,17 @@ public class PhoService {
     }
 
     /**
+     * Get the current canvas id of a photo.
+     * @param photoId the photo ID
+     * @return canvasId
+     * @throws InvalidPhotoIdException when photo id is invalid
+     */
+    public String getCanvasId(String photoId) throws InvalidPhotoIdException {
+        Photo p = findByPhotoId(photoId);
+        return p.getCanvasId();
+    }
+
+    /**
      * Handles the fetch of current contents about a photo.
      *
      * @param photoId the photo ID

@@ -152,9 +152,24 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Fetch the canvas id only.
+        get(API_CONTEXT + "/edit/:pId/canvasid", "application/json", (request, response) -> {
+            try {
+                response.status(200);
+                String photoId = request.params(":pId");
+                String canvasId = phoService.getCanvasId(photoId);
+                Map<String, String> returnMessage = new HashMap<>();
+                returnMessage.put("canvasId", canvasId);
+                return returnMessage;
+            } catch (PhoService.InvalidPhotoIdException ex) {
+                logger.error("Invalid photo Id");
+                response.status(404);
+                return createFailureContent(ex.getMessage());
+            }
+        }, new JsonTransformer());
+
         // Fetch editing session status, including canvas image data
         get(API_CONTEXT + "/edit/:pId/fetch", "application/json", (request, response) -> {
-            // TODO: Consider split fetch to fetchCanvasId and fetchOtherData, only do the latter when needed
             try {
                 response.status(200);
                 String photoId = request.params(":pId");
