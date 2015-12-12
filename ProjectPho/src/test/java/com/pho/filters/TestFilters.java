@@ -25,6 +25,7 @@ public class TestFilters {
     // Anonymous class for testing filters
     private interface Fixture {
         Filter init();
+        String filterType();
     }
 
     @Before
@@ -40,6 +41,9 @@ public class TestFilters {
 
     @DataPoint
     public static final Fixture blurFilter = new Fixture() {
+        public String filterType() {
+            return "BlurFilter";
+        }
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
@@ -49,6 +53,9 @@ public class TestFilters {
 
     @DataPoint
     public static final Fixture changeContrastFilter = new Fixture() {
+        public String filterType() {
+            return "ChangeContrastFilter";
+        }
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
@@ -58,6 +65,9 @@ public class TestFilters {
 
     @DataPoint
     public static final Fixture edgeDetection = new Fixture() {
+        public String filterType() {
+            return "EdgeDetectionFilter";
+        }
         public Filter init() {
             Map<String, Double> params = new HashMap<String, Double>();
             params.put("value", 0.8);
@@ -66,7 +76,7 @@ public class TestFilters {
     };
 
     @Theory
-    public void testFilterRectangle(Fixture fix) {
+    public void testFilterRectangle(Fixture fix) throws IOException {
         Filter f = fix.init();
         f.loadImage(testImage);
         BufferedImage p1 = f.getImage();
@@ -74,6 +84,12 @@ public class TestFilters {
         BufferedImage p2 = f.getImage();
 
         assertTrue(this.isDifferent(p1, p2));
+
+        // Output result to file, to check with human eyes
+        File output = new File("tmp/" + fix.filterType() + ".jpg");
+        ImageIO.write(p2, "jpg", output);
+        output = new File("tmp/" + fix.filterType() + ".png");
+        ImageIO.write(p2, "png", output);
     }
 
     @Theory
