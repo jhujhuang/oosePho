@@ -86,6 +86,10 @@ public class TestFilters {
         assertTrue(this.isDifferent(p1, p2));
 
         // Output result to file, to check with human eyes
+        File dir = new File("tmp");
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
         File output = new File("tmp/" + fix.filterType() + ".jpg");
         ImageIO.write(p2, "jpg", output);
         output = new File("tmp/" + fix.filterType() + ".png");
