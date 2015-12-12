@@ -35,6 +35,11 @@
             }
         });
 
+        $("#hide_invite_link").on('click', function(e) {
+            e.preventDefault();
+            $("#invite_message").css('display', 'none');
+        });
+
 
         $("#upload:hidden").on('change', function(e){
             // var selectedFile = this.files[0];
@@ -136,7 +141,7 @@
 
         vm.photosOfUser = null;
         vm.pid = "";
-        vm.url = "";
+        vm.url = "undefined";
         vm.html = "";
         vm.isInSession = false;
         vm.canvasId = "";

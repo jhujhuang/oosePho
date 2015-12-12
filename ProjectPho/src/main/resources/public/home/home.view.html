@@ -49,9 +49,11 @@
     </div>
 </div>
 <div id="invite_message" style="display:none;">
-    <p>Pho is about editing your photo together with your friends. Send this
-    <a href="{{url}}">link</a>
-    to a friend! (Or open a new page yourself)</p>
+    <p>Pho is about editing your photo together with your friends. Send this link
+    <a href="{{vm.url}}">{{vm.url}}</a>
+    to a friend! (Or open a new page yourself)
+        <a id="hide_invite_link" href="#"> Cancel </a>
+    </p>
 </div>
 <div class="open_box_container">
     <div id="open" style="display:none;" class="open_box_center well">
