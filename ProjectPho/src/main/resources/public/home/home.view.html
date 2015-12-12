@@ -54,11 +54,16 @@
     to a friend! Or open a new page yourself
 </div>
 <div class="open_box_container">
-    <div id="open" style="display:none;" class="open_box_center">
-        <div class="col-xs-6 col-md-3">
-            <a href="#/edit/{{key}}" class="thumbnail"  data-ng-repeat="(key, value) in vm.photosOfUser">
+    <div id="open" style="display:none;" class="open_box_center well">
+        <div class="row">
+        <div class="col-xs-6 col-md-3" data-ng-repeat="(key, value) in vm.photosOfUser">
+            <a href="#/edit/{{key}}" class="thumbnail">
                 <img data-ng-src="data:image/png;base64, {{value}}" data-err-src="./images/icon.png"><!--alt="{{key}}"-->
             </a>
+        </div>
+        </div>
+        <div>
+            <a id="hide_open_link" href="#">Cancel</a>
         </div>
     </div>
 </div>
