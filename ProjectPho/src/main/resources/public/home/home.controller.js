@@ -9,6 +9,15 @@
     function HomeController(UserService, $rootScope, $http, $routeParams) {
 
         // some jQuery to make a link serve as an input option
+        $("#save_link").on('click', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                saveVersion();
+            } else {
+                alert("Please open a photo first!");
+            }
+        });
+
         $("#upload_link").on('click', function(e){
             e.preventDefault();
             $("#upload:hidden").trigger('click');
@@ -17,7 +26,7 @@
         $("#open_link").on('click', function(e){
             e.preventDefault();
             $("#open").css('display', 'block');
-            // get all newest versions of the user's photos.
+            // get all the user's photos.
             openImage();
         });
 
@@ -40,6 +49,23 @@
             $("#invite_message").css('display', 'none');
         });
 
+        $("#revisions_link").on('click', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                $("#revisions").css('display', 'block');
+                // Get all revisions
+                getRevisions();
+            } else {
+                alert("Please open a photo first!");
+            }
+        });
+
+        $("#hide_revisions_link").on('click', function(e) {
+            e.preventDefault();
+            console.log("Hide revisions");
+            $("#revisions").css('display', 'none');
+        });
+
 
         $("#upload:hidden").on('change', function(e){
             // var selectedFile = this.files[0];
@@ -56,7 +82,7 @@
             } else {
                 alert("Please open a photo first!");
             }
-        })
+        });
 
 
         var vm = this;
@@ -119,6 +145,36 @@
 
         // Left panel ends here
 
+
+        vm.revertToVersion = function(versionId) {
+            if (confirm("Are you sure you want to revert to version " + versionId + "? Any unsaved changes will be lost.")) {
+                revertForSure(versionId);
+            } else {
+                console.log("Not reverting");
+            }
+        }
+
+        function revertForSure(versionId) {
+            console.log("Reverting to version" + versionId);
+
+            var content = {};
+            content['userId'] = vm.user.username;
+            content['versionId'] = versionId;
+            $http.post("/api/edit/" + vm.pId + "/versions/revert", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Reverted and new same version added.");
+                getRevisions();
+            })
+            .error(function() {
+                alert("Failed to revert to version " + versionId);
+            });
+        }
+
+
         function initController() {
             console.log("Initialize the controller");
             loadCurrentUser();
@@ -160,6 +216,7 @@
         /* Editing related variables and logic. */
 
         vm.photosOfUser = null;
+        vm.revisionsOfPhoto = null;
         vm.pid = "";
         vm.url = "undefined";
         vm.html = "";
@@ -228,6 +285,21 @@
             .error(function(){
                 // console.log("Failed to send the image to server!");
             });
+        }
+
+        function getRevisions() {
+            // TODO: get by request and response
+            $http.get("/api/edit/" + vm.pId + "/versions", {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function(response) {
+                vm.revisionsOfPhoto = response['versions'];
+            })
+            .error(function() {
+                console.log("Failed to get revisions.");
+            })
         }
 
         function joinEditingSession(pId){
@@ -337,7 +409,24 @@
         }
 
         function saveVersion(){
+            console.log("Saving version");
 
+            var content = {};
+            content['userId'] = vm.user.username;
+            content['canvasId'] = vm.canvasId;
+            $http.post("/api/edit/" + vm.pId + "/save", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Version saved successfully!");
+                getRevisions();
+            })
+            .error(function() {
+                console.log("Failed to save version. Maybe due to unsync.");
+                alert("Failed to save version. Please try again.");
+            });
         }
     }
 

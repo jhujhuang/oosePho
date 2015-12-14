@@ -26,7 +26,7 @@
                     File <span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                    <li><a>Save</a></li>
+                    <li><a id="save_link">Save</a></li>
                     <li>
                         <a id="upload_link">Upload</a>
                         <input id="upload" style="display:none;" type="file" file-model="myFile"/>
@@ -42,8 +42,8 @@
                     <li><a>Print</a></li>
                 </ul>
             </li>
-            <!-- Please change TODO to display the number, and maybe change style to not be a tab -->
-            <li role="listitem"><a>{{TODO}} revisions</a></li>
+            <!-- Please change TODO display the number of revisions, and maybe change style to not be a tab -->
+            <li role="listitem"><a id="revisions_link">revisions</a></li>
             <li><a href="#/login" class="btn btn-primary">Logout</a></li>
         </ul>
     </div>
@@ -67,6 +67,31 @@
         <div>
             <a id="hide_open_link" href="#">Cancel</a>
         </div>
+    </div>
+</div>
+<div class="revisions_container">
+    <div id="revisions" style="display:none;" class="panel panel-info">
+        <div class="panel-heading">
+            Revisions
+            <a href="#" id="hide_revisions_link"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+        </div>
+        <table class="table revisions-table">
+            <tr>
+                <th>Version</th>
+                <th>Time Created</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+            <tr data-ng-repeat="version in vm.revisionsOfPhoto | orderBy: '-'">
+                <td>{{version.versionId}}</td>
+                <td>{{version.createdTime}}</td>
+                <td>{{version.userId}}</td>
+                <td>
+                    <!--<a href="#" id="previewVersion">Preview</a>  TODO: implement preview-->
+                    <a id="revert" ng-click="vm.revertToVersion(version.versionId)">Revert</a>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
 <div class="container">

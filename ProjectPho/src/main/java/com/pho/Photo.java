@@ -132,6 +132,7 @@ public class Photo {
 
         // Update canvas
         canvas = img;
+        updateCanvasId();
     }
 
 
