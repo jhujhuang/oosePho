@@ -198,7 +198,7 @@ public class Photo {
      * @param params Map of filter parameters.
      * @throws PhoService.PhoServiceException when editType is not found.
      */
-    public void edit(String editType, Map<String, Double> params)
+    public void edit(String editType, Map<String, Double> params, Map<String, Double> select)
             throws PhoService.PhoServiceException {
         Filter f;
         try {
@@ -210,8 +210,13 @@ public class Photo {
 
         // Make changes and store new canvas image
         // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
-        f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
-
+        int x1 = select.get("x1").intValue();
+        System.out.println(x1);
+        if (x1 == -1) {
+            f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
+        } else {
+            f.applyToRectangle(x1, select.get("x2").intValue(), select.get("y1").intValue(), select.get("y2").intValue());
+        }
         canvas = f.getImage();
 
         updateCanvasId();

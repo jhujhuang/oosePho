@@ -125,10 +125,12 @@ public class PhoController {
                 String canvasId = property.getProperty("canvasId");
                 String editType = property.getProperty("editType");
                 String moreParams = property.getProperty("moreParams");
+                String select = property.getProperty("select");
                 Map<String, Double> paramMap = new Gson().fromJson(moreParams, HashMap.class);
-                String photoId = request.params(":pId");
-                phoService.edit(photoId, canvasId, editType, paramMap);
+                Map<String, Double> selectMap = new Gson().fromJson(select, HashMap.class);
 
+                String photoId = request.params(":pId");
+                phoService.edit(photoId, canvasId, editType, paramMap, selectMap);
                 // DO NOT return canvasId; rather frontend will get new info by fetching.
                 return Collections.EMPTY_MAP;
             } catch (PhoService.InvalidPhotoIdException ex) {

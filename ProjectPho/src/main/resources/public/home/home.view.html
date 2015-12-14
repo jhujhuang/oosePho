@@ -80,7 +80,7 @@
                 <li><a ng-click="vm.currentTool = 'changecontrast'">ChangeContrast</a></li>
                 <li><a ng-click="vm.currentTool = 'edgedetect'">EdgeDetection</a></li>
             </ul>
-            <button type="button" ng-click="vm.currentTool = 'select'" class="btn btn-lg btn-default btn-block">Selection</button>
+            <button type="button" ng-click="vm.currentTool = 'select';vm.tapSelect()" class="btn btn-lg btn-default btn-block">Selection</button>
             <button type="button" ng-click="vm.currentTool = 'pencil'" class="btn btn-lg btn-default btn-block">Pencil</button>
         </div>
         <div id="tools-parameters">
@@ -110,7 +110,7 @@
     </div>
     <div class="col-sm-9">
         <div id="canvas" style="overflow:auto">
-            <img data-ng-src="data:image/png;base64, {{vm.canvasData}}" data-err-src="./images/icon.png" border="1px">
+            <img id="canvas_image" data-ng-src="data:image/png;base64, {{vm.canvasData}}" data-err-src="./images/icon.png" border="1px">
 
             <!--<div id="heads_up" ng-if="!vm.hasCanvasData()" class="jumbotron">
                 <h1>Hello, {{vm.user.firstName}}!</h1>

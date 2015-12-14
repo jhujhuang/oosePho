@@ -64,19 +64,37 @@
         vm.user = null;
         vm.allUsers = [];
         vm.deleteUser = deleteUser;
-
+        vm.select = {};
+        vm.select['x1'] = -1;
         initController();
 
         // Left panel starts here
 
         vm.currentTool = '';
 
+        vm.tapSelect = function() {
+            console.log("selecting");
+            $('#canvas_image').imgAreaSelect({
+                handles: true,
+                onSelectEnd: function (img, selection) {
+                    vm.select['x1'] = selection.x1;
+                    vm.select['y1'] = selection.y1;
+                    vm.select['x2']= selection.x2;
+                    vm.select['y2'] = selection.y2;
+                    console.log("x1:" + selection.x1 + "x2:" + selection.x2 +
+                        "y1:" + selection.y1 + "y2:" + selection.y2);
+                }
+            });
+        }
+
         vm.doBlur = function() {
             // TODO: Add a percentage
             applyFilter('BlurFilter', {});
+            vm.select.x1 = -1;
         }
         vm.doEdgeDetect = function() {
             applyFilter('EdgeDetectionFilter', {});
+            vm.select.x1 = -1;
         }
 
         function applyFilter(filterType, params) {
@@ -84,6 +102,8 @@
             content['canvasId'] = vm.canvasId;
             content['editType'] = filterType;
             content['moreParams'] = JSON.stringify(params);
+            content['select'] = JSON.stringify(vm.select);
+            console.log(content);
             $http.post("/api/edit/" + vm.pId + "/change", JSON.stringify(content), {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
