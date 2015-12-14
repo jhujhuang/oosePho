@@ -118,6 +118,14 @@
 
 
         vm.revertToVersion = function(versionId) {
+            if (confirm("Are you sure you want to revert to version " + versionId + "? Any unsaved changes will be lost.")) {
+                revertForSure(versionId);
+            } else {
+                console.log("Not reverting");
+            }
+        }
+
+        function revertForSure(versionId) {
             console.log("Reverting to version" + versionId);
 
             var content = {};
