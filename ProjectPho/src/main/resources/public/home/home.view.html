@@ -82,7 +82,7 @@
                 <th>Author</th>
                 <th>Actions</th>
             </tr>
-            <tr data-ng-repeat="version in vm.revisionsOfPhoto">
+            <tr data-ng-repeat="version in vm.revisionsOfPhoto | orderBy: '-'">
                 <td>{{version.versionId}}</td>
                 <td>{{version.createdTime}}</td>
                 <td>{{version.userId}}</td>
