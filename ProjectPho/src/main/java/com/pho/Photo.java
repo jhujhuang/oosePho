@@ -211,6 +211,7 @@ public class Photo {
         // Make changes and store new canvas image
         // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
         f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
+        // System.out.println("width: " + canvas.getWidth() + "height: " + canvas.getHeight());
 
         canvas = f.getImage();
 
