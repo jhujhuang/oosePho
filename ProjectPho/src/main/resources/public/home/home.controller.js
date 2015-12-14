@@ -157,6 +157,7 @@
         /* Editing related variables and logic. */
 
         vm.photosOfUser = null;
+        vm.revisionsOfPhoto = null;
         vm.pid = "";
         vm.url = "undefined";
         vm.html = "";
@@ -229,6 +230,17 @@
 
         function getRevisions() {
             // TODO: get by request and response
+            $http.get("/api/edit/" + vm.pId + "/versions", {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function(response) {
+                vm.revisionsOfPhoto = response['versions'];
+            })
+            .error(function() {
+                console.log("Failed to get revisions.");
+            })
         }
 
         function joinEditingSession(pId){

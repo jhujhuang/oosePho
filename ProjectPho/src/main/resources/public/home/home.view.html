@@ -82,10 +82,10 @@
                 <th>Author</th>
                 <th>Actions</th>
             </tr>
-            <tr data-ng-repeat="(versionId, createdTime, author) in vm.revisionsOfPhoto">
-                <td>{{versionId}}</td>
-                <td>{{createdTime}}</td>
-                <td>{{author}}</td>
+            <tr data-ng-repeat="version in vm.revisionsOfPhoto">
+                <td>{{version.versionId}}</td>
+                <td>{{version.createdTime}}</td>
+                <td>{{version.userId}}</td>
                 <td>
                     <a href="#" id="previewVersion">Preview</a>
                     <a href="#" id="revert">Revert</a>
