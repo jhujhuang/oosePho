@@ -17,7 +17,7 @@
         $("#open_link").on('click', function(e){
             e.preventDefault();
             $("#open").css('display', 'block');
-            // get all newest versions of the user's photos.
+            // get all the user's photos.
             openImage();
         });
 
@@ -38,6 +38,23 @@
         $("#hide_invite_link").on('click', function(e) {
             e.preventDefault();
             $("#invite_message").css('display', 'none');
+        });
+
+        $("#revisions_link").on('click', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                $("#revisions").css('display', 'block');
+                // Get all revisions
+                getRevisions();
+            } else {
+                alert("Please open a photo first!");
+            }
+        });
+
+        $("#hide_revisions_link").on('click', function(e) {
+            e.preventDefault();
+            console.log("Hide revisions");
+            $("#revisions").css('display', 'none');
         });
 
 
@@ -208,6 +225,10 @@
             .error(function(){
                 // console.log("Failed to send the image to server!");
             });
+        }
+
+        function getRevisions() {
+            // TODO: get by request and response
         }
 
         function joinEditingSession(pId){
