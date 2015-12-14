@@ -9,6 +9,15 @@
     function HomeController(UserService, $rootScope, $http, $routeParams) {
 
         // some jQuery to make a link serve as an input option
+        $("#save_link").on('click', function(e) {
+            e.preventDefault();
+            if (vm.isInSession) {
+                saveVersion();
+            } else {
+                alert("Please open a photo first!");
+            }
+        });
+
         $("#upload_link").on('click', function(e){
             e.preventDefault();
             $("#upload:hidden").trigger('click');
@@ -380,7 +389,24 @@
         }
 
         function saveVersion(){
+            console.log("Saving version");
 
+            var content = {};
+            content['userId'] = vm.user.username;
+            content['canvasId'] = vm.canvasId;
+            $http.post("/api/edit/" + vm.pId + "/save", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Version saved successfully!");
+                getRevisions();
+            })
+            .error(function() {
+                console.log("Failed to save version. Maybe due to unsync.");
+                alert("Failed to save version. Please try again.");
+            });
         }
     }
 
