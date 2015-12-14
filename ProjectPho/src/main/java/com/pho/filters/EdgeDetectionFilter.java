@@ -96,7 +96,11 @@ public class EdgeDetectionFilter extends Filter {
                 newB = newB > 255 ? 255 : newB;
                 newB = newB < 0 ? 0 : newB;
 
-                int newColor = ((newR & 0x0ff) << 16) | (( newG & 0x0ff) << 8) | (newB & 0x0ff);
+                // System.out.println("r: " + newR + " g: " + newG + " b:" + newB);
+                newR = (newR << 16) & 0x00FF0000;
+                newG = (newG << 8) &  0x0000FF00;
+                newB = newB &         0x000000FF;
+                int newColor = 0xFF000000 | newR | newG | newB;
                 offscreen.setRGB(x, y, newColor);
             }
         }

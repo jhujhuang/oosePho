@@ -209,7 +209,6 @@ public class Photo {
         f.loadImage(canvas);
 
         // Make changes and store new canvas image
-        // TODO: Should put x0, x1, y0, y1 in params, so can also apply to selection?
         int x1 = select.get("x1").intValue();
         System.out.println(x1);
         if (x1 == -1) {
