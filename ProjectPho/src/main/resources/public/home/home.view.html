@@ -87,8 +87,8 @@
                 <td>{{version.createdTime}}</td>
                 <td>{{version.userId}}</td>
                 <td>
-                    <a href="#" id="previewVersion">Preview</a>
-                    <a href="#" id="revert">Revert</a>
+                    <!--<a href="#" id="previewVersion">Preview</a>  TODO: implement preview-->
+                    <a id="revert" ng-click="vm.revertToVersion(version.versionId)">Revert</a>
                 </td>
             </tr>
         </table>

@@ -73,7 +73,7 @@
             } else {
                 alert("Please open a photo first!");
             }
-        })
+        });
 
 
         var vm = this;
@@ -115,6 +115,28 @@
         }
 
         // Left panel ends here
+
+
+        vm.revertToVersion = function(versionId) {
+            console.log("Reverting to version" + versionId);
+
+            var content = {};
+            content['userId'] = vm.user.username;
+            content['versionId'] = versionId;
+            $http.post("/api/edit/" + vm.pId + "/versions/revert", JSON.stringify(content), {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function() {
+                console.log("Reverted and new same version added.");
+                getRevisions();
+            })
+            .error(function() {
+                alert("Failed to revert to version " + versionId);
+            });
+        }
+
 
         function initController() {
             console.log("Initialize the controller");
