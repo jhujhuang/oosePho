@@ -69,6 +69,30 @@
         </div>
     </div>
 </div>
+<div class="revisions_container">
+    <div id="revisions" style="display:none;" class="panel panel-primary">
+        <div class="panel-heading">
+            Revisions <span id="hide_revisions_link" class="glyphicon glyphicon-remove pull-right"></span>
+        </div>
+        <table class="table revisions-table">
+            <tr>
+                <th>Version</th>
+                <th>Time Created</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+            <tr data-ng-repeat="(versionId, createdTime, author) in vm.revisionsOfPhoto">
+                <td>{{versionId}}</td>
+                <td>{{createdTime}}</td>
+                <td>{{author}}</td>
+                <td>
+                    <a href="#" id="previewVersion">Preview</a>
+                    <a href="#" id="revert">Revert</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 <div class="container">
     <div class="col-sm-3">
         <div id="toolbar" class="my-toolbar btn-group-vertical btn-group-lg btn-block" role="toolbar">

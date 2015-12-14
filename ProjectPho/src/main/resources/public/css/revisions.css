@@ -1,0 +1,8 @@
+.revisions_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.revisions-table {
+    width: 100%;
+}

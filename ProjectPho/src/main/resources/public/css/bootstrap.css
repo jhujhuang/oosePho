@@ -4806,6 +4806,7 @@ a.list-group-item-danger.active:focus {
 }
 .panel > .table,
 .panel > .table-responsive > .table {
+  color: #333333;
   margin-bottom: 0;
 }
 .panel > .table:first-child,
