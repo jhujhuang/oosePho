@@ -2,6 +2,7 @@ package com.pho.filters;
 
 import java.awt.image.BufferedImage;
 import java.util.Map;
+import java.util.Arrays;
 
 /**
  * Blur filter.
@@ -33,6 +34,9 @@ public class BlurFilter extends Filter {
                 {1, 2, 1}
         };
 
+        // System.out.println(Arrays.deepToString(mask));
+
+
         // apply filtering to offscreen first
         BufferedImage offscreen = deepCopy(image);
 
@@ -41,7 +45,7 @@ public class BlurFilter extends Filter {
 
                 int totalPixels = 4;
                 int rgb = image.getRGB(x, y);
-
+                // int newA = (rgb >> 24) & 0xFF * mask[1][1];
                 int newR = (rgb >> 16) & 0xFF * mask[1][1];
                 int newG = (rgb >> 8) & 0xFF * mask[1][1];
                 int newB = (rgb >> 0) & 0xFF * mask[1][1];
@@ -57,7 +61,7 @@ public class BlurFilter extends Filter {
                     newR += (image.getRGB(x, y - 1) >> 16) & 0xFF * mask[1][0];
                     newG += (image.getRGB(x, y - 1) >> 8) & 0xFF * mask[1][0];
                     newB += (image.getRGB(x, y - 1) >> 0) & 0xFF * mask[1][0];
-                    totalPixels+= 2;
+                    totalPixels += 2;
                 }
 
                 if (x < x2 - 1 && y > 0) {
@@ -98,15 +102,30 @@ public class BlurFilter extends Filter {
                 if (x < x2 -1 && y < y2 - 1) {
                     newR += (image.getRGB(x + 1, y + 1) >> 16) & 0xFF * mask[2][2];
                     newG += (image.getRGB(x + 1, y + 1) >> 8) & 0xFF * mask[2][2];
-                    newB += (image.getRGB(x + 1, y + 1) >> 0) & 0xFF * mask[0][2];
+                    newB += (image.getRGB(x + 1, y + 1) >> 0) & 0xFF * mask[2][2];
                     totalPixels+= 1;
                 }
 
+                // newA /= totalPixels;
                 newR /= totalPixels;
                 newG /= totalPixels;
                 newB /= totalPixels;
 
-                int newColor = ((newR & 0x0ff) << 16) | (( newG & 0x0ff) << 8) | (newB & 0x0ff);
+                newR = newR > 255 ? 255 : newR;
+                newR = newR < 0 ? 0 : newR;
+
+                newG = newG > 255 ? 255 : newG;
+                newG = newG < 0 ? 0 : newG;
+
+                newB = newB > 255 ? 255 : newB;
+                newB = newB < 0 ? 0 : newB;
+
+                newR = (newR << 16) & 0x00FF0000;
+                newG = (newG << 8) &  0x0000FF00;
+                newB = newB &         0x000000FF;
+
+                // System.out.println(" r: " + newR + " g: " + newG + " b:" + newB);
+                int newColor = 0xFF000000 | newR | newG | newB;
                 offscreen.setRGB(x, y, newColor);
             }
         }
