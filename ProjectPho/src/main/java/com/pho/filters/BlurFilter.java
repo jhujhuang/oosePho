@@ -1,6 +1,9 @@
 package com.pho.filters;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.Map;
 import java.util.Arrays;
 
@@ -28,18 +31,35 @@ public class BlurFilter extends Filter {
      */
     public void applyToRectangle(int x1, int x2, int y1, int y2) {
         // TODO: Implement
-        int mask[][] = new int[][]{
+        /*int mask[][] = new int[][]{
                 {1, 2, 1},
                 {2, 4, 2},
                 {1, 2, 1}
+        };*/
+        float[] matrix = {
+                0.111f, 0.111f, 0.111f,
+                0.111f, 0.111f, 0.111f,
+                0.111f, 0.111f, 0.111f,
         };
 
-        // System.out.println(Arrays.deepToString(mask));
+        BufferedImageOp op = new ConvolveOp( new Kernel(3, 3, matrix) );
+        BufferedImage src = image;
 
+        BufferedImage blurredImage = op.filter(src, null);
+
+
+        // System.out.println(Arrays.deepToString(mask));
 
         // apply filtering to offscreen first
         BufferedImage offscreen = deepCopy(image);
 
+        for (int y = y1; y < y2; y++) {
+            for (int x = x1; x < x2; x++) {
+                offscreen.setRGB(x, y, blurredImage.getRGB(x, y));
+            }
+        }
+
+        /*
         for (int y = y1; y < y2; y++) {
             for (int x = x1; x < x2; x++) {
 
@@ -129,6 +149,7 @@ public class BlurFilter extends Filter {
                 offscreen.setRGB(x, y, newColor);
             }
         }
+        */
         // update image with offscreen
         image = offscreen;
     }

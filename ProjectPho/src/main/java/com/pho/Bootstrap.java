@@ -33,8 +33,9 @@ public class Bootstrap {
         }
 
         //Specify the IP address and Port at which the server should be run
-        ipAddress(IP_ADDRESS);
-        port(PORT);
+        // ipAddress(IP_ADDRESS);
+        // port(PORT);
+        port(getHerokuAssignedPort());
 
         //Specify the sub-directory from which to serve static resources (like html and css)
         staticFileLocation("/public");
@@ -46,6 +47,14 @@ public class Bootstrap {
         } catch (PhoService.PhoServiceException ex) {
             logger.error("Failed to create a Service instance. Aborting");
         }
+    }
+
+    static int getHerokuAssignedPort() {
+        ProcessBuilder processBuilder = new ProcessBuilder();
+        if (processBuilder.environment().get("PORT") != null) {
+            return Integer.parseInt(processBuilder.environment().get("PORT"));
+        }
+        return 8080; //return default port if heroku-port isn't set (i.e. on localhost)
     }
 
     /**
