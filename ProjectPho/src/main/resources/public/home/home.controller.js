@@ -165,6 +165,15 @@
             }
         }
 
+        vm.previewVersion = function(versionId) {
+            // TODO: get version data vm.previewVersionData
+            $("#preview_a_version").css('display', 'block');
+        }
+
+        vm.hidePreviewVersion = function() {
+            $("#preview_a_version").css('display', 'none');
+        }
+
         function revertForSure(versionId) {
             console.log("Reverting to version" + versionId);
 

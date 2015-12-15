@@ -87,11 +87,18 @@
                 <td>{{version.createdTime}}</td>
                 <td>{{version.userId}}</td>
                 <td>
-                    <!--<a href="#" id="previewVersion">Preview</a>  TODO: implement preview-->
+                    <a id="previewVersion" ng-click="vm.previewVersion(version.versionId)">Preview</a>
                     <a id="revert" ng-click="vm.revertToVersion(version.versionId)">Revert</a>
                 </td>
             </tr>
         </table>
+    </div>
+    <div id="preview_a_version" class="preview-revision panel panel-info" style="display:none;">
+        <div class="panel-heading">
+            Preview
+            <a ng-click="vm.hidePreviewVersion()"><span class="glyphicon glyphicon-remove pull-right"></span></a>
+        </div>
+        <img data-ng-src="data:image/png;base64, {{vm.previewVersionData}}">
     </div>
 </div>
 <div class="container">
