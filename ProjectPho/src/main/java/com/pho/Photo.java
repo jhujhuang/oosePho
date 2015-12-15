@@ -244,17 +244,21 @@ public class Photo {
      * @throws IOException when fails to get image bytes
      */
     public String getImageBytes() throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(canvas, "jpg", baos);
-        baos.flush();
-        byte[] imageInByteArray = baos.toByteArray();
-        baos.close();
-        return DatatypeConverter.printBase64Binary(imageInByteArray);
+       return getBytesOfImage(canvas);
     }
 
     //-----------------------------------------------------------------------------//
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
+
+    private String getBytesOfImage(BufferedImage img) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(img, "jpg", baos);
+        baos.flush();
+        byte[] imageInByteArray = baos.toByteArray();
+        baos.close();
+        return DatatypeConverter.printBase64Binary(imageInByteArray);
+    }
 
     private void updateCanvasId() {
         canvasId = "" + canvasIdInt++;
@@ -266,6 +270,16 @@ public class Photo {
      */
     private String getNextVId() {
         return "" + nextVId++;  // TODO: Consider change how to make this versionId
+    }
+
+    /**
+     * Get the base 64 string representation of the image of a version.
+     * @param versionId string
+     * @return base 64 string
+     */
+    public String getVersionBytes(String versionId) throws IOException {
+        Version v = versions.get(Integer.parseInt(versionId));
+        return getBytesOfImage(v.getImage());
     }
 
     /**

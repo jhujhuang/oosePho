@@ -6,3 +6,12 @@
 .revisions-table {
     width: 100%;
 }
+.preview-revision {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    z-index: 100;
+}
+.preview-revision img {
+    max-width: 100%;
+}

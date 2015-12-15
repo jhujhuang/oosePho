@@ -157,12 +157,35 @@
         // Left panel ends here
 
 
+        vm.previewVersionData = "";
+
         vm.revertToVersion = function(versionId) {
             if (confirm("Are you sure you want to revert to version " + versionId + "? Any unsaved changes will be lost.")) {
                 revertForSure(versionId);
             } else {
                 console.log("Not reverting");
             }
+        }
+
+        vm.previewVersion = function(versionId) {
+            // TODO: get version data vm.previewVersionData
+            $http.get("/api/edit/" + vm.pId + "/" + versionId, {
+                withCredentials: true,
+                headers: {'Content-Type': undefined },
+                transformRequest: angular.identity
+            })
+            .success(function(response) {
+                vm.previewVersionData = response['previewData'];
+                $("#preview_a_version").css('display', 'block')
+            })
+            .error(function() {
+                console.log("Failed to get version preview");
+            })
+            ;
+        }
+
+        vm.hidePreviewVersion = function() {
+            $("#preview_a_version").css('display', 'none');
         }
 
         function revertForSure(versionId) {
@@ -299,7 +322,6 @@
         }
 
         function getRevisions() {
-            // TODO: get by request and response
             $http.get("/api/edit/" + vm.pId + "/versions", {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },

@@ -258,6 +258,21 @@ public class PhoService {
         p.addVersion(getTime(), userId);
     }
 
+    /**
+     * Get a base64 string representation of the version image data.
+     * @param pId string
+     * @param versionId string
+     * @return base 64 string
+     */
+    public String getPreview(String pId, String versionId) throws InvalidPhotoIdException {
+        Photo p = findByPhotoId(pId);
+        try {
+            return p.getVersionBytes(versionId);
+        } catch (IOException e) {
+            throw new RuntimeException("Something went wrong when we try to write image to bytes.");
+        }
+    }
+
     //-----------------------------------------------------------------------------//
     // Helper Classes and Methods
     //-----------------------------------------------------------------------------//
@@ -336,6 +351,7 @@ public class PhoService {
         Date d = new Date();
         return d.toString();
     }
+
 
 
     public static class PhoServiceException extends Exception {

@@ -256,6 +256,22 @@ public class PhoController {
             }
         }, new JsonTransformer());
 
+        // Get a preview of a version of a photo
+        get(API_CONTEXT + "/edit/:pId/:versionId", "application/json", (request, response) -> {
+            try {
+                response.status(200);
+                String pId = request.params(":pId");
+                String versionId = request.params("versionId");
+                Map<String, String> result= new HashMap<>();
+                result.put("previewData", phoService.getPreview(pId, versionId));
+                return result;
+            } catch (PhoService.InvalidPhotoIdException ex) {
+                logger.error("Invalid photo Id");
+                response.status(404);
+                return createFailureContent(ex.getMessage());
+            }
+        }, new JsonTransformer());
+
     }
 
     private Map<String, String> createFailureContent(String reason) {
