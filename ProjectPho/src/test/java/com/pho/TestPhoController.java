@@ -164,6 +164,7 @@ public class TestPhoController {
         content.put("canvasId", oldCanvasId);
         content.put("editType", "BlurFilter");
         content.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
+        content.put("select", new Gson().toJson(getSelectMap()));
         Response editResponse = request("POST", "/edit/" + pId + "/change", content);
         assertEquals("Fail to apply filter on photo", 200, editResponse.httpStatus);
 
@@ -266,6 +267,7 @@ public class TestPhoController {
         editContent.put("canvasId", fetched.canvasId);
         editContent.put("editType", "BlurFilter");
         editContent.put("moreParams", new Gson().toJson(Collections.EMPTY_MAP));
+        editContent.put("select", new Gson().toJson(getSelectMap()));
         request("POST", "/edit/" + pId + "/change", editContent);
         saveResult = request("POST", "/edit/" + pId + "/save", content);
         assertEquals("Fail to recognize synchronization error", 401, saveResult.httpStatus);
@@ -318,6 +320,16 @@ public class TestPhoController {
     //------------------------------------------------------------------------//
     // Generic Helper Methods and classes
     //------------------------------------------------------------------------//
+
+    /** Get a select map for edit **/
+    private Map<String, Double> getSelectMap() {
+        Map<String, Double> select = new HashMap<>();
+        select.put("x1", -1.0);  // Whole picture
+        select.put("x2", 20.0);  // These three will not be looked at.
+        select.put("y1", 0.0);
+        select.put("y2", 20.0);
+        return select;
+    }
 
     /** Register a user. **/
     private void registerUser() {
