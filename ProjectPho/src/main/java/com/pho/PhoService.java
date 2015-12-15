@@ -48,7 +48,7 @@ public class PhoService {
 
         // TODO: Load users from database & load allPhotos from database
 
-        // TODO: Implement
+
         //Create the schema for the database if necessary. This allows this
         //program to mostly self-contained. But this is not always what you want;
         //sometimes you want to create the schema externally via a script.
@@ -77,22 +77,18 @@ public class PhoService {
         String sql = "INSERT INTO userpw(user_id, password) " +
                      "VALUES (:user_id, :password)";
 
-
         // Create new user
         User user = new User(userId);
 
         // Store user password
-        // TODO: implement
         try (Connection conn = db.open()) {
             conn.createQuery(sql)
                     .addParameter("user_id", userId)
                     .addParameter("password", password)
                     .executeUpdate();
         } catch(Sql2oException ex) {
-//            throw new PhoServiceException("PhoService.register: Failed to create new account", ex);
-            throw ex;
+            throw new PhoServiceException("PhoService.register: Failed to create new account", ex);
         }
-
 
         users.add(user);
     }
@@ -116,6 +112,19 @@ public class PhoService {
         allPhotos.add(pIdTracker, p);
         pIdTracker++;
 
+        String sql = "INSERT INTO userpic(user_id, pId) " +
+                "VALUES (:user_id, :pId)";
+
+        try (Connection conn = db.open()) {
+            conn.createQuery(sql)
+                    .addParameter("user_id", userId)
+                    .addParameter("password", password)
+                    .executeUpdate();
+        } catch(Sql2oException ex) {
+            throw new PhoServiceException("PhoService.register: Failed to create new account", ex);
+        }
+
+
         usr.addPhoto(p);  // User is authenticated at this point.
 
         return pId;
@@ -131,6 +140,16 @@ public class PhoService {
         Photo e = findByPhotoId(photoId);
         User usr = getUser(userId);
         e.addCollaborator(usr);
+
+        try (Connection conn = db.open()) {
+            conn.createQuery(sql)
+                    .addParameter("user_id", userId)
+                    .addParameter("password", password)
+                    .executeUpdate();
+        } catch(Sql2oException ex) {
+            throw new PhoServiceException("PhoService.register: Failed to create new account", ex);
+        }
+
     }
 
     /**
