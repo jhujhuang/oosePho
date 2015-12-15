@@ -33,9 +33,9 @@ public class Bootstrap {
         }
 
         //Specify the IP address and Port at which the server should be run
-        // ipAddress(IP_ADDRESS);
-        // port(PORT);
-        port(getHerokuAssignedPort());
+        ipAddress(IP_ADDRESS);
+        port(PORT);
+        // port(getHerokuAssignedPort());
 
         //Specify the sub-directory from which to serve static resources (like html and css)
         staticFileLocation("/public");
