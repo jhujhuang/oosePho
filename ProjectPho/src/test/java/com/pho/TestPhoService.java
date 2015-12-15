@@ -144,11 +144,7 @@ public class TestPhoService {
         String pId = phoService.createNewPhoto(userId, testImg);
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP, select);
         String newCanvasId = phoService.getCanvasId(pId);
         // Check that canvas id has been updated
@@ -172,11 +168,7 @@ public class TestPhoService {
         String pId = phoService.createNewPhoto(userId, testImg);
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         String wrongId = "csf";
         assert(!pId.equals(wrongId));
         phoService.edit(wrongId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP, select);
@@ -191,11 +183,7 @@ public class TestPhoService {
         String pId = phoService.createNewPhoto(userId, testImg);
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP, select);
         phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP, select);
     }
@@ -209,11 +197,7 @@ public class TestPhoService {
         String pId = phoService.createNewPhoto(userId, testImg);
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, oldCanvasId, "NotAFilter", Collections.EMPTY_MAP, select);
     }
 
@@ -260,11 +244,7 @@ public class TestPhoService {
 
         map = phoService.getRevisions(pId);
         assertEquals(2, map.get("versions").size());
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP, select);
         canvasId = phoService.getCanvasId(pId);
         phoService.saveVersion(otherUser, pId, canvasId);
@@ -293,13 +273,18 @@ public class TestPhoService {
         String pId = phoService.createNewPhoto(userId, testImg);
         Photo.FetchResult fetchResult = phoService.fetch(pId);
         String oldCanvasId = fetchResult.canvasId;
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, oldCanvasId, "BlurFilter", Collections.EMPTY_MAP, select);
         phoService.saveVersion(userId, pId, oldCanvasId);
+    }
+
+    private Map<String, Double> getSelectMap() {
+        Map<String, Double> select = new HashMap<>();
+        select.put("x1", 0.0);
+        select.put("x2", 20.0);
+        select.put("y1", 0.0);
+        select.put("y2", 20.0);
+        return select;
     }
 
     @Test(expected = PhoService.InvalidPhotoIdException.class)
@@ -330,11 +315,7 @@ public class TestPhoService {
         // Let someone change the photo and save a version
         String canvasId = fetchResult.canvasId;
         String otherUser = "TestUser";
-        Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 200.0);
-        select.put("y1", 0.0);
-        select.put("y2", 200.0);
+        Map<String, Double> select = getSelectMap();
         phoService.edit(pId, canvasId, "BlurFilter", Collections.EMPTY_MAP, select);
         canvasId = phoService.getCanvasId(pId);
         phoService.saveVersion(otherUser, pId, canvasId);
