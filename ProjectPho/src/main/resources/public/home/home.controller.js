@@ -120,9 +120,14 @@
             applyFilter('BlurFilter', {});
         }
         vm.doContrastChange = function() {
-            var param = {};
-            param['value'] = parseFloat(vm.contrastRatio);
-            applyFilter('ChangeContrastFilter', param);
+            var ratio = parseFloat(vm.contrastRatio);
+            if (ratio < 0) {
+                alert("Please enter a non-negative number!");
+            } else {
+                var param = {};
+                param['value'] = ratio;
+                applyFilter('ChangeContrastFilter', param);
+            }
         }
         vm.doEdgeDetect = function() {
             applyFilter('EdgeDetectionFilter', {});

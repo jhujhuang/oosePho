@@ -9,7 +9,7 @@
 }
 
 #tool-changecontrast-param {
-    top: 15px;
+    top: -75px;
     position: relative;
 }
 
@@ -17,13 +17,23 @@
     position: relative;
     width: 80px;
     left: 5px;
-    border-radius: 5px;
 }
 
-textarea:focus, input:focus {
+#tools-parameters textarea:focus, input:focus {
     color: #0000ff;
 }
 
-input, select, textarea {
+#tools-parameters input, select, textarea {
     color: #000
+}
+
+#tools-parameters .alert {
+    padding: 5px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }

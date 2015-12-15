@@ -124,9 +124,11 @@
                 <button type="submit" class="btn btn-default" ng-click="vm.doBlur()">Apply</button>
             </div>
             <div id="tool-changecontrast" ng-if="vm.currentTool=='changecontrast'">
-                <button type="submit" class="btn btn-default" ng-click="vm.doContrastChange()">Apply</button>
                 <div id="tool-changecontrast-param">
-                    Contrast ratio: <input id="tool-changecontrast-input" ng-model="vm.contrastRatio">
+                    <p class="alert alert-info">Please enter your desired contrast ratio.
+                        Values greater than 1 will add contrast; values between 0 and 1 will decrease contrast.</p>
+                    Contrast ratio: <input id="tool-changecontrast-input" ng-model="vm.contrastRatio" type="number">
+                    <button type="submit" class="btn btn-default" ng-click="vm.doContrastChange()">Apply</button>
                 </div>
             </div>
             <div id="tool-edgedetect" ng-if="vm.currentTool=='edgedetect'">
