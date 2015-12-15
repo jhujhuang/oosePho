@@ -280,8 +280,8 @@ public class TestPhoService {
 
     private Map<String, Double> getSelectMap() {
         Map<String, Double> select = new HashMap<>();
-        select.put("x1", 0.0);
-        select.put("x2", 20.0);
+        select.put("x1", -1.0);  // Whole picture
+        select.put("x2", 20.0);  // These three will not be looked at.
         select.put("y1", 0.0);
         select.put("y2", 20.0);
         return select;
