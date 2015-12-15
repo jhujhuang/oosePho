@@ -27,7 +27,7 @@ public class Bootstrap {
         //Check if the database file exists in the current directory. Abort if not
         DataSource dataSource = configureDataSource();
         if (dataSource == null) {
-            System.out.printf("Could not find Game.db in the current directory (%s). Terminating\n",
+            System.out.printf("Could not find Pho.db in the current directory (%s). Terminating\n",
                     Paths.get(".").toAbsolutePath().normalize());
             System.exit(1);
         }
