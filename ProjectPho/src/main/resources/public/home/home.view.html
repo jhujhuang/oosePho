@@ -93,13 +93,14 @@
             </tr>
         </table>
     </div>
-    <div id="preview_a_version" class="preview-revision panel panel-info" style="display:none;">
+    <div class="preview-revision col-sm-7">
+    <div id="preview_a_version" class="panel panel-info" style="display:none;">
         <div class="panel-heading">
             Preview
             <a ng-click="vm.hidePreviewVersion()"><span class="glyphicon glyphicon-remove pull-right"></span></a>
         </div>
         <img data-ng-src="data:image/png;base64, {{vm.previewVersionData}}">
-    </div>
+    </div></div>
 </div>
 <div class="container">
     <div class="col-sm-3">
