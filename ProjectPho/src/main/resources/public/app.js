@@ -64,6 +64,8 @@
                 $location.path('/login');
             }
         });
+
+        $rootScope.alert = alert.bind(window);
     }
 
 })();
