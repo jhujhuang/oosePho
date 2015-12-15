@@ -1,7 +1,10 @@
 package com.pho;
 
 import org.hashids.Hashids;
+import org.sql2o.Connection;
 import org.sql2o.Sql2o;
+import org.sql2o.Sql2oException;
+
 import javax.sql.DataSource;
 
 import java.awt.image.BufferedImage;
@@ -49,14 +52,14 @@ public class PhoService {
         //Create the schema for the database if necessary. This allows this
         //program to mostly self-contained. But this is not always what you want;
         //sometimes you want to create the schema externally via a script.
-        /*try (Connection conn = db.open()) {
-            String sql = "CREATE TABLE IF NOT EXISTS item (item_id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "                                 title TEXT, done BOOLEAN, created_on TIMESTAMP)" ;
+        try (Connection conn = db.open()) {
+            String sql = "CREATE TABLE IF NOT EXISTS userpw (user_id TEXT PRIMARY KEY, " +
+                                                           "password TEXT)";
             conn.createQuery(sql).executeUpdate();
+
         } catch(Sql2oException ex) {
-            logger.error("Failed to create schema at startup", ex);
-            throw new GameServiceException("Failed to create schema at startup", ex);
-        }*/
+            throw new PhoServiceException("Failed to create schema at startup", ex);
+        }
     }
 
     /**
@@ -71,11 +74,26 @@ public class PhoService {
             throw new PhoServiceException("Existing userId", null);
         }
 
-        // Store user password
-        // TODO: implement
+        String sql = "INSERT INTO userpw(user_id, password) " +
+                     "VALUES (:user_id, :password)";
+
 
         // Create new user
         User user = new User(userId);
+
+        // Store user password
+        // TODO: implement
+        try (Connection conn = db.open()) {
+            conn.createQuery(sql)
+                    .addParameter("user_id", userId)
+                    .addParameter("password", password)
+                    .executeUpdate();
+        } catch(Sql2oException ex) {
+//            throw new PhoServiceException("PhoService.register: Failed to create new account", ex);
+            throw ex;
+        }
+
+
         users.add(user);
     }
 
@@ -335,6 +353,10 @@ public class PhoService {
     private String getTime() {
         Date d = new Date();
         return d.toString();
+    }
+
+    private int getChangedRows(Connection conn) throws Sql2oException {
+        return conn.createQuery("SELECT changes()").executeScalar(Integer.class);
     }
 
 
