@@ -38,8 +38,11 @@
                         <a id="invite_link">Invite</a>
                     </li>
                     <li role="separator" class="divider"></li>
-                    <li><a>Export as<span class="caret"></span></a></li>
-                    <li><a>Print</a></li>
+                    <li>
+                        <a ng-click="alert('You may right-click on the canvas to save your photo to your local disk!')">
+                            Export<span class="caret"></span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <!-- Please change TODO display the number of revisions, and maybe change style to not be a tab -->
