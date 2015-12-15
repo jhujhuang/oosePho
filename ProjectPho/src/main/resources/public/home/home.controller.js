@@ -92,6 +92,7 @@
         vm.deleteUser = deleteUser;
         vm.select = {};
         vm.select['x1'] = -1;
+        vm.ias = "";
         initController();
 
         // Left panel starts here
@@ -100,7 +101,8 @@
 
         vm.tapSelect = function() {
             console.log("selecting");
-            $('#canvas_image').imgAreaSelect({
+            vm.ias = $('#canvas_image').imgAreaSelect({
+                instance: true,
                 handles: true,
                 onSelectEnd: function (img, selection) {
                     vm.select['x1'] = selection.x1;
@@ -136,6 +138,9 @@
                 transformRequest: angular.identity
             })
             .success(function() {
+                vm.ias.setOptions({
+                    hide: true
+                })
                 console.log(filterType + " applied. Wait for fetch and update.");
             })
             .error(function() {
