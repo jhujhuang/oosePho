@@ -27,8 +27,8 @@ public class ChangeContrastFilter extends Filter {
         if (contrast >= 0) {
             double averageLuminance = 0;
             int count = 0;
-            for (int i = y1; i < y2; i++) {
-                for (int j = x1; j < x2; j++) {
+            for (int i = x1; i < x2; i++) {
+                for (int j = y1; j < y2; j++) {
                     count++;
                     int rgb = image.getRGB(i, j);
                     int r = (rgb >> 16) & 0xFF;
@@ -46,10 +46,16 @@ public class ChangeContrastFilter extends Filter {
                     int r = (rgb >> 16) & 0xFF;
                     int g = (rgb >> 8) & 0xFF;
                     int b = (rgb >> 0) & 0xFF;
-                    int newR = (int)((r - averageLuminance) * contrast + (255 - averageLuminance));
-                    int newG = (int)((g - averageLuminance) * contrast + (255 - averageLuminance));
-                    int newB = (int)((b - averageLuminance) * contrast + (255 - averageLuminance));
-                    int newColor = ((newR & 0x0ff) << 16) | (( newG & 0x0ff) << 8) | (newB & 0x0ff);
+                    int newR = (int)((r - averageLuminance) * contrast + averageLuminance);
+                    int newG = (int)((g - averageLuminance) * contrast + averageLuminance);
+                    int newB = (int)((b - averageLuminance) * contrast + averageLuminance);
+                    newR = (newR > 255) ? 255 : newR;
+                    newG = (newG > 255) ? 255 : newG;
+                    newB = (newB > 255) ? 255 : newB;
+                    newR = (newR < 0) ? 0 : newR;
+                    newG = (newG < 0) ? 0 : newG;
+                    newB = (newB < 0) ? 0 : newB;
+                    int newColor = ((newR & 0xFF) << 16) | ((newG & 0xFF) << 8) | newB & 0xFF;
                     offscreen.setRGB(x, y, newColor);
                 }
             }
