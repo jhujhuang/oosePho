@@ -118,17 +118,14 @@
         vm.doBlur = function() {
             // TODO: Add a percentage
             applyFilter('BlurFilter', {});
-            vm.select.x1 = -1;
         }
         vm.doContrastChange = function() {
             var param = {};
             param['value'] = parseFloat(vm.contrastRatio);
             applyFilter('ChangeContrastFilter', param);
-            vm.select.x1 = -1;
         }
         vm.doEdgeDetect = function() {
             applyFilter('EdgeDetectionFilter', {});
-            vm.select.x1 = -1;
         }
 
         function applyFilter(filterType, params) {
@@ -144,10 +141,13 @@
                 transformRequest: angular.identity
             })
             .success(function() {
-                vm.ias.setOptions({
-                    hide: true
-                })
+                if (!(vm.select.x1 == -1)) {
+                    vm.ias.setOptions({
+                        hide: true
+                    });
+                }
                 console.log(filterType + " applied. Wait for fetch and update.");
+                vm.select.x1 = -1;
             })
             .error(function() {
                 alert("Failed to apply filter.");
