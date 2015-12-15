@@ -19,10 +19,6 @@
     left: 5px;
 }
 
-#tools-parameters textarea:focus, input:focus {
-    color: #0000ff;
-}
-
 #tools-parameters input, select, textarea {
     color: #000
 }
