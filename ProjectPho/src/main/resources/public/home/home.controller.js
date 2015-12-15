@@ -120,6 +120,12 @@
             applyFilter('BlurFilter', {});
             vm.select.x1 = -1;
         }
+        vm.doContrastChange = function() {
+            var param = {};
+            param['value'] = parseFloat(vm.contrastRatio);
+            applyFilter('ChangeContrastFilter', param);
+            vm.select.x1 = -1;
+        }
         vm.doEdgeDetect = function() {
             applyFilter('EdgeDetectionFilter', {});
             vm.select.x1 = -1;

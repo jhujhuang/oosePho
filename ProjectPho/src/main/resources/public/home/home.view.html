@@ -109,27 +109,24 @@
             <button type="button" ng-click="vm.currentTool = 'pencil'" class="btn btn-lg btn-default btn-block">Pencil</button>
         </div>
         <div id="tools-parameters">
-            <div id="tool-blur" ng-hide="!(vm.currentTool=='blur')">
-                <div class="input-group">
-                    <!-- TODO: Add description/instruction -->
-                    <button type="submit" class="btn btn-default" ng-click="vm.doBlur()">Apply</button>
+            <div id="tool-blur" ng-if="vm.currentTool=='blur'">
+                <button type="submit" class="btn btn-default" ng-click="vm.doBlur()">Apply</button>
+            </div>
+            <div id="tool-changecontrast" ng-if="vm.currentTool=='changecontrast'">
+                <button type="submit" class="btn btn-default" ng-click="vm.doContrastChange()">Apply</button>
+                <div id="tool-changecontrast-param">
+                    Contrast ratio: <input id="tool-changecontrast-input" ng-model="vm.contrastRatio">
                 </div>
             </div>
-            <div id="tool-changecontrast" ng-hide="!(vm.currentTool=='changecontrast')">
-                Coming Soon!
-            </div>
-            <div id="tool-edgedetect" ng-hide="!(vm.currentTool=='edgedetect')">
-                <div class="input-group">
-                    <!-- TODO: Add description/instruction -->
-                    <button type="submit" class="btn btn-default" ng-click="vm.doEdgeDetect()">Apply</button>
-                </div>
+            <div id="tool-edgedetect" ng-if="vm.currentTool=='edgedetect'">
+                <button type="submit" class="btn btn-default" ng-click="vm.doEdgeDetect()">Apply</button>
             </div>
 
             <div id="tool-selection" ng-hide="!(vm.currentTool=='select')">
                 Select an area
             </div>
             <div id="tool-pencil" ng-hide="!(vm.currentTool=='pencil')">
-                Coming soon
+                Coming soon!
             </div>
         </div>
     </div>

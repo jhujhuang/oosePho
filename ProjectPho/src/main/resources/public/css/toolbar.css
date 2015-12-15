@@ -1,4 +1,29 @@
 #toolbar button {
     padding: 30px;
+    position: relative;
 }
 
+#tools-parameters {
+    top: 100px;
+    position: relative;
+}
+
+#tool-changecontrast-param {
+    top: 15px;
+    position: relative;
+}
+
+#tool-changecontrast-input {
+    position: relative;
+    width: 80px;
+    left: 5px;
+    border-radius: 5px;
+}
+
+textarea:focus, input:focus {
+    color: #0000ff;
+}
+
+input, select, textarea {
+    color: #000
+}
