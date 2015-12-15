@@ -1,6 +1,9 @@
 package com.pho.filters;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.util.Map;
 
 /**
@@ -21,14 +24,37 @@ public class EdgeDetectionFilter extends Filter {
     @Override
     public void applyToRectangle(int x1, int x2, int y1, int y2){
         // TODO: Implement
-        int mask[][] = new int[][]{
+        /* int mask[][] = new int[][]{
                 {-1, -1, -1},
                 {-1, 8, -1},
                 {-1, -1, -1}
+        };*/
+
+        float[] matrix = {
+                -0.111f, -0.111f, -0.111f,
+                -0.111f, 8.111f, -0.111f,
+                -0.111f, -0.111f, -0.111f,
         };
+
+        BufferedImageOp op = new ConvolveOp( new Kernel(3, 3, matrix) );
+        BufferedImage src = image;
+
+        BufferedImage edgedImage = op.filter(src, null);
+
+
+        // System.out.println(Arrays.deepToString(mask));
 
         // apply filtering to offscreen first
         BufferedImage offscreen = deepCopy(image);
+
+        for (int y = y1; y < y2; y++) {
+            for (int x = x1; x < x2; x++) {
+                offscreen.setRGB(x, y, edgedImage.getRGB(x, y));
+            }
+        }
+
+        // apply filtering to offscreen first
+        /*BufferedImage offscreen = deepCopy(image);
 
         for (int y = y1; y < y2; y++) {
             for (int x = x1; x < x2; x++) {
@@ -103,7 +129,7 @@ public class EdgeDetectionFilter extends Filter {
                 int newColor = 0xFF000000 | newR | newG | newB;
                 offscreen.setRGB(x, y, newColor);
             }
-        }
+        }*/
         // update image with offscreen
         image = offscreen;
     }
