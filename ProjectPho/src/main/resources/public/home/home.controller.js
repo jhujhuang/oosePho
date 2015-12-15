@@ -322,7 +322,7 @@
             var imageWithJson = new FormData();
             imageWithJson.append('file', $('#upload')[0].files[0]);
             imageWithJson.append('userId', vm.user.username);
-            alert($('#upload')[0].files[0].name);
+            console.log($('#upload')[0].files[0].name);
             $http.post("/api/createnewphoto", imageWithJson, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
