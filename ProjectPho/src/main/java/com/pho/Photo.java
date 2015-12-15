@@ -211,7 +211,6 @@ public class Photo {
 
         // Make changes and store new canvas image
         int x1 = select.get("x1").intValue();
-        System.out.println(x1);
         if (x1 == -1) {
             f.applyToRectangle(0, canvas.getWidth(), 0, canvas.getHeight());
         } else {
