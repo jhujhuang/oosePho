@@ -32,7 +32,7 @@ public class EdgeDetectionFilter extends Filter {
 
         float[] matrix = {
                 -0.111f, -0.111f, -0.111f,
-                -0.111f, 8.111f, -0.111f,
+                -0.111f, 8.888f, -0.111f,
                 -0.111f, -0.111f, -0.111f,
         };
 
