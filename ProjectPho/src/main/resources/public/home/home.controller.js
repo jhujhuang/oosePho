@@ -116,7 +116,6 @@
         }
 
         vm.doBlur = function() {
-            // TODO: Add a percentage
             applyFilter('BlurFilter', {});
         }
         vm.doContrastChange = function() {
@@ -161,36 +160,7 @@
 
         // Left panel ends here
 
-
-//vm.resizePic = function() {
-//    console.log("resizing");
-//    $('#canvas_image').each(function() {
-//        var maxWidth = 100; // Max width for the image
-//        var maxHeight = 100;    // Max height for the image
-//        var ratio = 0;  // Used for aspect ratio
-//        var width = $(this).width();    // Current image width
-//        var height = $(this).height();  // Current image height
-//
-//        // Check if the current width is larger than the max
-//        if(width > maxWidth){
-//            ratio = maxWidth / width;   // get ratio for scaling image
-//            $(this).css("width", maxWidth); // Set new width
-//            $(this).css("height", height * ratio);  // Scale height based on ratio
-//            height = height * ratio;    // Reset height to match scaled image
-//            width = width * ratio;    // Reset width to match scaled image
-//        }
-//
-//        // Check if current height is larger than max
-//        if(height > maxHeight){
-//            ratio = maxHeight / height; // get ratio for scaling image
-//            $(this).css("height", maxHeight);   // Set new height
-//            $(this).css("width", width * ratio);    // Scale width based on ratio
-//            width = width * ratio;    // Reset width to match scaled image
-//        }
-//    });
-//}
-
-
+        // For showing preview of version
         vm.previewVersionData = "";
 
 
@@ -203,7 +173,6 @@
         }
 
         vm.previewVersion = function(versionId) {
-            // TODO: get version data vm.previewVersionData
             $http.get("/api/edit/" + vm.pId + "/" + versionId, {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
@@ -215,8 +184,7 @@
             })
             .error(function() {
                 console.log("Failed to get version preview");
-            })
-            ;
+            });
         }
 
         vm.hidePreviewVersion = function() {
@@ -274,13 +242,6 @@
             });
         }
 
-         // File.prototype.convertToBase64 = function(callback){
-         //           var FR= new FileReader();
-         //           FR.onload = function(e) {
-         //                callback(e.target.result)
-         //           };
-         //           FR.readAsDataURL(this);
-         // }
 
         /* Editing related variables and logic. */
 
@@ -331,7 +292,6 @@
             .success(function(response) {
                 console.log("Upload success.");
                 window.location.href = '#/edit/' + response['pId'];
-                //vm.resizePic();
             })
             .error(function(){
                 // console.log("Failed to send the image to server!");
@@ -339,22 +299,13 @@
         }
 
         function openImage(){
-            /* Check for the various File API support.*/
-            /*if (window.File && window.FileReader && window.FileList && window.Blob) {
-              // Great success! All the File APIs are supported.
-            } else {
-              alert('The File APIs are not fully supported in this browser.');
-            }*/
             $http.post("/api/listphotos", JSON.stringify({userId : vm.user.username}), {
             })
             .success(function(response){
                 vm.photosOfUser = response['photos'];
-                /* Check if the response has the correct string. */
-                // console.log(JSON.stringify(vm.photosOfUser, null, 2));
-                //vm.resizePic();
             })
             .error(function(){
-                // console.log("Failed to send the image to server!");
+                console.log("Failed list photos!");
             });
         }
 
@@ -377,8 +328,6 @@
 
             console.log($rootScope.globals.currentUser.username + " is entering Editing Session: " + pId);
 
-            //alert(vm.user);  // TODO: Why is null? Just use user form scope now
-            //$http.post("/api/edit/" + pId, JSON.stringify({userId : vm.user.username}), {})
             $http.post("/api/edit/" + pId, JSON.stringify({userId : $rootScope.globals.currentUser.username}), {
                 withCredentials: true,
                 headers: {'Content-Type': undefined },
@@ -437,29 +386,11 @@
                 vm.canvasData = response['canvasData'];
                 vm.versionId = response['versionId'];
 
-                //var image = new Image();
-                //image.onload = function() {
-                //    ctx.drawImage(image, 0, 0);
-                //};
-                //image.src = "data:image/png;base64; " + vm.canvasData;
-
             })
             .error(function() {
                 console.log("Fetch failed");
             });
-            /*if(vm.canvasData) {
-            $('#heads_up').css('display', 'none');
-            var html = "<img data-ng-src=\"data:image/png;base64, {{vm.canvasData}}\" data-err-src=\"./images/icon.png\" border=\"1px\">";
-            $('#canvas').html(html);
-            }*/
         }
-
-        /*function hasCanvasData() {
-            if(!vm.canvasData) {
-                return false;
-            }
-            return true;
-        }*/
 
         function changeTitle(newTitle) {
             console.log("Change title to: " + newTitle);

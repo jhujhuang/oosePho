@@ -45,7 +45,6 @@
                     </li>
                 </ul>
             </li>
-            <!-- Please change TODO display the number of revisions, and maybe change style to not be a tab -->
             <li role="listitem"><a id="revisions_link">revisions</a></li>
             <li><a href="#/login" class="btn btn-primary">Logout</a></li>
         </ul>
@@ -146,13 +145,6 @@
     <div class="col-sm-9">
         <div id="canvas" style="overflow:auto">
             <img id="canvas_image" data-ng-src="data:image/png;base64, {{vm.canvasData}}" data-err-src="./images/icon.png" border="1px">
-
-            <!--<div id="heads_up" ng-if="!vm.hasCanvasData()" class="jumbotron">
-                <h1>Hello, {{vm.user.firstName}}!</h1>
-                <P>It seems that you have not selected a photo. To begin your journey with Pho, you need to choose a photo from your portfolio.</P>
-                <p>If you have uploaded a photo, just go to File -> Open.</p>
-                <p>Enjoy!</p>
-            </div>-->
         </div>
         <!-- TODO: "Make a comment" form -->
         <div id="comments">

@@ -65,6 +65,7 @@
             }
         });
 
+        // Can then just write alert() in html ng-click
         $rootScope.alert = alert.bind(window);
     }
 
