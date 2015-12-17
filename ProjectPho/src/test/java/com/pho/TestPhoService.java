@@ -334,5 +334,5 @@ public class TestPhoService {
         assertEquals(initialCanvas, fetchResult.canvasData);
     }
 
-    // TODO: more tests
+    // TODO: more tests when more are implemented
 }

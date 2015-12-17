@@ -37,9 +37,6 @@ public class TestPhoController {
 
     @Before
     public void setup() throws Exception {
-        //Clear the database and then start the server
-        //clearDB();
-
         //Start the main server
         Bootstrap.main(null);
         Spark.awaitInitialization();
@@ -48,7 +45,6 @@ public class TestPhoController {
     @After
     public void tearDown() {
         //Stop the server
-        //clearDB();
         Spark.stop();
     }
 
@@ -215,7 +211,7 @@ public class TestPhoController {
     @Test
     public void testMakeComment() {
         registerUser();
-        // TODO
+        // TODO: Finish when commenting is implemented
     }
 
     @Test
@@ -441,22 +437,6 @@ public class TestPhoController {
             return new Gson().fromJson(content, type);
         }
     }
-
-    //------------------------------------------------------------------------//
-    // GameApp Specific Helper Methods and classes
-    //------------------------------------------------------------------------//
-
-    /*private void clearDB() {
-        SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl("jdbc:sqlite:game.db");
-
-        Sql2o db = new Sql2o(dataSource);
-
-        try (Connection conn = db.open()) {
-            String sql = "DROP TABLE IF EXISTS item" ;
-            conn.createQuery(sql).executeUpdate();
-        }
-    }*/
 
 }
 

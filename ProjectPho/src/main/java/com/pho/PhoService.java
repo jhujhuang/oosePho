@@ -148,7 +148,7 @@ public class PhoService {
     }
 
     /**
-     * Make an edit to a photo.
+     * Make an edit to a photo. Apply a filter to selection, or to the whole picture.
      *
      * @param photoId the photo ID
      * @param canvasId the canvas ID

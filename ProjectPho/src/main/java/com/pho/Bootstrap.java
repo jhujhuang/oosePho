@@ -6,12 +6,11 @@ import org.slf4j.LoggerFactory;
 import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
-
-import static spark.Spark.*;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static spark.Spark.*;
 
 /**
  * Bootstrap.
@@ -32,10 +31,10 @@ public class Bootstrap {
             System.exit(1);
         }
 
-        //Specify the IP address and Port at which the server should be run
+        // Specify the IP address and Port at which the server should be run
         ipAddress(IP_ADDRESS);
         port(PORT);
-        // port(getHerokuAssignedPort());
+        // TODO: port(getHerokuAssignedPort());
 
         //Specify the sub-directory from which to serve static resources (like html and css)
         staticFileLocation("/public");

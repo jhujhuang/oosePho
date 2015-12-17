@@ -32,13 +32,13 @@ public class User {
      * @return the array containing the photos of the user
      */
     public List<Photo> getPhotos() {
-	return this.photos;
+        return this.photos;
     }
     
     /** Add a photo to a user's collection of photo.
      * @param p the photo to add
      */
     public void addPhoto(Photo p) {
-	this.photos.add(p);
+        this.photos.add(p);
     }
 }
