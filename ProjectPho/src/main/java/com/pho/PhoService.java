@@ -154,10 +154,10 @@ public class PhoService {
      * @param canvasId the canvas ID
      * @param editType the edit type
      * @param params other parameters
+     * @param select parameters for selection axis
      * @throws InvalidPhotoIdException when photo id is invalid
      * @throws PhoSyncException if canvas in out of date
      * @throws PhoServiceException when failures occur
-     * @return newCanvasId the new canvas ID
      */
     public void edit(String photoId, String canvasId, String editType, Map<String, Double> params,
                      Map<String, Double> select)
@@ -263,6 +263,7 @@ public class PhoService {
      * @param pId string
      * @param versionId string
      * @return base 64 string
+     * @throws InvalidPhotoIdException when cannot find photo
      */
     public String getPreview(String pId, String versionId) throws InvalidPhotoIdException {
         Photo p = findByPhotoId(pId);

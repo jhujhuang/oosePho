@@ -197,6 +197,7 @@ public class Photo {
      * Apply filter to photo, and update canvas.
      * @param editType String of filter type.
      * @param params Map of filter parameters.
+     * @param select parameters for selection axis
      * @throws PhoService.PhoServiceException when editType is not found.
      */
     public void edit(String editType, Map<String, Double> params, Map<String, Double> select)
@@ -276,6 +277,7 @@ public class Photo {
      * Get the base 64 string representation of the image of a version.
      * @param versionId string
      * @return base 64 string
+     * @throws IOException when failed to write bytes from the image
      */
     public String getVersionBytes(String versionId) throws IOException {
         Version v = versions.get(Integer.parseInt(versionId));
